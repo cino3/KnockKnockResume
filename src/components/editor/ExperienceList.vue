@@ -1,0 +1,112 @@
+<template>
+  <draggable
+    v-model="store.experiences"
+    item-key="id"
+    handle=".drag-handle"
+    class="draggable-list"
+  >
+    <template #item="{ element: exp }">
+      <div class="list-item">
+        <div class="item-header">
+          <GripVertical class="drag-handle" :size="16" />
+          <el-checkbox v-model="exp.isVisible" />
+          <el-button
+            type="danger"
+            size="small"
+            text
+            @click="store.removeExperience(exp.id)"
+          >
+            <template #icon>
+              <Trash2 :size="14" />
+            </template>
+          </el-button>
+        </div>
+        <el-form :model="exp" label-width="80px" size="small">
+          <el-form-item label="公司">
+            <el-input v-model="exp.company" placeholder="公司名称" />
+          </el-form-item>
+          <el-form-item label="职位">
+            <el-input v-model="exp.position" placeholder="职位名称" />
+          </el-form-item>
+          <el-form-item label="时间">
+            <div class="date-range">
+              <el-date-picker
+                v-model="exp.startDate"
+                type="month"
+                placeholder="开始时间"
+                format="YYYY-MM"
+                value-format="YYYY-MM"
+                size="small"
+              />
+              <span style="margin: 0 8px;">-</span>
+              <el-date-picker
+                v-model="exp.endDate"
+                type="month"
+                placeholder="结束时间"
+                format="YYYY-MM"
+                value-format="YYYY-MM"
+                size="small"
+              />
+            </div>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input
+              v-model="exp.description"
+              type="textarea"
+              :rows="4"
+              placeholder="工作内容描述，支持换行"
+            />
+          </el-form-item>
+        </el-form>
+      </div>
+    </template>
+  </draggable>
+</template>
+
+<script setup lang="ts">
+import { useResumeStore } from '@/stores/resume'
+import draggable from 'vuedraggable'
+import { GripVertical, Trash2 } from 'lucide-vue-next'
+
+const store = useResumeStore()
+</script>
+
+<style scoped>
+.draggable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drag-handle {
+  cursor: move;
+  color: #9ca3af;
+}
+
+.drag-handle:hover {
+  color: #6b7280;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+</style>
+
