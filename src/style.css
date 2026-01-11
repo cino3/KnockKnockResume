@@ -116,12 +116,22 @@ body {
     break-after: auto !important;
     box-sizing: border-box !important;
     
-    /* 调试：添加边框来可视化内容区域（打印时可以移除） */
-    border: 1px dashed red !important;
+    /* 移除调试边框 */
+    border: none !important;
     
     /* 确保背景色被打印 */
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+  
+  /* 隐藏所有调试标签和调试元素 */
+  .debug-container-label,
+  .debug-wrapper-label,
+  .page-debug-label,
+  .debug-info,
+  .debug-item {
+    display: none !important;
+    visibility: hidden !important;
   }
   
   /* 减少最后一个 section 的底部间距，确保有底部留白 */
