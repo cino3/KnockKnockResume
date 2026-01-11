@@ -19,16 +19,6 @@
         <ResumeContent />
       </div>
 
-      <!-- 调试信息 -->
-      <div style="position: fixed; top: 80px; left: 20px; background: white; padding: 10px; border-radius: 4px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 100;">
-        <strong>📏 分页参数</strong><br>
-        MAX_CONTENT_HEIGHT: {{ MAX_CONTENT_HEIGHT }}px<br>
-        A4_HEIGHT_PX: {{ A4_HEIGHT_PX }}px<br>
-        PAGE_PADDING_Y: {{ PAGE_PADDING_Y }}px<br>
-        SAFETY_MARGIN: {{ SAFETY_MARGIN }}px<br>
-        <strong>⚠️ 已增加安全边距至 80px</strong>
-      </div>
-
       <!-- 3. 真实渲染的分页 (JS 计算结果，仅屏幕预览) -->
       <div
         v-for="(page, index) in renderPages"
@@ -62,9 +52,8 @@ const resumeStyle = computed(() => ({
 // A4 规格 (96 DPI)
 const A4_HEIGHT_PX = 1123
 const PAGE_PADDING_Y = 150 // 约 20mm * 2
-// 关键修复：大幅增加安全边距，确保底部留白
-const SAFETY_MARGIN = 80 // 额外的安全边距（像素）
-const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y - SAFETY_MARGIN // 893px
+const SAFETY_MARGIN = 0 // 移除额外安全边距，与打印页保持一致
+const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y - SAFETY_MARGIN // 973px
 
 /**
  * 深度优先分页算法 (按行拆分)
@@ -289,9 +278,9 @@ onMounted(() => { setTimeout(calculatePages, 500) })
 
 /* ================= 打印样式 (使用打印专用容器) ================= */
 @media print {
-  /* 设置打印页边距：20mm 基础边距 + 21mm 安全边距（80px at 96dpi）= 41mm 总边距 */
+  /* 设置打印页边距：统一使用 20mm */
   @page {
-    margin: 20mm 20mm 41mm 20mm; /* 上 右 下 左 - 下边距增加 21mm 安全边距 */
+    margin: 20mm;
     size: A4;
   }
 
