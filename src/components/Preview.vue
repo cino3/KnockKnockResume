@@ -12,6 +12,34 @@
       />
     </div>
 
+    <!-- 调试信息 -->
+    <div class="debug-info" v-if="showDebug">
+      <div class="debug-item">
+        <strong>内容总高度:</strong> {{ contentHeight }}px
+      </div>
+      <div class="debug-item">
+        <strong>每页内容高度:</strong> {{ pageContentHeight }}px (257mm)
+      </div>
+      <div class="debug-item">
+        <strong>计算页数:</strong> {{ pages }}
+      </div>
+      <div class="debug-item">
+        <strong>页面列表:</strong>
+        <div v-for="pageIndex in pages" :key="pageIndex" style="margin-left: 20px; font-size: 12px;">
+          第{{ pageIndex }}页: offset = -{{ (pageIndex - 1) * pageContentHeight }}px
+        </div>
+      </div>
+      <el-button size="small" @click="showDebug = false" style="margin-top: 8px;">隐藏调试</el-button>
+    </div>
+    <el-button 
+      v-else
+      size="small" 
+      @click="showDebug = true" 
+      style="position: fixed; top: 80px; right: 20px; z-index: 100;"
+    >
+      显示调试信息
+    </el-button>
+
     <!-- 简历内容 - 使用分页容器 -->
     <div class="resume-pages-container" :style="{ transform: `scale(${scale})`, transformOrigin: 'top center' }">
       <!-- 隐藏的测量容器，用于计算内容高度 -->
@@ -30,8 +58,18 @@
           class="resume-paper screen-page"
           :class="{ 'page-break': pageIndex < pages }"
           :style="resumeStyle"
+          :data-page-index="pageIndex"
         >
-          <div class="page-content-wrapper" :style="getPageContentStyle(pageIndex)">
+          <!-- 调试：显示页码和offset -->
+          <div v-if="showDebug" class="page-debug-label">
+            第{{ pageIndex }}页 | offset: -{{ (pageIndex - 1) * pageContentHeight }}px | 内容范围: {{ (pageIndex - 1) * pageContentHeight }}px - {{ pageIndex * pageContentHeight }}px
+          </div>
+          <div 
+            class="page-content-wrapper" 
+            :style="getPageContentStyle(pageIndex)"
+            :data-page-index="pageIndex"
+            :data-offset="(pageIndex - 1) * pageContentHeight"
+          >
             <ResumeContent />
           </div>
         </div>
@@ -49,6 +87,9 @@ const store = useResumeStore()
 const scale = ref(1)
 const measureRef = ref<HTMLElement | null>(null)
 const pages = ref<number>(1)
+const contentHeight = ref<number>(0)
+const pageContentHeight = 971 // 257mm in pixels at 96 DPI
+const showDebug = ref(false)
 
 const resumeStyle = computed(() => {
   return {
@@ -63,20 +104,38 @@ function calculatePages() {
   nextTick(() => {
     if (!measureRef.value) return
     
-    const contentHeight = measureRef.value.scrollHeight
+    const height = measureRef.value.scrollHeight
+    contentHeight.value = height
     // A4页面内容区域高度：297mm - 40mm (上下padding) = 257mm
     // 转换为像素：257mm * 3.779527559 = 约971px (96 DPI)
-    const pageContentHeight = 971 // 257mm in pixels at 96 DPI
-    const calculatedPages = Math.max(1, Math.ceil(contentHeight / pageContentHeight))
+    const calculatedPages = Math.max(1, Math.ceil(height / pageContentHeight))
     pages.value = calculatedPages
+    
+    // 调试输出
+    if (showDebug.value) {
+      console.log('=== 分页调试信息 ===')
+      console.log('内容总高度:', height, 'px')
+      console.log('每页内容高度:', pageContentHeight, 'px (257mm)')
+      console.log('计算页数:', calculatedPages)
+      console.log('每页 offset:')
+      for (let i = 1; i <= calculatedPages; i++) {
+        console.log(`  第${i}页: translateY(-${(i - 1) * pageContentHeight}px)`)
+      }
+    }
   })
 }
 
 // 获取每页内容的样式
 function getPageContentStyle(pageIndex: number) {
-  // 每页内容高度为971px (257mm)
-  const pageContentHeight = 971
   const offset = (pageIndex - 1) * pageContentHeight
+  // 调试输出
+  if (showDebug.value) {
+    console.log(`第${pageIndex}页样式:`, {
+      offset,
+      transform: `translateY(-${offset}px)`,
+      '内容范围': `${offset}px - ${offset + pageContentHeight}px`
+    })
+  }
   return {
     transform: `translateY(-${offset}px)`
   }
@@ -129,9 +188,9 @@ onMounted(() => {
 .resume-paper {
   width: 210mm;
   height: 297mm;
-  background: white;
+  background: #f0f0f0; /* 调试：灰色背景，显示padding区域（20mm） */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20mm;
+  padding: 0; /* 关键：移除 padding，因为页面内容包装器已经有 padding */
   margin: 0;
   color: #333;
   font-family: var(--font-family, 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
@@ -140,6 +199,7 @@ onMounted(() => {
   page-break-after: always;
   break-after: page;
   position: relative;
+  /* 调试说明：灰色区域是padding区域（20mm），白色内容区域会显示在中间 */
 }
 
 /* 隐藏的测量容器 */
@@ -166,7 +226,12 @@ onMounted(() => {
 /* 屏幕上显示的页面容器 */
 .screen-page {
   display: block;
-  overflow: hidden;
+  overflow: hidden; /* 关键：隐藏超出页面高度的内容 */
+  height: 297mm; /* 固定高度，确保每页都是297mm */
+  position: relative; /* 确保绝对定位的子元素相对于此容器 */
+  /* 调试：添加红色虚线边框来可视化页面边界 */
+  border: 2px dashed red;
+  box-sizing: border-box;
 }
 
 /* 确保打印容器在屏幕上完全隐藏 */
@@ -186,6 +251,12 @@ onMounted(() => {
   width: 100%;
   padding: 20mm;
   box-sizing: border-box;
+  /* 确保内容包装器包含完整内容，通过 transform 来显示不同部分 */
+  height: auto;
+  min-height: 100%;
+  /* 调试：添加蓝色虚线边框和白色背景来可视化内容区域 */
+  border: 1px dashed blue;
+  background: white; /* 白色背景，与灰色padding区域形成对比 */
 }
 
 .resume-header {
@@ -278,7 +349,51 @@ onMounted(() => {
   line-height: var(--line-height, 1.6);
 }
 
+/* 调试信息样式 */
+.debug-info {
+  position: fixed;
+  top: 120px;
+  right: 20px;
+  z-index: 100;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  max-width: 300px;
+  font-family: monospace;
+}
+
+.debug-item {
+  margin-bottom: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.debug-item:last-child {
+  border-bottom: none;
+}
+
+.page-debug-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 0, 0, 0.1);
+  color: red;
+  font-size: 10px;
+  padding: 2px 8px;
+  z-index: 10;
+  font-family: monospace;
+  border-bottom: 1px dashed red;
+}
+
 @media print {
+  .scale-control,
+  .debug-info,
+  .page-debug-label {
+    display: none !important;
+  }
   .scale-control {
     display: none;
   }
@@ -288,8 +403,14 @@ onMounted(() => {
   }
 
   .resume-pages-container {
-    gap: 0;
-    padding: 0;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 }
 </style>
