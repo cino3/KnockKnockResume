@@ -81,6 +81,9 @@ export const useResumeStore = defineStore('resume', () => {
     paragraphSpacing: 8
   })
 
+  // 预览缩放（固定为 70%）
+  const previewScale = ref(0.7)
+
   // 计算属性：生成简历文件名
   const resumeFileName = computed(() => {
     return `${profile.value.name}_${profile.value.title}_简历`
@@ -170,6 +173,7 @@ export const useResumeStore = defineStore('resume', () => {
     projects,
     educations,
     theme,
+    previewScale,
     resumeFileName,
     addExperience,
     removeExperience,

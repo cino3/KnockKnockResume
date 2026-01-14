@@ -1,13 +1,7 @@
 <template>
   <div class="preview-container">
-    <!-- 缩放控制器 -->
-    <div class="scale-control">
-      <span>缩放: {{ Math.round(scale * 100) }}%</span>
-      <el-slider v-model="scale" :min="0.5" :max="1.5" :step="0.1" style="width: 200px; margin: 0 12px;" />
-    </div>
-
     <!-- 简历页面容器 -->
-    <div class="resume-pages-container" :style="{ transform: `scale(${scale})`, transformOrigin: 'top center' }">
+    <div class="resume-pages-container" :style="{ transform: `scale(${store.previewScale})`, transformOrigin: 'top center' }">
 
       <!-- 1. 测量容器 (永远隐藏，仅用于计算) -->
       <div ref="measureRef" class="resume-paper measure-container" :style="resumeStyle">
@@ -39,7 +33,6 @@ import { useResumeStore } from '@/stores/resume'
 import ResumeContent from './ResumeContent.vue'
 
 const store = useResumeStore()
-const scale = ref(1)
 const measureRef = ref<HTMLElement | null>(null)
 const renderPages = ref<number[]>([1])
 
@@ -197,11 +190,6 @@ onMounted(() => {
 .preview-container {
   position: relative; width: 100%; height: 100%;
   background: #525659; overflow: auto;
-}
-.scale-control {
-  position: fixed; top: 20px; right: 20px; z-index: 100;
-  display: flex; align-items: center; background: white;
-  padding: 12px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .resume-pages-container {
   display: flex; flex-direction: column; align-items: center;

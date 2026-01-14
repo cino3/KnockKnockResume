@@ -34,12 +34,12 @@ import Preview from './components/Preview.vue'
 
 .preview-panel {
   flex: 1;
-  background: #f5f5f5;
-  overflow: auto;
+  background: #525659;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 20px;
+  padding: 0;
 }
 </style>
 
