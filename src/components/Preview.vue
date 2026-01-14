@@ -49,23 +49,60 @@ const resumeStyle = computed(() => ({
   '--paragraph-spacing': `${store.theme.paragraphSpacing}px`
 }))
 
-// A4 规格 (96 DPI)
-const A4_HEIGHT_PX = 1123
-// const PAGE_PADDING_Y = 150 // 约 20mm * 2
-const PAGE_PADDING_Y = 91  // 约 12mm * 2
-const SAFETY_MARGIN = 0 // 移除额外安全边距，与打印页保持一致
-const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y - SAFETY_MARGIN // 973px
+// ================= 常量定义 =================
+const A4_HEIGHT_PX = 1123 // A4 高度 (96 DPI)
+const PAGE_PADDING_Y = 91  // 上下边距之和: 9mm + 15mm ≈ 91px
+const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y
+const SAFETY_BUFFER = 5    // 额外安全边距，防止溢出
 
-/**
- * 深度优先分页算法 (按行拆分)
- */
+// ================= 类型定义 =================
+type ClassList = string[]
+
+// ================= 工具函数 =================
+const getItemClassNames = (): ClassList => [
+  'experience-item',
+  'project-item',
+  'education-item'
+]
+
+const getAtomClassNames = (): ClassList => [
+  'item-header',
+  'text-line'
+]
+
+const getOuterHeight = (el: HTMLElement): number => {
+  const style = window.getComputedStyle(el)
+  const marginTop = parseFloat(style.marginTop || '0')
+  const marginBottom = parseFloat(style.marginBottom || '0')
+  return el.offsetHeight + marginTop + marginBottom + SAFETY_BUFFER
+}
+
+const collectAtoms = (node: HTMLElement): HTMLElement[] => {
+  const atoms: HTMLElement[] = []
+  const atomClassNames = getAtomClassNames()
+
+  const traverse = (el: HTMLElement) => {
+    const isAtom = atomClassNames.some(cls => el.classList.contains(cls))
+    if (isAtom) {
+      atoms.push(el)
+    } else if (el.children.length > 0) {
+      Array.from(el.children).forEach(c => traverse(c as HTMLElement))
+    } else {
+      atoms.push(el)
+    }
+  }
+
+  traverse(node)
+  return atoms
+}
+
+// ================= 分页算法 =================
 async function calculatePages() {
   await nextTick()
   if (!measureRef.value) return
 
   const sourceRoot = measureRef.value
   const pagesData: HTMLElement[][] = []
-
   let currentPageNodes: HTMLElement[] = []
   let currentHeight = 0
 
@@ -75,24 +112,12 @@ async function calculatePages() {
     currentHeight = 0
   }
 
-  const getOuterHeight = (el: HTMLElement) => {
-    const style = window.getComputedStyle(el)
-    const marginTop = parseFloat(style.marginTop || '0')
-    const marginBottom = parseFloat(style.marginBottom || '0')
-    const paddingTop = parseFloat(style.paddingTop || '0')
-    const paddingBottom = parseFloat(style.paddingBottom || '0')
-    // 计算完整的外部高度：offsetHeight + margin
-    // offsetHeight 已经包含了 padding 和 border
-    // 增加更大的安全缓冲（从 +2 增加到 +5）来确保不会溢出
-    return el.offsetHeight + marginTop + marginBottom + 5 // +5 作为额外的安全边距
-  }
-
   const topLevelNodes = Array.from(sourceRoot.children) as HTMLElement[]
+  const itemClassNames = getItemClassNames()
 
   for (const sectionNode of topLevelNodes) {
     const isSection = sectionNode.classList.contains('resume-section')
 
-    // 非 Section 节点 (如 Header)
     if (!isSection) {
       const h = getOuterHeight(sectionNode)
       if (currentHeight + h > MAX_CONTENT_HEIGHT && currentHeight > 0) startNewPage()
@@ -101,43 +126,25 @@ async function calculatePages() {
       continue
     }
 
-    // Section 节点：深入内部拆分
     let currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
     currentPageNodes.push(currentSectionWrapper)
 
     const sectionChildren = Array.from(sectionNode.children) as HTMLElement[]
 
     for (const childNode of sectionChildren) {
-      const isItem = childNode.classList.contains('experience-item') ||
-                     childNode.classList.contains('project-item') ||
-                     childNode.classList.contains('education-item')
+      const isItem = itemClassNames.some(cls => childNode.classList.contains(cls))
       const isContent = childNode.classList.contains('section-content')
 
       if (isItem || isContent) {
-        // 创建 Item Wrapper
+        const atoms = collectAtoms(childNode)
         let currentItemWrapper = childNode.cloneNode(false) as HTMLElement
         currentSectionWrapper.appendChild(currentItemWrapper)
 
-        // 递归收集所有原子元素 (Header, Text Lines)
-        const atoms: HTMLElement[] = []
-        const traverseAtoms = (node: HTMLElement) => {
-           if (node.classList.contains('item-header') || node.classList.contains('text-line')) {
-             atoms.push(node)
-           } else if (node.children.length > 0) {
-             Array.from(node.children).forEach(c => traverseAtoms(c as HTMLElement))
-           } else {
-             atoms.push(node)
-           }
-        }
-        traverseAtoms(childNode)
-
-        // 逐个放入原子元素
         for (const atom of atoms) {
           const atomHeight = getOuterHeight(atom)
 
           if (currentHeight + atomHeight > MAX_CONTENT_HEIGHT) {
             startNewPage()
-            // 换页后重建层级：Section -> Item
             currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
             currentPageNodes.push(currentSectionWrapper)
             currentItemWrapper = childNode.cloneNode(false) as HTMLElement
@@ -148,7 +155,6 @@ async function calculatePages() {
           currentHeight += atomHeight
         }
       } else {
-        // 普通子元素 (如 Section Title)
         const h = getOuterHeight(childNode)
         if (currentHeight + h > MAX_CONTENT_HEIGHT) {
           startNewPage()
@@ -174,8 +180,16 @@ async function calculatePages() {
   })
 }
 
-watch([() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.theme], () => { calculatePages() }, { deep: true })
-onMounted(() => { setTimeout(calculatePages, 500) })
+// ================= 监听与生命周期 =================
+watch(
+  [() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.theme],
+  () => calculatePages(),
+  { deep: true }
+)
+
+onMounted(() => {
+  setTimeout(calculatePages, 500)
+})
 </script>
 
 <style scoped>
