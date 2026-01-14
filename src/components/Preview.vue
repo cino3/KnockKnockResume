@@ -51,7 +51,8 @@ const resumeStyle = computed(() => ({
 
 // A4 规格 (96 DPI)
 const A4_HEIGHT_PX = 1123
-const PAGE_PADDING_Y = 150 // 约 20mm * 2
+// const PAGE_PADDING_Y = 150 // 约 20mm * 2
+const PAGE_PADDING_Y = 91  // 约 12mm * 2
 const SAFETY_MARGIN = 0 // 移除额外安全边距，与打印页保持一致
 const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y - SAFETY_MARGIN // 973px
 
@@ -201,7 +202,7 @@ onMounted(() => { setTimeout(calculatePages, 500) })
 /* 测量容器：永远隐藏 */
 .measure-container {
   position: absolute; top: 0; left: 0; visibility: hidden; z-index: -100;
-  height: auto !important; min-height: 297mm; padding: 20mm;
+  height: auto !important; min-height: 297mm; padding: 9mm 12mm 15mm 12mm;
 }
 
 /* 打印专用容器：屏幕隐藏 */
@@ -209,7 +210,7 @@ onMounted(() => { setTimeout(calculatePages, 500) })
   display: none;
   height: auto;
   min-height: 297mm;
-  padding: 20mm;
+  padding: 9mm 12mm 15mm 12mm;
   box-sizing: border-box;
   background: white;
 }
@@ -220,7 +221,7 @@ onMounted(() => { setTimeout(calculatePages, 500) })
   overflow: hidden;
 }
 .page-content-wrapper {
-  width: 100%; height: 100%; padding: 20mm; box-sizing: border-box;
+  width: 100%; height: 100%; padding: 9mm 12mm 15mm 12mm; box-sizing: border-box;
 }
 .page-number {
   position: absolute; bottom: 10px; right: 20px;
@@ -278,9 +279,9 @@ onMounted(() => { setTimeout(calculatePages, 500) })
 
 /* ================= 打印样式 (使用打印专用容器) ================= */
 @media print {
-  /* 设置打印页边距：统一使用 20mm */
+  /* 设置打印页边距：0，由容器 padding 提供 */
   @page {
-    margin: 20mm;
+    margin: 0;
     size: A4;
   }
 
@@ -288,13 +289,8 @@ onMounted(() => { setTimeout(calculatePages, 500) })
   .scale-control,
   .measure-container,
   .page-number,
-  .screen-page {
-    display: none !important;
-  }
-
-  /* 显示打印专用容器 */
   .print-only-container {
-    display: block !important;
+    display: none !important;
   }
 
   /* 重置容器样式 */
@@ -308,7 +304,7 @@ onMounted(() => { setTimeout(calculatePages, 500) })
     overflow: visible !important;
   }
 
-  /* 核心修复：取消缩放和间距 */
+  /* 核心修复：取消缩放，保留分页间距 */
   .resume-pages-container {
     transform: none !important;
     width: 100% !important;
@@ -318,37 +314,19 @@ onMounted(() => { setTimeout(calculatePages, 500) })
     gap: 0 !important;
   }
 
-  /* 打印容器样式：移除 padding，由 @page margin 提供边距 */
-  .print-only-container {
-    width: 100%;
+  /* 屏幕预览页面：打印时显示，并确保每页单独成页 */
+  .screen-page {
+    display: block !important;
+    page-break-after: always;
+    break-after: page;
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 0 !important; /* 重要：移除内部 padding，使用 @page margin */
-    box-sizing: border-box;
   }
 
   /* 确保背景色打印 */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-  }
-
-  /* 打印分页：使用浏览器原生分页 */
-  .print-only-container .resume-section {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .print-only-container .experience-item,
-  .print-only-container .project-item,
-  .print-only-container .education-item {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .print-only-container .text-line {
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 }
 </style>
