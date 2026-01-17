@@ -46,7 +46,7 @@ const resumeStyle = computed(() => ({
 const A4_HEIGHT_PX = 1123 // A4 高度 (96 DPI)
 const PAGE_PADDING_Y = 91  // 上下边距之和: 9mm + 15mm ≈ 91px
 const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y
-const SAFETY_BUFFER = 5    // 额外安全边距，防止溢出
+const SAFETY_BUFFER = 0    // 额外安全边距，防止溢出（减少避免留白过多）
 
 // ================= 类型定义 =================
 type ClassList = string[]
