@@ -207,14 +207,26 @@ export const useResumeStore = defineStore('resume', () => {
   }
 
   function getExportData() {
-    return {
-      profile: profile.value,
+    // 导出时排除头像图片数据，创建不包含 avatar 的对象
+    const exportData = {
+      profile: {
+        name: profile.value.name,
+        title: profile.value.title,
+        mobile: profile.value.mobile,
+        email: profile.value.email,
+        birthday: profile.value.birthday,
+        github: profile.value.github,
+        website: profile.value.website,
+        skills: profile.value.skills
+      },
       experiences: experiences.value,
       projects: projects.value,
       educations: educations.value,
       theme: theme.value,
       exportTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
     }
+
+    return exportData
   }
 
   return {

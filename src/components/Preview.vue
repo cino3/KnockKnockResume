@@ -271,7 +271,7 @@ onMounted(() => {
   margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px;
+  font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px;
 }
 .page-content-wrapper :deep(.section-content) {
   margin-bottom: var(--paragraph-spacing, 8px);
@@ -286,7 +286,7 @@ onMounted(() => {
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
-  margin-bottom: 9px;
+  margin-bottom: 5px;
 }
 .page-content-wrapper :deep(.item-header) {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;

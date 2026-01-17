@@ -65,7 +65,8 @@
         v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
         :key="index"
         class="text-line"
-      >{{ line }}</div>
+        v-html="line"
+      ></div>
     </div>
     <div class="section-divider"></div>
   </section>
@@ -90,7 +91,8 @@
           v-for="(line, index) in formatDescriptionLines(exp.description)"
           :key="index"
           class="text-line"
-        >{{ line }}</div>
+          v-html="line"
+        ></div>
       </div>
     </div>
     <div class="section-divider"></div>
@@ -115,7 +117,8 @@
           v-for="(line, index) in formatDescriptionLines(proj.description)"
           :key="index"
           class="text-line"
-        >{{ line }}</div>
+          v-html="line"
+        ></div>
       </div>
     </div>
     <div class="section-divider"></div>
@@ -141,10 +144,13 @@ function formatDateRange(start: string, end: string): string {
   return `${startStr} - ${endStr}`
 }
 
-// 核心工具：按换行符拆分文本
+// 核心工具：按换行符拆分文本（支持 HTML 内容）
 function formatDescriptionLines(text: string | undefined): string[] {
   if (!text) return []
-  return text.split('\n')
+  // 将 <br> 标签替换为换行符，然后按换行符拆分
+  const normalizedText = text.replace(/<br\s*\/?>/gi, '\n')
+  // 过滤掉空字符串，避免渲染空的 .text-line div
+  return normalizedText.split('\n').filter(line => line.trim() !== '')
 }
 </script>
 
@@ -165,7 +171,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 8px; }
-.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; }
+.section-title { font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; }
 .section-content { margin-bottom: var(--paragraph-spacing, 8px); }
 
 /* 模块间分隔线 */
@@ -177,7 +183,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
   display: none;
 }
 
-.experience-item, .project-item, .education-item { margin-bottom: 9px; }
+.experience-item, .project-item, .education-item { margin-bottom: 5px; }
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
 .item-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }

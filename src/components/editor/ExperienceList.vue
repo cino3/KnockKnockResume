@@ -43,11 +43,10 @@
             />
           </el-form-item>
           <el-form-item label="描述">
-            <el-input
+            <BoldTextarea
               v-model="exp.description"
-              type="textarea"
+              placeholder="工作内容描述，支持换行和加粗"
               :rows="4"
-              placeholder="工作内容描述，支持换行"
             />
           </el-form-item>
         </el-form>
@@ -60,6 +59,7 @@
 import { useResumeStore } from '@/stores/resume'
 import draggable from 'vuedraggable'
 import { GripVertical, Trash2 } from 'lucide-vue-next'
+import BoldTextarea from './BoldTextarea.vue'
 
 const store = useResumeStore()
 </script>

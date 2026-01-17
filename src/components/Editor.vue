@@ -94,11 +94,10 @@
       <el-collapse-item name="skills" title="专业技能">
         <el-form :model="store.profile" label-width="80px" size="small">
           <el-form-item label="技能">
-            <el-input
+            <BoldTextarea
               v-model="store.profile.skills"
-              type="textarea"
+              placeholder="请输入专业技能，可换行输入多个技能项，支持加粗"
               :rows="6"
-              placeholder="请输入专业技能，可换行输入多个技能项"
             />
           </el-form-item>
         </el-form>
@@ -167,6 +166,7 @@ import dayjs from 'dayjs'
 import ExperienceList from './editor/ExperienceList.vue'
 import ProjectList from './editor/ProjectList.vue'
 import EducationList from './editor/EducationList.vue'
+import BoldTextarea from './editor/BoldTextarea.vue'
 
 const store = useResumeStore()
 const activeNames = ref(['profile'])
