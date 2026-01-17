@@ -232,10 +232,10 @@ onMounted(() => {
 
 /* Copy styles from ResumeContent */
 .page-content-wrapper :deep(.resume-header) {
-  border-bottom: 2px solid var(--primary, #2563eb); padding-bottom: 16px; margin-bottom: 24px;
+  border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 24px;
 }
 .page-content-wrapper :deep(.name) {
-  font-size: 32px; font-weight: 700; color: var(--primary, #2563eb); margin-bottom: 8px;
+  font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.title) {
   font-size: 18px; color: #666; margin-bottom: 12px;
@@ -247,13 +247,20 @@ onMounted(() => {
   display: flex; align-items: center; gap: 4px;
 }
 .page-content-wrapper :deep(.resume-section) {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 20px; font-weight: 600; color: var(--primary, #2563eb); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;
+  font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 16px;
 }
 .page-content-wrapper :deep(.section-content) {
   margin-bottom: var(--paragraph-spacing, 8px);
+}
+.page-content-wrapper :deep(.section-divider) {
+  border-bottom: 2px dashed #d1d5db;
+  margin-top: 16px;
+}
+.page-content-wrapper :deep(.resume-section:last-child .section-divider) {
+  display: none;
 }
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),

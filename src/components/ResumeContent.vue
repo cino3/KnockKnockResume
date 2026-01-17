@@ -6,7 +6,6 @@
     <div class="contact-info">
       <span v-if="store.profile.mobile">📱 {{ store.profile.mobile }}</span>
       <span v-if="store.profile.email">✉️ {{ store.profile.email }}</span>
-      <span v-if="store.profile.location">📍 {{ store.profile.location }}</span>
       <span v-if="store.profile.github">🔗 {{ store.profile.github }}</span>
       <span v-if="store.profile.website">🌐 {{ store.profile.website }}</span>
     </div>
@@ -23,6 +22,7 @@
         class="text-line"
       >{{ line }}</div>
     </div>
+    <div class="section-divider"></div>
   </section>
 
   <!-- 工作经历 -->
@@ -49,6 +49,7 @@
         >{{ line }}</div>
       </div>
     </div>
+    <div class="section-divider"></div>
   </section>
 
   <!-- 项目经历 -->
@@ -74,6 +75,7 @@
         >{{ line }}</div>
       </div>
     </div>
+    <div class="section-divider"></div>
   </section>
 
   <!-- 教育背景 -->
@@ -128,15 +130,24 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 <style scoped>
 /* 基础样式 */
-.resume-header { border-bottom: 2px solid var(--primary, #2563eb); padding-bottom: 16px; margin-bottom: 24px; }
-.name { font-size: 32px; font-weight: 700; color: var(--primary, #2563eb); margin-bottom: 8px; }
+.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 24px; }
+.name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 8px; }
 .title { font-size: 18px; color: #666; margin-bottom: 12px; }
 .contact-info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #666; }
 .contact-info span { display: flex; align-items: center; gap: 4px; }
 
-.resume-section { margin-bottom: 32px; }
-.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #2563eb); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
+.resume-section { margin-bottom: 16px; }
+.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 16px; }
 .section-content { margin-bottom: var(--paragraph-spacing, 8px); }
+
+/* 模块间分隔线 */
+.section-divider {
+  border-bottom: 2px dashed #d1d5db;
+  margin-top: 16px;
+}
+.resume-section:last-child .section-divider {
+  display: none;
+}
 
 .experience-item, .project-item, .education-item { margin-bottom: 24px; }
 

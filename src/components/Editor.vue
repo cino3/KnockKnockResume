@@ -8,12 +8,27 @@
         </template>
         导出 PDF
       </el-button>
+      <el-button type="info" @click="handleExportJSON">
+        <template #icon>
+          <Download :size="16" />
+        </template>
+        导出 JSON
+      </el-button>
+      <el-button type="success" @click="handleSave">
+        <template #icon>
+          <Save :size="16" />
+        </template>
+        保存
+      </el-button>
       <el-button type="danger" @click="handleReset">
         <template #icon>
           <RotateCcw :size="16" />
         </template>
         重置
       </el-button>
+    </div>
+    <div v-if="store.lastSavedTime" class="save-time">
+      最后保存于 {{ store.lastSavedTime }}
     </div>
 
     <!-- 折叠面板 -->
@@ -32,9 +47,6 @@
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input v-model="store.profile.email" placeholder="请输入邮箱" />
-          </el-form-item>
-          <el-form-item label="地址">
-            <el-input v-model="store.profile.location" placeholder="请输入地址" />
           </el-form-item>
           <el-form-item label="GitHub">
             <el-input v-model="store.profile.github" placeholder="GitHub 链接（可选）" />
@@ -95,9 +107,6 @@
       <!-- 主题设置 -->
       <el-collapse-item name="theme" title="主题设置">
         <el-form :model="store.theme" label-width="100px" size="small">
-          <el-form-item label="主色调">
-            <el-color-picker v-model="store.theme.primaryColor" />
-          </el-form-item>
           <el-form-item label="行高">
             <el-slider
               v-model="store.theme.lineHeight"
@@ -126,7 +135,9 @@
 import { ref } from 'vue'
 import { useResumeStore } from '@/stores/resume'
 import { usePrint } from '@/composables/usePrint'
-import { Download, RotateCcw, Plus } from 'lucide-vue-next'
+import { Download, RotateCcw, Plus, Save } from 'lucide-vue-next'
+import { ElMessage } from 'element-plus'
+import dayjs from 'dayjs'
 import ExperienceList from './editor/ExperienceList.vue'
 import ProjectList from './editor/ProjectList.vue'
 import EducationList from './editor/EducationList.vue'
@@ -138,6 +149,41 @@ const { printResume } = usePrint(store.resumeFileName)
 
 const handleExport = () => {
   printResume()
+}
+
+const handleSave = () => {
+  // 更新保存时间（数据已经通过 pinia-plugin-persistedstate 自动保存到 localStorage）
+  store.updateLastSavedTime()
+
+  // 显示成功提示
+  ElMessage.success({
+    message: '简历已保存',
+    duration: 2000
+  })
+}
+
+const handleExportJSON = () => {
+  // 获取导出数据
+  const data = store.getExportData()
+  const jsonString = JSON.stringify(data, null, 2)
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+
+  // 创建下载链接
+  const link = document.createElement('a')
+  const timestamp = dayjs().format('YYYYMMDD_HHmmss')
+  link.href = url
+  link.download = `${store.resumeFileName}_${timestamp}.json`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+
+  // 显示成功提示
+  ElMessage.success({
+    message: 'JSON 文件已导出',
+    duration: 2000
+  })
 }
 
 const handleReset = () => {
@@ -154,10 +200,25 @@ const handleReset = () => {
 
 .editor-header {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.editor-header .el-button {
+  flex: 1;
+  min-width: 0;
+  font-size: 10px;
+  padding: 8px 12px;
+}
+
+.save-time {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 16px;
+  padding-left: 4px;
 }
 
 .list-container {

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import dayjs from 'dayjs'
 import type { Profile, Experience, Project, Education, ThemeConfig, ResumeData } from '@/types/resume'
 import { generateUUID } from '@/utils/uuid'
 
@@ -10,7 +11,6 @@ export const useResumeStore = defineStore('resume', () => {
     title: '前端工程师',
     mobile: '138-0000-0000',
     email: 'zhangsan@example.com',
-    location: '北京市',
     github: 'https://github.com/zhangsan',
     website: 'https://zhangsan.dev',
     summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。'
@@ -75,7 +75,7 @@ export const useResumeStore = defineStore('resume', () => {
 
   // 主题配置
   const theme = ref<ThemeConfig>({
-    primaryColor: '#2563eb',
+    primaryColor: '#000000',
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     lineHeight: 1.6,
     paragraphSpacing: 8
@@ -83,6 +83,9 @@ export const useResumeStore = defineStore('resume', () => {
 
   // 预览缩放（固定为 70%）
   const previewScale = ref(0.7)
+
+  // 最后保存时间
+  const lastSavedTime = ref<string | null>(null)
 
   // 计算属性：生成简历文件名
   const resumeFileName = computed(() => {
@@ -153,17 +156,31 @@ export const useResumeStore = defineStore('resume', () => {
       title: '',
       mobile: '',
       email: '',
-      location: '',
       summary: ''
     }
     experiences.value = []
     projects.value = []
     educations.value = []
     theme.value = {
-      primaryColor: '#2563eb',
+      primaryColor: '#000000',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       lineHeight: 1.6,
       paragraphSpacing: 8
+    }
+  }
+
+  function updateLastSavedTime() {
+    lastSavedTime.value = dayjs().format('HH:mm')
+  }
+
+  function getExportData() {
+    return {
+      profile: profile.value,
+      experiences: experiences.value,
+      projects: projects.value,
+      educations: educations.value,
+      theme: theme.value,
+      exportTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
     }
   }
 
@@ -174,6 +191,7 @@ export const useResumeStore = defineStore('resume', () => {
     educations,
     theme,
     previewScale,
+    lastSavedTime,
     resumeFileName,
     addExperience,
     removeExperience,
@@ -181,7 +199,9 @@ export const useResumeStore = defineStore('resume', () => {
     removeProject,
     addEducation,
     removeEducation,
-    resetData
+    resetData,
+    updateLastSavedTime,
+    getExportData
   }
 }, {
   persist: true

@@ -4,7 +4,6 @@ export interface Profile {
   title: string;         // 职位
   mobile: string;
   email: string;
-  location: string;
   github?: string;
   website?: string;
   summary: string;       // 个人简介
