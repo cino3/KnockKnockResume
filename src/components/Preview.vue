@@ -226,9 +226,6 @@ async function calculatePages() {
     const inRange = firstPageMargin >= TARGET_MARGIN - MARGIN_TOLERANCE &&
                     firstPageMargin <= TARGET_MARGIN + MARGIN_TOLERANCE
 
-    const status = inRange ? '✅' : '  '
-    console.log(`[${iteration + 1}/${testBuffers.length}]${status} safetyBuffer=${safetyBuffer}px, 第一页留白=${firstPageMargin.toFixed(1)}px (偏差: ${deviation.toFixed(1)}px)`)
-
     // 计算得分（偏差越小越好）
     const score = deviation
 
@@ -257,15 +254,6 @@ async function calculatePages() {
       nodes.forEach(node => container.appendChild(node))
     }
   })
-
-  // 最终结果
-  if (bestHeights.length > 0) {
-    const inRange = bestMargin >= TARGET_MARGIN - MARGIN_TOLERANCE &&
-                    bestMargin <= TARGET_MARGIN + MARGIN_TOLERANCE
-    const deviation = Math.abs(bestMargin - TARGET_MARGIN)
-    const resultStatus = inRange ? '✅ 符合目标' : '❌ 不符合目标'
-    console.log(`\n🎯 最终结果: 第一页留白=${bestMargin.toFixed(1)}px, 偏差=${deviation.toFixed(1)}px, ${resultStatus}`)
-  }
 }
 
 // ================= 监听与生命周期 =================
