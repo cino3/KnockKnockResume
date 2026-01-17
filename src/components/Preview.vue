@@ -44,9 +44,11 @@ const resumeStyle = computed(() => ({
 
 // ================= 常量定义 =================
 const A4_HEIGHT_PX = 1123 // A4 高度 (96 DPI)
-const PAGE_PADDING_Y = 91  // 上下边距之和: 9mm + 15mm ≈ 91px
+const PAGE_PADDING_Y = 93  // 上下边距之和: 36px + 57px = 93px
 const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y
-const SAFETY_BUFFER = 0    // 额外安全边距，防止溢出（减少避免留白过多）
+const OVERFLOW_THRESHOLD = 2   // 容差阈值：允许内容溢出 2px（解决计算误差）
+const TARGET_MARGIN = 12       // 目标留白：12px
+const MARGIN_TOLERANCE = 8     // 留白容差：±8px，即 4-20px 范围
 
 // ================= 类型定义 =================
 type ClassList = string[]
@@ -63,11 +65,18 @@ const getAtomClassNames = (): ClassList => [
   'text-line'
 ]
 
-const getOuterHeight = (el: HTMLElement): number => {
+const getOuterHeight = (el: HTMLElement, safetyBuffer: number = 0): number => {
   const style = window.getComputedStyle(el)
   const marginTop = parseFloat(style.marginTop || '0')
   const marginBottom = parseFloat(style.marginBottom || '0')
-  return el.offsetHeight + marginTop + marginBottom + SAFETY_BUFFER
+  return el.offsetHeight + marginTop + marginBottom + safetyBuffer
+}
+
+// 判断是否应该放入当前页（应用容差策略）
+const shouldFitInPage = (currentHeight: number, itemHeight: number): boolean => {
+  const totalHeight = currentHeight + itemHeight
+  const effectiveMax = MAX_CONTENT_HEIGHT + OVERFLOW_THRESHOLD
+  return totalHeight <= effectiveMax
 }
 
 const collectAtoms = (node: HTMLElement): HTMLElement[] => {
@@ -90,19 +99,24 @@ const collectAtoms = (node: HTMLElement): HTMLElement[] => {
 }
 
 // ================= 分页算法 =================
-async function calculatePages() {
-  await nextTick()
-  if (!measureRef.value) return
 
-  const sourceRoot = measureRef.value
+// 核心分页函数：使用指定的 safetyBuffer 进行分页
+// 返回：[页面节点数组, 每页的实际高度数组]
+function calculateWithBuffer(sourceRoot: HTMLElement, safetyBuffer: number): { pages: HTMLElement[][]; heights: number[] } {
   const pagesData: HTMLElement[][] = []
+  const pageHeights: number[] = []
   let currentPageNodes: HTMLElement[] = []
   let currentHeight = 0
+  let currentActualHeight = 0  // 不包含 safetyBuffer 的实际高度
 
   const startNewPage = () => {
-    if (currentPageNodes.length > 0) pagesData.push(currentPageNodes)
+    if (currentPageNodes.length > 0) {
+      pagesData.push(currentPageNodes)
+      pageHeights.push(currentActualHeight)
+    }
     currentPageNodes = []
     currentHeight = 0
+    currentActualHeight = 0
   }
 
   const topLevelNodes = Array.from(sourceRoot.children) as HTMLElement[]
@@ -112,10 +126,16 @@ async function calculatePages() {
     const isSection = sectionNode.classList.contains('resume-section')
 
     if (!isSection) {
-      const h = getOuterHeight(sectionNode)
-      if (currentHeight + h > MAX_CONTENT_HEIGHT && currentHeight > 0) startNewPage()
+      const h = getOuterHeight(sectionNode, safetyBuffer)
+      const actualH = getOuterHeight(sectionNode, 0)
+
+      // 应用容差策略判断
+      if (!shouldFitInPage(currentHeight, h) && currentHeight > 0) {
+        startNewPage()
+      }
       currentPageNodes.push(sectionNode.cloneNode(true) as HTMLElement)
       currentHeight += h
+      currentActualHeight += actualH
       continue
     }
 
@@ -130,13 +150,16 @@ async function calculatePages() {
 
       if (isItem || isContent) {
         const atoms = collectAtoms(childNode)
+
         let currentItemWrapper = childNode.cloneNode(false) as HTMLElement
         currentSectionWrapper.appendChild(currentItemWrapper)
 
         for (const atom of atoms) {
-          const atomHeight = getOuterHeight(atom)
+          const atomHeight = getOuterHeight(atom, safetyBuffer)
+          const actualAtomHeight = getOuterHeight(atom, 0)
 
-          if (currentHeight + atomHeight > MAX_CONTENT_HEIGHT) {
+          // 应用容差策略判断
+          if (!shouldFitInPage(currentHeight, atomHeight)) {
             startNewPage()
             currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
             currentPageNodes.push(currentSectionWrapper)
@@ -146,31 +169,103 @@ async function calculatePages() {
 
           currentItemWrapper.appendChild(atom.cloneNode(true))
           currentHeight += atomHeight
+          currentActualHeight += actualAtomHeight
         }
       } else {
-        const h = getOuterHeight(childNode)
-        if (currentHeight + h > MAX_CONTENT_HEIGHT) {
+        const h = getOuterHeight(childNode, safetyBuffer)
+        const actualH = getOuterHeight(childNode, 0)
+
+        // 应用容差策略判断
+        if (!shouldFitInPage(currentHeight, h)) {
           startNewPage()
           currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
           currentPageNodes.push(currentSectionWrapper)
         }
         currentSectionWrapper.appendChild(childNode.cloneNode(true))
         currentHeight += h
+        currentActualHeight += actualH
       }
     }
   }
 
-  if (currentPageNodes.length > 0) pagesData.push(currentPageNodes)
-  renderPages.value = pagesData.length > 0 ? Array(pagesData.length).fill(1) : [1]
+  if (currentPageNodes.length > 0) {
+    pagesData.push(currentPageNodes)
+    pageHeights.push(currentActualHeight)
+  }
+
+  return { pages: pagesData, heights: pageHeights }
+}
+
+
+// 主分页函数：迭代优化（目标：第一页留白 10-14px）
+async function calculatePages() {
+  await nextTick()
+  if (!measureRef.value) return
+
+  const sourceRoot = measureRef.value
+  let safetyBuffer = 0
+  let bestPagesData: HTMLElement[][] = []
+  let bestHeights: number[] = []
+  let bestScore = Infinity
+  let bestMargin = Infinity
+
+  // 尝试不同的 safetyBuffer 值，找到最接近目标的方案
+  const testBuffers = [0, -2, -3, -5, -1, 1, 2, 3, 5]  // 按优先级排序
+
+  for (let iteration = 0; iteration < testBuffers.length; iteration++) {
+    safetyBuffer = testBuffers[iteration]
+    const { pages: pagesData, heights: pageHeights } = calculateWithBuffer(sourceRoot, safetyBuffer)
+
+    if (pageHeights.length === 0) continue
+
+    const firstPageHeight = pageHeights[0]
+    const firstPageMargin = MAX_CONTENT_HEIGHT - firstPageHeight
+    const deviation = Math.abs(firstPageMargin - TARGET_MARGIN)
+
+    // 判断是否符合要求
+    const inRange = firstPageMargin >= TARGET_MARGIN - MARGIN_TOLERANCE &&
+                    firstPageMargin <= TARGET_MARGIN + MARGIN_TOLERANCE
+
+    const status = inRange ? '✅' : '  '
+    console.log(`[${iteration + 1}/${testBuffers.length}]${status} safetyBuffer=${safetyBuffer}px, 第一页留白=${firstPageMargin.toFixed(1)}px (偏差: ${deviation.toFixed(1)}px)`)
+
+    // 计算得分（偏差越小越好）
+    const score = deviation
+
+    // 更新最优结果
+    if (score < bestScore) {
+      bestScore = score
+      bestPagesData = pagesData
+      bestHeights = pageHeights
+      bestMargin = firstPageMargin
+    }
+
+    // 如果找到完美解，提前结束
+    if (inRange) {
+      break
+    }
+  }
+
+  // 渲染最优结果
+  renderPages.value = bestPagesData.length > 0 ? Array(bestPagesData.length).fill(1) : [1]
 
   await nextTick()
-  pagesData.forEach((nodes, index) => {
+  bestPagesData.forEach((nodes, index) => {
     const container = document.getElementById(`page-content-${index}`)
     if (container) {
       container.innerHTML = ''
       nodes.forEach(node => container.appendChild(node))
     }
   })
+
+  // 最终结果
+  if (bestHeights.length > 0) {
+    const inRange = bestMargin >= TARGET_MARGIN - MARGIN_TOLERANCE &&
+                    bestMargin <= TARGET_MARGIN + MARGIN_TOLERANCE
+    const deviation = Math.abs(bestMargin - TARGET_MARGIN)
+    const resultStatus = inRange ? '✅ 符合目标' : '❌ 不符合目标'
+    console.log(`\n🎯 最终结果: 第一页留白=${bestMargin.toFixed(1)}px, 偏差=${deviation.toFixed(1)}px, ${resultStatus}`)
+  }
 }
 
 // ================= 监听与生命周期 =================
@@ -196,7 +291,7 @@ onMounted(() => {
   gap: 20px; padding: 40px 0; width: 100%;
 }
 .resume-paper {
-  width: 210mm; height: 297mm; background: white;
+  width: 794px; height: 1123px; background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); margin: 0;
   box-sizing: border-box; text-align: left;
 }
@@ -204,15 +299,15 @@ onMounted(() => {
 /* 测量容器：永远隐藏 */
 .measure-container {
   position: absolute; top: 0; left: 0; visibility: hidden; z-index: -100;
-  height: auto !important; min-height: 297mm; padding: 9mm 12mm 15mm 12mm;
+  height: auto !important; min-height: 1123px; padding: 36px 47px 57px 47px;
 }
 
 /* 打印专用容器：屏幕隐藏 */
 .print-only-container {
   display: none;
   height: auto;
-  min-height: 297mm;
-  padding: 9mm 12mm 15mm 12mm;
+  min-height: 1123px;
+  padding: 36px 47px 57px 47px;
   box-sizing: border-box;
   background: white;
 }
@@ -223,7 +318,7 @@ onMounted(() => {
   overflow: hidden;
 }
 .page-content-wrapper {
-  width: 100%; height: 100%; padding: 9mm 12mm 15mm 12mm; box-sizing: border-box;
+  width: 100%; height: 100%; padding: 36px 47px 57px 47px; box-sizing: border-box;
 }
 .page-number {
   position: absolute; bottom: 10px; right: 20px;
@@ -286,7 +381,7 @@ onMounted(() => {
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 .page-content-wrapper :deep(.item-header) {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
