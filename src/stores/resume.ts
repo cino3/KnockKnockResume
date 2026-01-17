@@ -14,8 +14,40 @@ export const useResumeStore = defineStore('resume', () => {
     birthday: '2000-01',
     github: 'https://github.com/zhangsan',
     website: 'https://zhangsan.dev',
-    summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。'
+    summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。',
+    skills: 'Vue.js, React, TypeScript, Node.js,Webpack, Vite'
   })
+
+  // 头像上传
+  function uploadAvatar(file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // 检查文件大小（500KB）
+      if (file.size > 500 * 1024) {
+        reject(new Error('图片大小不能超过 500KB'))
+        return
+      }
+
+      // 检查文件类型
+      if (!file.type.startsWith('image/')) {
+        reject(new Error('只能上传图片文件'))
+        return
+      }
+
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        profile.value.avatar = e.target?.result as string
+        resolve()
+      }
+      reader.onerror = () => {
+        reject(new Error('图片读取失败'))
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
+  function removeAvatar() {
+    profile.value.avatar = undefined
+  }
 
   // 工作经历
   const experiences = ref<Experience[]>([
@@ -202,7 +234,9 @@ export const useResumeStore = defineStore('resume', () => {
     removeEducation,
     resetData,
     updateLastSavedTime,
-    getExportData
+    getExportData,
+    uploadAvatar,
+    removeAvatar
   }
 }, {
   persist: true

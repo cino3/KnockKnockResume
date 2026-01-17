@@ -235,7 +235,10 @@ onMounted(() => {
   border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.header-top) {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;
+  display: flex; align-items: center; margin-bottom: 8px; position: relative;
+}
+.page-content-wrapper :deep(.header-left) {
+  display: flex; align-items: baseline; gap: 12px;
 }
 .page-content-wrapper :deep(.name) {
   font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0;
@@ -243,8 +246,17 @@ onMounted(() => {
 .page-content-wrapper :deep(.title) {
   font-size: 18px; color: #666; margin-bottom: 0;
 }
+.page-content-wrapper :deep(.avatar-wrapper) {
+  position: absolute; right: 0; top: 0;
+}
+.page-content-wrapper :deep(.avatar) {
+  width: 80px; height: 100px; object-fit: cover; display: block;
+}
 .page-content-wrapper :deep(.contact-info) {
-  display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666;
+  display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; min-height: 50px;
+}
+.page-content-wrapper :deep(.contact-info.has-avatar) {
+  margin-right: 96px;
 }
 .page-content-wrapper :deep(.contact-row) {
   display: flex; flex-wrap: wrap; gap: 16px;
@@ -342,6 +354,12 @@ onMounted(() => {
     break-after: page;
     box-shadow: none !important;
     margin: 0 !important;
+  }
+
+  /* 最后一页不分页，避免空白页 */
+  .screen-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
   }
 
   /* 确保背景色打印 */

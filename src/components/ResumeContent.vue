@@ -2,28 +2,33 @@
   <!-- 头部 -->
   <header class="resume-header">
     <div class="header-top">
-      <h1 class="name">{{ store.profile.name }}</h1>
-      <p class="title">{{ store.profile.title }}</p>
+      <div class="header-left">
+        <h1 class="name">{{ store.profile.name }}</h1>
+        <p class="title">{{ store.profile.title }}</p>
+      </div>
+      <div v-if="store.profile.avatar" class="avatar-wrapper">
+        <img :src="store.profile.avatar" class="avatar" alt="头像" />
+      </div>
     </div>
-    <div class="contact-info">
+    <div class="contact-info" :class="{ 'has-avatar': store.profile.avatar }">
       <div class="contact-row">
         <span v-if="store.profile.mobile" class="contact-item">
           <Phone :size="14" />
           {{ store.profile.mobile }}
         </span>
-        <span v-if="store.profile.email" class="contact-item">
-          <Mail :size="14" />
-          {{ store.profile.email }}
-        </span>
         <span v-if="store.profile.birthday" class="contact-item">
           <Cake :size="14" />
           {{ store.profile.birthday }}
         </span>
-      </div>
-      <div class="contact-row">
         <span v-if="store.profile.github" class="contact-item">
           <Link :size="14" />
           {{ store.profile.github }}
+        </span>
+      </div>
+      <div class="contact-row">
+        <span v-if="store.profile.email" class="contact-item">
+          <Mail :size="14" />
+          {{ store.profile.email }}
         </span>
         <span v-if="store.profile.website" class="contact-item">
           <Globe :size="14" />
@@ -33,9 +38,9 @@
     </div>
   </header>
 
-  <!-- 教育背景 -->
+  <!-- 教育经历 -->
   <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title">教育背景</h2>
+    <h2 class="section-title">教育经历</h2>
     <div
       v-for="edu in visibleEducations"
       :key="edu.id"
@@ -48,6 +53,19 @@
         </div>
         <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
       </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+  <!-- 专业技能 -->
+  <section v-if="store.profile.skills" class="resume-section">
+    <h2 class="section-title">专业技能</h2>
+    <div class="section-content">
+      <div
+        v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
+        :key="index"
+        class="text-line"
+      >{{ line }}</div>
     </div>
     <div class="section-divider"></div>
   </section>
@@ -133,10 +151,14 @@ function formatDescriptionLines(text: string | undefined): string[] {
 <style scoped>
 /* 基础样式 */
 .resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px; }
-.header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+.header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
+.header-left { display: flex; align-items: baseline; gap: 12px; }
 .name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0; }
 .title { font-size: 18px; color: #666; margin-bottom: 0; }
-.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; }
+.avatar-wrapper { position: absolute; right: 0; top: 0; }
+.avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; min-height: 50px; }
+.contact-info.has-avatar { margin-right: 96px; }
 .contact-info-row { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 16px; }
 .contact-item { display: flex; align-items: center; gap: 6px; }

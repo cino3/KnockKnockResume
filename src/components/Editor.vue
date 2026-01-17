@@ -51,6 +51,23 @@
           <el-form-item label="出生年月">
             <el-input v-model="store.profile.birthday" placeholder="2000-01（可选）" />
           </el-form-item>
+          <el-form-item label="头像">
+            <input
+              ref="avatarInput"
+              type="file"
+              accept="image/*"
+              style="display: none"
+              @change="handleAvatarChange"
+            />
+            <div class="avatar-uploader">
+              <img v-if="store.profile.avatar" :src="store.profile.avatar" class="avatar-preview" />
+              <el-button v-else size="small" type="primary" @click="triggerFileInput">选择图片</el-button>
+            </div>
+            <div v-if="store.profile.avatar" style="margin-top: 8px;">
+              <el-button size="small" type="danger" text @click="handleRemoveAvatar">删除头像</el-button>
+            </div>
+            <div style="font-size: 12px; color: #999; margin-top: 4px;">建议尺寸 80x100px，最大 500KB</div>
+          </el-form-item>
           <el-form-item label="GitHub">
             <el-input v-model="store.profile.github" placeholder="GitHub 链接（可选）" />
           </el-form-item>
@@ -60,8 +77,8 @@
         </el-form>
       </el-collapse-item>
 
-      <!-- 教育背景 -->
-      <el-collapse-item name="education" title="教育背景">
+      <!-- 教育经历 -->
+      <el-collapse-item name="education" title="教育经历">
         <div class="list-container">
           <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
             <template #icon>
@@ -71,6 +88,20 @@
           </el-button>
           <EducationList />
         </div>
+      </el-collapse-item>
+
+      <!-- 专业技能 -->
+      <el-collapse-item name="skills" title="专业技能">
+        <el-form :model="store.profile" label-width="80px" size="small">
+          <el-form-item label="技能">
+            <el-input
+              v-model="store.profile.skills"
+              type="textarea"
+              :rows="6"
+              placeholder="请输入专业技能，可换行输入多个技能项"
+            />
+          </el-form-item>
+        </el-form>
       </el-collapse-item>
 
       <!-- 工作经历 -->
@@ -139,6 +170,7 @@ import EducationList from './editor/EducationList.vue'
 
 const store = useResumeStore()
 const activeNames = ref(['profile'])
+const avatarInput = ref<HTMLInputElement | null>(null)
 
 const { printResume } = usePrint(store.resumeFileName)
 
@@ -186,6 +218,33 @@ const handleReset = () => {
     store.resetData()
   }
 }
+
+const triggerFileInput = () => {
+  avatarInput.value?.click()
+}
+
+const handleAvatarChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  try {
+    await store.uploadAvatar(file)
+    ElMessage.success('头像上传成功')
+  } catch (error: any) {
+    ElMessage.error(error.message || '头像上传失败')
+  }
+
+  // 清空 input，允许重复上传同一文件
+  if (target) {
+    target.value = ''
+  }
+}
+
+const handleRemoveAvatar = () => {
+  store.removeAvatar()
+  ElMessage.success('头像已删除')
+}
 </script>
 
 <style scoped>
@@ -218,6 +277,19 @@ const handleReset = () => {
 
 .list-container {
   padding: 8px 0;
+}
+
+.avatar-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.avatar-preview {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #e5e7eb;
 }
 </style>
 

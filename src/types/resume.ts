@@ -5,9 +5,11 @@ export interface Profile {
   mobile: string;
   email: string;
   birthday?: string;     // 出生年月
+  avatar?: string;       // 头像 base64
   github?: string;
   website?: string;
   summary: string;       // 个人简介
+  skills?: string;       // 专业技能
 }
 
 // 经历列表项 (共用接口)
