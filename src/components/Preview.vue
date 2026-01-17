@@ -232,10 +232,10 @@ onMounted(() => {
 
 /* Copy styles from ResumeContent */
 .page-content-wrapper :deep(.resume-header) {
-  border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 8px;
+  border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.header-top) {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.name) {
   font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0;
@@ -244,7 +244,10 @@ onMounted(() => {
   font-size: 18px; color: #666; margin-bottom: 0;
 }
 .page-content-wrapper :deep(.contact-info) {
-  display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #666;
+  display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666;
+}
+.page-content-wrapper :deep(.contact-row) {
+  display: flex; flex-wrap: wrap; gap: 16px;
 }
 .page-content-wrapper :deep(.contact-item) {
   display: flex; align-items: center; gap: 6px;

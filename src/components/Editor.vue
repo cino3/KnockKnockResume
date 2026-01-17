@@ -48,6 +48,9 @@
           <el-form-item label="邮箱">
             <el-input v-model="store.profile.email" placeholder="请输入邮箱" />
           </el-form-item>
+          <el-form-item label="出生年月">
+            <el-input v-model="store.profile.birthday" placeholder="2000-01（可选）" />
+          </el-form-item>
           <el-form-item label="GitHub">
             <el-input v-model="store.profile.github" placeholder="GitHub 链接（可选）" />
           </el-form-item>

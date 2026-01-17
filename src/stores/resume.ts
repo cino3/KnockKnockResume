@@ -11,6 +11,7 @@ export const useResumeStore = defineStore('resume', () => {
     title: '前端工程师',
     mobile: '138-0000-0000',
     email: 'zhangsan@example.com',
+    birthday: '2000-01',
     github: 'https://github.com/zhangsan',
     website: 'https://zhangsan.dev',
     summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。'

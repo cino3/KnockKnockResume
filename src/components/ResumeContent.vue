@@ -6,22 +6,30 @@
       <p class="title">{{ store.profile.title }}</p>
     </div>
     <div class="contact-info">
-      <span v-if="store.profile.mobile" class="contact-item">
-        <Phone :size="14" />
-        {{ store.profile.mobile }}
-      </span>
-      <span v-if="store.profile.email" class="contact-item">
-        <Mail :size="14" />
-        {{ store.profile.email }}
-      </span>
-      <span v-if="store.profile.github" class="contact-item">
-        <Link :size="14" />
-        {{ store.profile.github }}
-      </span>
-      <span v-if="store.profile.website" class="contact-item">
-        <Globe :size="14" />
-        {{ store.profile.website }}
-      </span>
+      <div class="contact-row">
+        <span v-if="store.profile.mobile" class="contact-item">
+          <Phone :size="14" />
+          {{ store.profile.mobile }}
+        </span>
+        <span v-if="store.profile.email" class="contact-item">
+          <Mail :size="14" />
+          {{ store.profile.email }}
+        </span>
+        <span v-if="store.profile.birthday" class="contact-item">
+          <Cake :size="14" />
+          {{ store.profile.birthday }}
+        </span>
+      </div>
+      <div class="contact-row">
+        <span v-if="store.profile.github" class="contact-item">
+          <Link :size="14" />
+          {{ store.profile.github }}
+        </span>
+        <span v-if="store.profile.website" class="contact-item">
+          <Globe :size="14" />
+          {{ store.profile.website }}
+        </span>
+      </div>
     </div>
   </header>
 
@@ -99,7 +107,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useResumeStore } from '@/stores/resume'
-import { Phone, Mail, Link, Globe } from 'lucide-vue-next'
+import { Phone, Mail, Link, Globe, Cake } from 'lucide-vue-next'
 import dayjs from 'dayjs'
 
 const store = useResumeStore()
@@ -124,11 +132,13 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 <style scoped>
 /* 基础样式 */
-.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 8px; }
-.header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px; }
+.header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
 .name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0; }
 .title { font-size: 18px; color: #666; margin-bottom: 0; }
-.contact-info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #666; }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; }
+.contact-info-row { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+.contact-row { display: flex; flex-wrap: wrap; gap: 16px; }
 .contact-item { display: flex; align-items: center; gap: 6px; }
 .contact-item :deep(svg) { flex-shrink: 0; }
 
