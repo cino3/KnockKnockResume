@@ -31,26 +31,19 @@
           <el-form-item label="学历">
             <el-input v-model="edu.degree" placeholder="学历" />
           </el-form-item>
-          <el-form-item label="时间">
-            <div class="date-range">
-              <el-date-picker
-                v-model="edu.startDate"
-                type="month"
-                placeholder="开始时间"
-                format="YYYY-MM"
-                value-format="YYYY-MM"
-                size="small"
-              />
-              <span style="margin: 0 8px;">-</span>
-              <el-date-picker
-                v-model="edu.endDate"
-                type="month"
-                placeholder="结束时间"
-                format="YYYY-MM"
-                value-format="YYYY-MM"
-                size="small"
-              />
-            </div>
+          <el-form-item label="开始时间">
+            <el-input
+              v-model="edu.startDate"
+              placeholder="2015-09"
+              size="small"
+            />
+          </el-form-item>
+          <el-form-item label="结束时间">
+            <el-input
+              v-model="edu.endDate"
+              placeholder="2019-06 或留空表示至今"
+              size="small"
+            />
           </el-form-item>
         </el-form>
       </div>

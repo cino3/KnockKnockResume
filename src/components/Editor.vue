@@ -54,15 +54,20 @@
           <el-form-item label="网站">
             <el-input v-model="store.profile.website" placeholder="个人网站（可选）" />
           </el-form-item>
-          <el-form-item label="个人简介">
-            <el-input
-              v-model="store.profile.summary"
-              type="textarea"
-              :rows="4"
-              placeholder="请输入个人简介"
-            />
-          </el-form-item>
         </el-form>
+      </el-collapse-item>
+
+      <!-- 教育背景 -->
+      <el-collapse-item name="education" title="教育背景">
+        <div class="list-container">
+          <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
+            <template #icon>
+              <Plus :size="14" />
+            </template>
+            添加教育
+          </el-button>
+          <EducationList />
+        </div>
       </el-collapse-item>
 
       <!-- 工作经历 -->
@@ -88,19 +93,6 @@
             添加项目
           </el-button>
           <ProjectList />
-        </div>
-      </el-collapse-item>
-
-      <!-- 教育背景 -->
-      <el-collapse-item name="education" title="教育背景">
-        <div class="list-container">
-          <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
-            <template #icon>
-              <Plus :size="14" />
-            </template>
-            添加教育
-          </el-button>
-          <EducationList />
         </div>
       </el-collapse-item>
 

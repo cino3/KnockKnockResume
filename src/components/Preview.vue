@@ -232,32 +232,38 @@ onMounted(() => {
 
 /* Copy styles from ResumeContent */
 .page-content-wrapper :deep(.resume-header) {
-  border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 24px;
+  border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 8px;
+}
+.page-content-wrapper :deep(.header-top) {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;
 }
 .page-content-wrapper :deep(.name) {
-  font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 8px;
+  font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0;
 }
 .page-content-wrapper :deep(.title) {
-  font-size: 18px; color: #666; margin-bottom: 12px;
+  font-size: 18px; color: #666; margin-bottom: 0;
 }
 .page-content-wrapper :deep(.contact-info) {
   display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #666;
 }
-.page-content-wrapper :deep(.contact-info span) {
-  display: flex; align-items: center; gap: 4px;
+.page-content-wrapper :deep(.contact-item) {
+  display: flex; align-items: center; gap: 6px;
+}
+.page-content-wrapper :deep(.contact-item svg) {
+  flex-shrink: 0;
 }
 .page-content-wrapper :deep(.resume-section) {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 16px;
+  font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px;
 }
 .page-content-wrapper :deep(.section-content) {
   margin-bottom: var(--paragraph-spacing, 8px);
 }
 .page-content-wrapper :deep(.section-divider) {
   border-bottom: 2px dashed #d1d5db;
-  margin-top: 16px;
+  margin-top: 7px;
 }
 .page-content-wrapper :deep(.resume-section:last-child .section-divider) {
   display: none;
@@ -265,13 +271,16 @@ onMounted(() => {
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
-  margin-bottom: 24px;
+  margin-bottom: 9px;
 }
 .page-content-wrapper :deep(.item-header) {
-  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.item-title) {
   font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px;
+}
+.page-content-wrapper :deep(.item-subtitle-inline) {
+  font-size: 14px; font-weight: 400; color: #666; margin-left: 8px;
 }
 .page-content-wrapper :deep(.item-subtitle) {
   font-size: 14px; color: #666;
@@ -280,7 +289,7 @@ onMounted(() => {
   font-size: 14px; color: #999; white-space: nowrap;
 }
 .page-content-wrapper :deep(.item-description-wrapper) {
-  margin-top: 8px;
+  margin-top: 0px;
 }
 .page-content-wrapper :deep(.text-line) {
   color: #555; line-height: var(--line-height, 1.6); min-height: 1.6em; white-space: pre-wrap;

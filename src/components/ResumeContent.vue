@@ -1,26 +1,45 @@
 <template>
   <!-- 头部 -->
   <header class="resume-header">
-    <h1 class="name">{{ store.profile.name }}</h1>
-    <p class="title">{{ store.profile.title }}</p>
+    <div class="header-top">
+      <h1 class="name">{{ store.profile.name }}</h1>
+      <p class="title">{{ store.profile.title }}</p>
+    </div>
     <div class="contact-info">
-      <span v-if="store.profile.mobile">📱 {{ store.profile.mobile }}</span>
-      <span v-if="store.profile.email">✉️ {{ store.profile.email }}</span>
-      <span v-if="store.profile.github">🔗 {{ store.profile.github }}</span>
-      <span v-if="store.profile.website">🌐 {{ store.profile.website }}</span>
+      <span v-if="store.profile.mobile" class="contact-item">
+        <Phone :size="14" />
+        {{ store.profile.mobile }}
+      </span>
+      <span v-if="store.profile.email" class="contact-item">
+        <Mail :size="14" />
+        {{ store.profile.email }}
+      </span>
+      <span v-if="store.profile.github" class="contact-item">
+        <Link :size="14" />
+        {{ store.profile.github }}
+      </span>
+      <span v-if="store.profile.website" class="contact-item">
+        <Globe :size="14" />
+        {{ store.profile.website }}
+      </span>
     </div>
   </header>
 
-  <!-- 个人简介 -->
-  <section v-if="store.profile.summary" class="resume-section">
-    <h2 class="section-title">个人简介</h2>
-    <div class="section-content">
-      <!-- 将简介拆分为多行 -->
-      <div
-        v-for="(line, index) in formatDescriptionLines(store.profile.summary)"
-        :key="index"
-        class="text-line"
-      >{{ line }}</div>
+  <!-- 教育背景 -->
+  <section v-if="visibleEducations.length > 0" class="resume-section">
+    <h2 class="section-title">教育背景</h2>
+    <div
+      v-for="edu in visibleEducations"
+      :key="edu.id"
+      class="education-item"
+    >
+      <div class="item-header">
+        <div>
+          <h3 class="item-title">{{ edu.school || '(未填写学校)' }}</h3>
+          <p class="item-subtitle">{{ edu.major || '' }} · {{ edu.degree || '' }}</p>
+        </div>
+        <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
+      </div>
     </div>
     <div class="section-divider"></div>
   </section>
@@ -35,8 +54,7 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ exp.company }}</h3>
-          <p class="item-subtitle">{{ exp.position }}</p>
+          <h3 class="item-title">{{ exp.company }} <span class="item-subtitle-inline">{{ exp.position }}</span></h3>
         </div>
         <span class="item-date">{{ formatDateRange(exp.startDate, exp.endDate) }}</span>
       </div>
@@ -62,8 +80,7 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ proj.name }}</h3>
-          <p class="item-subtitle">{{ proj.role }}</p>
+          <h3 class="item-title">{{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span></h3>
         </div>
         <span class="item-date">{{ formatDateRange(proj.startDate, proj.endDate) }}</span>
       </div>
@@ -77,35 +94,12 @@
     </div>
     <div class="section-divider"></div>
   </section>
-
-  <!-- 教育背景 -->
-  <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title">教育背景</h2>
-    <div
-      v-for="edu in visibleEducations"
-      :key="edu.id"
-      class="education-item"
-    >
-      <div class="item-header">
-        <div>
-          <h3 class="item-title">{{ edu.school || '(未填写学校)' }}</h3>
-          <p class="item-subtitle">{{ edu.major || '' }} · {{ edu.degree || '' }}</p>
-        </div>
-        <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
-      </div>
-    </div>
-  </section>
-
-  <section v-else class="resume-section">
-    <div style="color: #999; font-size: 14px; padding: 16px; text-align: center; border: 1px dashed #ddd; border-radius: 4px;">
-      暂无教育背景信息
-    </div>
-  </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useResumeStore } from '@/stores/resume'
+import { Phone, Mail, Link, Globe } from 'lucide-vue-next'
 import dayjs from 'dayjs'
 
 const store = useResumeStore()
@@ -130,33 +124,36 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 <style scoped>
 /* 基础样式 */
-.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 24px; }
-.name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 8px; }
-.title { font-size: 18px; color: #666; margin-bottom: 12px; }
+.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 16px; margin-bottom: 8px; }
+.header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0; }
+.title { font-size: 18px; color: #666; margin-bottom: 0; }
 .contact-info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #666; }
-.contact-info span { display: flex; align-items: center; gap: 4px; }
+.contact-item { display: flex; align-items: center; gap: 6px; }
+.contact-item :deep(svg) { flex-shrink: 0; }
 
-.resume-section { margin-bottom: 16px; }
-.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 16px; }
+.resume-section { margin-bottom: 8px; }
+.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; }
 .section-content { margin-bottom: var(--paragraph-spacing, 8px); }
 
 /* 模块间分隔线 */
 .section-divider {
   border-bottom: 2px dashed #d1d5db;
-  margin-top: 16px;
+  margin-top: 7px;
 }
 .resume-section:last-child .section-divider {
   display: none;
 }
 
-.experience-item, .project-item, .education-item { margin-bottom: 24px; }
+.experience-item, .project-item, .education-item { margin-bottom: 9px; }
 
-.item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
 .item-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }
+.item-subtitle-inline { font-size: 14px; font-weight: 400; color: #666; margin-left: 8px; }
 .item-subtitle { font-size: 14px; color: #666; }
 .item-date { font-size: 14px; color: #999; white-space: nowrap; }
 
-.item-description-wrapper { margin-top: 8px; }
+.item-description-wrapper { margin-top: 0px; }
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {

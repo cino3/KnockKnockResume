@@ -28,26 +28,19 @@
           <el-form-item label="角色">
             <el-input v-model="proj.role" placeholder="担任角色" />
           </el-form-item>
-          <el-form-item label="时间">
-            <div class="date-range">
-              <el-date-picker
-                v-model="proj.startDate"
-                type="month"
-                placeholder="开始时间"
-                format="YYYY-MM"
-                value-format="YYYY-MM"
-                size="small"
-              />
-              <span style="margin: 0 8px;">-</span>
-              <el-date-picker
-                v-model="proj.endDate"
-                type="month"
-                placeholder="结束时间"
-                format="YYYY-MM"
-                value-format="YYYY-MM"
-                size="small"
-              />
-            </div>
+          <el-form-item label="开始时间">
+            <el-input
+              v-model="proj.startDate"
+              placeholder="2021-01"
+              size="small"
+            />
+          </el-form-item>
+          <el-form-item label="结束时间">
+            <el-input
+              v-model="proj.endDate"
+              placeholder="2024-12 或留空表示至今"
+              size="small"
+            />
           </el-form-item>
           <el-form-item label="描述">
             <el-input
