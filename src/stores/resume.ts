@@ -1,10 +1,40 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
-import type { Profile, Experience, Project, Education, ThemeConfig, ResumeData } from '@/types/resume'
+import type { Profile, Experience, Project, Education, Awards, SelfEvaluation, ThemeConfig, ResumeData } from '@/types/resume'
 import { generateUUID } from '@/utils/uuid'
 
 export const useResumeStore = defineStore('resume', () => {
+  // ================= 数据迁移：从旧格式迁移到新格式 =================
+  // 检查 localStorage 中的 awards 数据，如果是数组则迁移
+  const storedData = localStorage.getItem('resume')
+  if (storedData) {
+    try {
+      const parsed = JSON.parse(storedData)
+      // 如果 awards 是数组，转换为对象格式
+      if (parsed.awards && Array.isArray(parsed.awards)) {
+        const oldAwards = parsed.awards as any[]
+        const newAwards = {
+          content: oldAwards
+            .filter((a: any) => a.isVisible !== false)
+            .map((a: any) => {
+              const parts = []
+              if (a.date) parts.push(a.date)
+              if (a.name) parts.push(a.name)
+              if (a.level) parts.push(`(${a.level})`)
+              return parts.join(' ')
+            })
+            .join('\n')
+        }
+        // 更新 localStorage
+        parsed.awards = newAwards
+        localStorage.setItem('resume', JSON.stringify(parsed))
+      }
+    } catch (e) {
+      console.error('数据迁移失败:', e)
+    }
+  }
+
   // 基础信息
   const profile = ref<Profile>({
     name: '张三',
@@ -106,6 +136,16 @@ export const useResumeStore = defineStore('resume', () => {
     }
   ])
 
+  // 获奖经历
+  const awards = ref<Awards>({
+    content: '2023年 全国大学生数学建模竞赛一等奖\n2022年 省级程序设计竞赛银奖\n2021年 校级优秀学生干部\n2020年 国家励志奖学金'
+  })
+
+  // 个人评价
+  const selfEvaluation = ref<SelfEvaluation>({
+    content: '具有良好的沟通能力和团队协作精神，工作积极主动，能够快速适应新环境。热爱技术，持续学习，追求代码质量和用户体验的完美结合。'
+  })
+
   // 主题配置
   const theme = ref<ThemeConfig>({
     primaryColor: '#000000',
@@ -194,6 +234,8 @@ export const useResumeStore = defineStore('resume', () => {
     experiences.value = []
     projects.value = []
     educations.value = []
+    awards.value = { content: '' }
+    selfEvaluation.value = { content: '' }
     theme.value = {
       primaryColor: '#000000',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -222,6 +264,8 @@ export const useResumeStore = defineStore('resume', () => {
       experiences: experiences.value,
       projects: projects.value,
       educations: educations.value,
+      awards: awards.value,
+      selfEvaluation: selfEvaluation.value,
       theme: theme.value,
       exportTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
     }
@@ -234,6 +278,8 @@ export const useResumeStore = defineStore('resume', () => {
     experiences,
     projects,
     educations,
+    awards,
+    selfEvaluation,
     theme,
     previewScale,
     lastSavedTime,

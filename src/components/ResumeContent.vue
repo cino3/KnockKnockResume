@@ -85,7 +85,7 @@
         <span class="item-date">{{ formatDateRange(exp.startDate, exp.endDate) }}</span>
       </div>
       <!-- 描述文本拆分为多行 -->
-      <div class="item-description-wrapper">
+      <div v-if="exp.description" class="item-description-wrapper">
         <div
           v-for="(line, index) in formatDescriptionLines(exp.description)"
           :key="index"
@@ -111,7 +111,7 @@
         </div>
         <span class="item-date">{{ formatDateRange(proj.startDate, proj.endDate) }}</span>
       </div>
-      <div class="item-description-wrapper">
+      <div v-if="proj.description" class="item-description-wrapper">
         <div
           v-for="(line, index) in formatDescriptionLines(proj.description)"
           :key="index"
@@ -119,6 +119,34 @@
           v-html="line"
         ></div>
       </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+  <!-- 获奖经历 -->
+  <section v-if="store.awards.content" class="resume-section">
+    <h2 class="section-title">获奖经历</h2>
+    <div class="section-content">
+      <div
+        v-for="(line, index) in formatDescriptionLines(store.awards.content)"
+        :key="index"
+        class="text-line"
+        v-html="line"
+      ></div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+  <!-- 个人评价 -->
+  <section v-if="store.selfEvaluation.content" class="resume-section">
+    <h2 class="section-title">个人评价</h2>
+    <div class="section-content">
+      <div
+        v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
+        :key="index"
+        class="text-line"
+        v-html="line"
+      ></div>
     </div>
     <div class="section-divider"></div>
   </section>
@@ -148,8 +176,11 @@ function formatDescriptionLines(text: string | undefined): string[] {
   if (!text) return []
   // 将 <br> 标签替换为换行符，然后按换行符拆分
   const normalizedText = text.replace(/<br\s*\/?>/gi, '\n')
-  // 过滤掉空字符串，避免渲染空的 .text-line div
-  return normalizedText.split('\n').filter(line => line.trim() !== '')
+  // 先过滤掉纯空白行，再 trim 剩余行
+  return normalizedText
+    .split('\n')
+    .filter(line => line.trim() !== '') // 先过滤纯空白行
+    .map(line => line.trimEnd()) // 只去除行尾空白，保留行首缩进
 }
 </script>
 
@@ -170,19 +201,25 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 8px; }
-.section-title { font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; }
+.section-title { font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; padding-bottom: 0; }
 .section-content { margin-bottom: var(--paragraph-spacing, 8px); }
 
 /* 模块间分隔线 */
 .section-divider {
   border-bottom: 2px dashed #d1d5db;
-  margin-top: 7px;
+  margin-top: 0px;
 }
 .resume-section:last-child .section-divider {
   display: none;
 }
 
 .experience-item, .project-item, .education-item { margin-bottom: 5px; }
+/* 每个 section 中的最后一个 item 移除下边距 */
+.resume-section .experience-item:last-child,
+.resume-section .project-item:last-child,
+.resume-section .education-item:last-child {
+  margin-bottom: 0px;
+}
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
 .item-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }
@@ -193,13 +230,12 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .education-degree { font-size: 14px; font-weight: 600; color: #333; }
 .item-date { font-size: 14px; color: #999; white-space: nowrap; }
 
-.item-description-wrapper { margin-top: 0px; }
+.item-description-wrapper { margin-top: 0px; margin-bottom: 0px; }
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {
   color: #555;
   line-height: var(--line-height, 1.6);
-  min-height: 1.6em; /* 确保空行也有高度 */
   white-space: pre-wrap;
 }
 

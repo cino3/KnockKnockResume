@@ -42,6 +42,14 @@ export interface Project extends ResumeItem {
   description: string;
 }
 
+export interface Awards {
+  content: string;     // 获奖经历内容，支持换行
+}
+
+export interface SelfEvaluation {
+  content: string;     // 个人评价内容，支持换行
+}
+
 // 主题配置
 export interface ThemeConfig {
   primaryColor: string; // 主色调
@@ -56,6 +64,8 @@ export interface ResumeData {
   experiences: Experience[];
   projects: Project[];
   educations: Education[];
+  awards: Awards;
+  selfEvaluation: SelfEvaluation;
   theme: ThemeConfig;
 }
 

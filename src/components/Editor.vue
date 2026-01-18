@@ -129,6 +129,20 @@
         </div>
       </el-collapse-item>
 
+      <!-- 获奖经历 -->
+      <el-collapse-item name="award" title="获奖经历">
+        <div class="list-container">
+          <AwardList />
+        </div>
+      </el-collapse-item>
+
+      <!-- 个人评价 -->
+      <el-collapse-item name="self-evaluation" title="个人评价">
+        <div class="list-container">
+          <SelfEvaluationEditor />
+        </div>
+      </el-collapse-item>
+
       <!-- 主题设置 -->
       <el-collapse-item name="theme" title="主题设置">
         <el-form :model="store.theme" label-width="100px" size="small">
@@ -166,6 +180,8 @@ import dayjs from 'dayjs'
 import ExperienceList from './editor/ExperienceList.vue'
 import ProjectList from './editor/ProjectList.vue'
 import EducationList from './editor/EducationList.vue'
+import AwardList from './editor/AwardList.vue'
+import SelfEvaluationEditor from './editor/SelfEvaluationEditor.vue'
 import BoldTextarea from './editor/BoldTextarea.vue'
 
 const store = useResumeStore()

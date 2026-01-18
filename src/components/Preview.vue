@@ -320,7 +320,7 @@ async function calculatePages() {
 
 // ================= 监听与生命周期 =================
 watch(
-  [() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.theme],
+  [() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.awards, () => store.selfEvaluation, () => store.theme],
   () => calculatePages(),
   { deep: true }
 )
@@ -423,7 +423,7 @@ onMounted(() => {
 }
 .page-content-wrapper :deep(.section-divider) {
   border-bottom: 2px dashed #d1d5db;
-  margin-top: 7px;
+  margin-top: 0px;
 }
 .page-content-wrapper :deep(.resume-section:last-child .section-divider) {
   display: none;
@@ -432,6 +432,12 @@ onMounted(() => {
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
   margin-bottom: 7px;
+}
+/* 每个 section 中的最后一个 item 移除下边距 */
+.page-content-wrapper :deep(.resume-section .experience-item:last-child),
+.page-content-wrapper :deep(.resume-section .project-item:last-child),
+.page-content-wrapper :deep(.resume-section .education-item:last-child) {
+  margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.item-header) {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
@@ -448,11 +454,21 @@ onMounted(() => {
 .page-content-wrapper :deep(.item-date) {
   font-size: 14px; color: #999; white-space: nowrap;
 }
+.page-content-wrapper :deep(.education-major) {
+  font-size: 13px; color: #666;
+}
+.page-content-wrapper :deep(.education-major-inline) {
+  font-size: 13px; font-weight: 400; color: #666; margin-left: 8px;
+}
+.page-content-wrapper :deep(.education-degree) {
+  font-size: 14px; font-weight: 600; color: #333;
+}
 .page-content-wrapper :deep(.item-description-wrapper) {
   margin-top: 0px;
+  margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.text-line) {
-  color: #555; line-height: var(--line-height, 1.6); min-height: 1.6em; white-space: pre-wrap;
+  color: #555; line-height: var(--line-height, 1.6); white-space: pre-wrap;
 }
 
 /* ================= 打印样式 (使用打印专用容器) ================= */
