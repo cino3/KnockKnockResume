@@ -297,6 +297,18 @@ export const useResumeStore = defineStore('resume', () => {
     removeAvatar
   }
 }, {
-  persist: true
+  persist: {
+    key: 'resume',
+    // 只持久化简历内容数据，不持久化 theme 配置
+    // 这样修改默认主题配置后可以立即生效
+    paths: [
+      'profile',
+      'experiences',
+      'projects',
+      'educations',
+      'awards',
+      'selfEvaluation'
+    ]
+  }
 })
 
