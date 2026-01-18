@@ -48,8 +48,7 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ edu.school || '(未填写学校)' }}</h3>
-          <p class="item-subtitle">{{ edu.major || '' }} · {{ edu.degree || '' }}</p>
+          <h3 class="item-title">{{ edu.school || '(未填写学校)' }}  -  <span class="education-degree">{{ edu.degree || '' }}</span> <span class="education-major-inline">{{ edu.major || '' }}</span></h3>
         </div>
         <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
       </div>
@@ -189,6 +188,9 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .item-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }
 .item-subtitle-inline { font-size: 14px; font-weight: 400; color: #666; margin-left: 8px; }
 .item-subtitle { font-size: 14px; color: #666; }
+.education-major { font-size: 13px; color: #666; }
+.education-major-inline { font-size: 13px; font-weight: 400; color: #666; margin-left: 8px; }
+.education-degree { font-size: 14px; font-weight: 600; color: #333; }
 .item-date { font-size: 14px; color: #999; white-space: nowrap; }
 
 .item-description-wrapper { margin-top: 0px; }

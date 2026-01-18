@@ -197,37 +197,101 @@ function calculateWithBuffer(sourceRoot: HTMLElement, safetyBuffer: number): { p
 }
 
 
-// 主分页函数：迭代优化（目标：第一页留白 10-14px）
+// 主分页函数：迭代优化（使用动态容差策略）
 async function calculatePages() {
   await nextTick()
   if (!measureRef.value) return
 
   const sourceRoot = measureRef.value
-  let safetyBuffer = 0
+
+  // ================= 方案B：动态容差范围 =================
+  // 第1步：先用safetyBuffer=0粗测一次，了解各页留白情况
+  const initialTest = calculateWithBuffer(sourceRoot, 0)
+  if (initialTest.heights.length === 0) return
+
+  const initialMargins = initialTest.heights.map(h => MAX_CONTENT_HEIGHT - h)
+  console.log('📊 初测结果 (safetyBuffer=0):', initialMargins.map((m, i) => `第${i+1}页=${m.toFixed(1)}px`).join(', '))
+
+  // 第2步：根据第2页留白情况，动态调整第1页的目标和容差
+  let dynamicTarget = TARGET_MARGIN  // 默认12px
+  let dynamicTolerance = MARGIN_TOLERANCE  // 默认±8px
+  let strategy = '标准'
+
+  // 如果第2页留白>150px，说明第1页太保守，需要放宽要求
+  if (initialMargins.length > 1 && initialMargins[1] > 150) {
+    // 放宽第1页要求：允许留白到30-60px
+    dynamicTarget = 45
+    dynamicTolerance = 15
+    strategy = '宽松（为第2页腾空间）'
+    console.log(`🎯 检测到第2页留白过大(${initialMargins[1].toFixed(1)}px)，调整为${strategy}策略`)
+    console.log(`   第1页目标: ${dynamicTarget}px ± ${dynamicTolerance}px（范围: ${dynamicTarget - dynamicTolerance}-${dynamicTarget + dynamicTolerance}px）`)
+  } else {
+    console.log(`🎯 使用${strategy}策略`)
+    console.log(`   第1页目标: ${dynamicTarget}px ± ${dynamicTolerance}px（范围: ${dynamicTarget - dynamicTolerance}-${dynamicTarget + dynamicTolerance}px）`)
+  }
+
+  // 第3步：使用动态容差重新评估所有方案
   let bestPagesData: HTMLElement[][] = []
   let bestHeights: number[] = []
   let bestScore = Infinity
   let bestMargin = Infinity
+  let bestSafetyBuffer = 0
 
-  // 尝试不同的 safetyBuffer 值，找到最接近目标的方案
-  const testBuffers = [0, -2, -3, -5, -1, 1, 2, 3, 5]  // 按优先级排序
+  const testBuffers = [
+    0, -0.5, -1, -1.5, -2, -2.5, -3,
+    0.5, 1, 1.5, 2, 3, 5,
+    -5, -10, -15, 10, 15
+  ]
+
+  console.log('🔍 开始测试不同 safetyBuffer 值...')
 
   for (let iteration = 0; iteration < testBuffers.length; iteration++) {
-    safetyBuffer = testBuffers[iteration]
+    const safetyBuffer = testBuffers[iteration]
     const { pages: pagesData, heights: pageHeights } = calculateWithBuffer(sourceRoot, safetyBuffer)
 
     if (pageHeights.length === 0) continue
 
-    const firstPageHeight = pageHeights[0]
-    const firstPageMargin = MAX_CONTENT_HEIGHT - firstPageHeight
-    const deviation = Math.abs(firstPageMargin - TARGET_MARGIN)
+    // ================= 使用动态容差的评分函数 =================
+    let totalScore = 0
+    const margins: number[] = []
 
-    // 判断是否符合要求
-    const inRange = firstPageMargin >= TARGET_MARGIN - MARGIN_TOLERANCE &&
-                    firstPageMargin <= TARGET_MARGIN + MARGIN_TOLERANCE
+    for (let i = 0; i < pageHeights.length; i++) {
+      const margin = MAX_CONTENT_HEIGHT - pageHeights[i]
+      margins.push(margin)
 
-    // 计算得分（偏差越小越好）
-    const score = deviation
+      if (margin < 0) {
+        // ❌ 内容溢出，严重惩罚
+        totalScore = Infinity
+        break
+      }
+
+      if (i === 0) {
+        // 第一页策略：使用动态容差
+        const deviation = Math.abs(margin - dynamicTarget)
+
+        if (margin >= dynamicTarget - dynamicTolerance &&
+            margin <= dynamicTarget + dynamicTolerance) {
+          // ✅ 在动态容差范围内，完美！奖励
+          totalScore -= 10
+        } else {
+          // ⚠️ 超出容差，线性惩罚（权重2倍）
+          totalScore += deviation * 2
+        }
+      } else {
+        // 其他页策略：留白越大，惩罚越大
+        totalScore += margin
+      }
+    }
+
+    const score = totalScore
+
+    // 标记第一页是否达标（使用动态容差）
+    const firstPageMargin = margins[0]
+    const firstPageOk = firstPageMargin >= dynamicTarget - dynamicTolerance &&
+                       firstPageMargin <= dynamicTarget + dynamicTolerance
+    const firstPageStatus = firstPageOk ? '✅' : '⚠️'
+
+    console.log(`  [${safetyBuffer}px] 第1页=${firstPageMargin.toFixed(1)}px ${firstPageStatus}, 其他页=[${margins.slice(1).map(m => m.toFixed(1)).join(', ')}]px, 得分=${score === Infinity ? '∞' : score.toFixed(1)}`)
 
     // 更新最优结果
     if (score < bestScore) {
@@ -235,13 +299,11 @@ async function calculatePages() {
       bestPagesData = pagesData
       bestHeights = pageHeights
       bestMargin = firstPageMargin
-    }
-
-    // 如果找到完美解，提前结束
-    if (inRange) {
-      break
+      bestSafetyBuffer = safetyBuffer
     }
   }
+
+  console.log(`✅ 选择方案: safetyBuffer=${bestSafetyBuffer}px, 第1页留白=${bestMargin.toFixed(1)}px`)
 
   // 渲染最优结果
   renderPages.value = bestPagesData.length > 0 ? Array(bestPagesData.length).fill(1) : [1]
