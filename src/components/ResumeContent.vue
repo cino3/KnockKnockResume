@@ -213,7 +213,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
   display: none;
 }
 
-.experience-item, .project-item, .education-item { margin-bottom: 5px; }
+.experience-item, .project-item, .education-item { margin-bottom: var(--paragraph-spacing, 8px); }
 /* 每个 section 中的最后一个 item 移除下边距 */
 .resume-section .experience-item:last-child,
 .resume-section .project-item:last-child,

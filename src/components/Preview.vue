@@ -431,7 +431,7 @@ onMounted(() => {
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
-  margin-bottom: 7px;
+  margin-bottom: var(--paragraph-spacing, 8px);
 }
 /* 每个 section 中的最后一个 item 移除下边距 */
 .page-content-wrapper :deep(.resume-section .experience-item:last-child),
