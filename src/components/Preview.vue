@@ -1,7 +1,10 @@
 <template>
   <div class="preview-container">
     <!-- 简历页面容器 -->
-    <div class="resume-pages-container" :style="{ transform: `scale(${store.previewScale})`, transformOrigin: 'top center' }">
+    <div
+      class="resume-pages-container"
+      :style="pagesContainerStyle"
+    >
 
       <!-- 1. 测量容器 (永远隐藏，仅用于计算) -->
       <div ref="measureRef" class="resume-paper measure-container" :style="resumeStyle">
@@ -15,7 +18,7 @@
 
       <!-- 3. 真实渲染的分页 (JS 计算结果，仅屏幕预览) -->
       <div
-        v-for="(page, index) in renderPages"
+        v-for="(_page, index) in renderPages"
         :key="index"
         class="resume-paper screen-page"
         :style="resumeStyle"
@@ -35,12 +38,27 @@ import ResumeContent from './ResumeContent.vue'
 const store = useResumeStore()
 const measureRef = ref<HTMLElement | null>(null)
 const renderPages = ref<number[]>([1])
+const supportsZoom = ref(false)
 
 const resumeStyle = computed(() => ({
   '--primary': store.theme.primaryColor,
   '--line-height': store.theme.lineHeight,
   '--paragraph-spacing': `${store.theme.paragraphSpacing}px`
 }))
+
+// `transform: scale()` 不会影响布局尺寸，滚动高度仍按未缩放计算，会导致“还能往下滚一大截空白”
+// 优先使用 `zoom`（Chromium 支持）让布局尺寸随缩放同步变化；不支持时再 fallback 到 transform。
+const pagesContainerStyle = computed(() => {
+  if (supportsZoom.value) {
+    return {
+      zoom: String(store.previewScale)
+    } as Record<string, string>
+  }
+  return {
+    transform: `scale(${store.previewScale})`,
+    transformOrigin: 'top center'
+  } as Record<string, string>
+})
 
 // ================= 常量定义 =================
 const A4_HEIGHT_PX = 1123 // A4 高度 (96 DPI)
@@ -232,7 +250,6 @@ async function calculatePages() {
 
   // 第3步：使用动态容差重新评估所有方案
   let bestPagesData: HTMLElement[][] = []
-  let bestHeights: number[] = []
   let bestScore = Infinity
   let bestMargin = Infinity
   let bestSafetyBuffer = 0
@@ -297,7 +314,6 @@ async function calculatePages() {
     if (score < bestScore) {
       bestScore = score
       bestPagesData = pagesData
-      bestHeights = pageHeights
       bestMargin = firstPageMargin
       bestSafetyBuffer = safetyBuffer
     }
@@ -306,7 +322,7 @@ async function calculatePages() {
   console.log(`✅ 选择方案: safetyBuffer=${bestSafetyBuffer}px, 第1页留白=${bestMargin.toFixed(1)}px`)
 
   // 渲染最优结果
-  renderPages.value = bestPagesData.length > 0 ? Array(bestPagesData.length).fill(1) : [1]
+  renderPages.value = bestPagesData.length > 0 ? new Array(bestPagesData.length).fill(1) : [1]
 
   await nextTick()
   bestPagesData.forEach((nodes, index) => {
@@ -326,6 +342,7 @@ watch(
 )
 
 onMounted(() => {
+  supportsZoom.value = typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('zoom', '1')
   setTimeout(calculatePages, 500)
 })
 </script>
@@ -334,7 +351,7 @@ onMounted(() => {
 /* ================= 预览样式 ================= */
 .preview-container {
   position: relative; width: 100%; height: 100%;
-  background: #525659; overflow: auto;
+  background: #F2F0EB; overflow: auto;
 }
 .resume-pages-container {
   display: flex; flex-direction: column; align-items: center;
@@ -389,7 +406,7 @@ onMounted(() => {
   font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0;
 }
 .page-content-wrapper :deep(.title) {
-  font-size: 18px; color: #666; margin-bottom: 0;
+  font-size: 18px; color: #2D2D29; margin-bottom: 0;
 }
 .page-content-wrapper :deep(.avatar-wrapper) {
   position: absolute; right: 0; top: 0;
@@ -398,7 +415,7 @@ onMounted(() => {
   width: 80px; height: 100px; object-fit: cover; display: block;
 }
 .page-content-wrapper :deep(.contact-info) {
-  display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; min-height: 50px;
+  display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #2D2D29; min-height: 50px;
 }
 .page-content-wrapper :deep(.contact-info.has-avatar) {
   margin-right: 96px;
@@ -416,7 +433,7 @@ onMounted(() => {
   margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px;
+  font-size: 18px; font-weight: 600; color: #2D2D29; margin-bottom: 7px; margin-top: 5px;
 }
 .page-content-wrapper :deep(.section-content) {
   margin-bottom: var(--paragraph-spacing, 8px);
@@ -443,32 +460,32 @@ onMounted(() => {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.item-title) {
-  font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px;
+  font-size: 16px; font-weight: 600; color: #2D2D29; margin-bottom: 4px;
 }
 .page-content-wrapper :deep(.item-subtitle-inline) {
-  font-size: 14px; font-weight: 400; color: #666; margin-left: 8px;
+  font-size: 14px; font-weight: 400; color: #2D2D29; margin-left: 8px;
 }
 .page-content-wrapper :deep(.item-subtitle) {
-  font-size: 14px; color: #666;
+  font-size: 14px; color: #2D2D29;
 }
 .page-content-wrapper :deep(.item-date) {
-  font-size: 14px; color: #999; white-space: nowrap;
+  font-size: 14px; color: #2D2D29; white-space: nowrap;
 }
 .page-content-wrapper :deep(.education-major) {
-  font-size: 13px; color: #666;
+  font-size: 13px; color: #2D2D29;
 }
 .page-content-wrapper :deep(.education-major-inline) {
-  font-size: 13px; font-weight: 400; color: #666; margin-left: 8px;
+  font-size: 13px; font-weight: 400; color: #2D2D29; margin-left: 8px;
 }
 .page-content-wrapper :deep(.education-degree) {
-  font-size: 14px; font-weight: 600; color: #333;
+  font-size: 14px; font-weight: 600; color: #2D2D29;
 }
 .page-content-wrapper :deep(.item-description-wrapper) {
   margin-top: 0px;
   margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.text-line) {
-  color: #555; line-height: var(--line-height, 1.6); white-space: pre-wrap;
+  color: #2D2D29; line-height: var(--line-height, 1.6); white-space: pre-wrap;
 }
 
 /* ================= 打印样式 (使用打印专用容器) ================= */

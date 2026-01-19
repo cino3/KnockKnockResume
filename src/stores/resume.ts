@@ -154,8 +154,8 @@ export const useResumeStore = defineStore('resume', () => {
     paragraphSpacing: 8
   })
 
-  // 预览缩放（固定为 70%）
-  const previewScale = ref(0.7)
+  // 预览缩放（默认 74%）
+  const previewScale = ref(0.78)
 
   // 最后保存时间
   const lastSavedTime = ref<string | null>(null)
