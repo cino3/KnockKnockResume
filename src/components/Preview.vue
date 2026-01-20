@@ -517,7 +517,9 @@ onMounted(() => {
 
   /* 核心修复：取消缩放，保留分页间距 */
   .resume-pages-container {
+    /* 打印时必须取消缩放，否则会继续按 0.74 等比例去排版 */
     transform: none !important;
+    zoom: 1 !important;
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
