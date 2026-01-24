@@ -165,44 +165,59 @@ const handleBlur = () => {
 
 <style scoped>
 .bold-textarea-wrapper {
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid #dcdfe6;
+  border-radius: 0;
   overflow: hidden;
   transition: border-color 0.2s;
 }
 
 .bold-textarea-wrapper:focus-within {
-  border-color: var(--el-color-primary);
+  border-bottom-color: var(--el-color-primary);
 }
 
 .toolbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px;
-  background-color: #f5f7fa;
-  border-bottom: 1px solid #dcdfe6;
+  padding: 8px 0;
+  background-color: transparent;
+  border-bottom: none;
 }
 
 .toolbar .el-button {
   padding: 4px 8px;
+  color: var(--primary-color, #465E69);
+  background-color: transparent !important;
+  transition: all 0.2s;
+}
+
+.toolbar .el-button:hover {
+  color: white !important;
+  background-color: rgba(70, 94, 105, 0.6) !important;
 }
 
 .toolbar .el-button.is-active {
-  background-color: var(--el-color-primary);
-  color: white;
+  background-color: var(--primary-color, #465E69) !important;
+  color: white !important;
+}
+
+.toolbar .el-button.is-active:hover {
+  background-color: #384c55 !important;
+  color: white !important;
 }
 
 .editor-content {
-  padding: 8px 12px;
+  padding: 8px 0;
   min-height: 88px;
   max-height: 300px;
   overflow-y: auto;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   color: #606266;
   word-break: break-word;
   white-space: pre-wrap;
+  font-family: var(--font-sans);
 }
 
 .editor-content:empty::before {

@@ -2,6 +2,17 @@
 // Element Plus 组件样式覆盖
 // ========================================
 
+// === 0. 覆盖 Element Plus 主题色变量 ===
+:root {
+  --el-color-primary: #465E69;
+  --el-color-primary-light-3: #6b8291;
+  --el-color-primary-light-5: #8a9ea9;
+  --el-color-primary-light-7: #a9bac1;
+  --el-color-primary-light-8: #b8c7cd;
+  --el-color-primary-light-9: #c7d4d9;
+  --el-color-primary-dark-2: #384c55;
+}
+
 // === 1. 按钮 ===
 .el-button {
   font-family: var(--font-sans);
@@ -27,19 +38,54 @@
   font-size: 13px;
 }
 
-// === 2. 输入框（非幽灵表单的普通输入框） ===
+// === 2. 输入框（全局幽灵样式） ===
 .el-input__wrapper {
-  border-radius: 6px;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #dcdfe6 !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
   transition: all 0.2s;
+}
 
-  &.is-focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 1px rgba(70, 94, 105, 0.1);
-  }
+.el-input__wrapper:hover {
+  box-shadow: none !important;
+}
+
+.el-input__wrapper.is-focus {
+  box-shadow: none !important;
+  border-bottom-color: var(--primary-color) !important;
 }
 
 .el-input__inner {
   font-family: var(--font-sans);
+  font-size: 15px;
+}
+
+// === 2.1 文本域（全局幽灵样式） ===
+.el-textarea__inner {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #dcdfe6 !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 8px;
+  resize: none;
+  font-family: var(--font-sans);
+  font-size: 15px;
+}
+
+.el-textarea__inner:hover {
+  box-shadow: none !important;
+}
+
+.el-textarea__inner:focus {
+  box-shadow: none !important;
+  border-bottom-color: var(--primary-color) !important;
 }
 
 // === 3. 下拉菜单 ===
@@ -122,9 +168,15 @@
 // === 7. 表单项标签 ===
 .el-form-item__label {
   font-family: var(--font-sans);
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 11px !important;
+  color: var(--text-secondary) !important;
+  text-transform: uppercase;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+}
+
+.el-form-item {
+  margin-bottom: 16px;
 }
 
 // === 8. 消息提示 ===
@@ -151,4 +203,69 @@
 
 .el-dialog__body {
   color: var(--text-main);
+}
+
+// === 10. 复选框和单选框 ===
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.el-checkbox__inner:hover {
+  border-color: var(--primary-color);
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+}
+
+.el-radio__inner:hover {
+  border-color: var(--primary-color);
+}
+
+// === 11. 开关 ===
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+// === 12. 按钮主要颜色（用于加粗按钮等） ===
+.el-button--primary.is-active,
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+// === 13. 文本按钮激活状态 ===
+.el-button--primary.is-active {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+// === 14. 文本类型按钮 ===
+.el-button--primary.is-text,
+.el-button--primary.text {
+  --el-button-text-color: var(--primary-color);
+  --el-button-bg-color: rgba(70, 94, 105, 0.1);
+  --el-button-border-color: transparent;
+}
+
+.el-button--primary.is-text:hover,
+.el-button--primary.text:hover {
+  --el-button-text-color: var(--primary-color);
+  --el-button-bg-color: rgba(70, 94, 105, 0.2);
+  --el-button-border-color: transparent;
+}
+
+.el-button--primary.is-text.is-active,
+.el-button--primary.text.is-active {
+  --el-button-text-color: white !important;
+  --el-button-bg-color: var(--primary-color) !important;
 }

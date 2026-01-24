@@ -401,13 +401,13 @@ const handleRemoveAvatar = () => {
 .sidebar-toggle {
   position: absolute;
   top: 50%;
-  left: calc(var(--sidebar-width-expanded) - 8px);
+  left: var(--sidebar-width-expanded);
   transform: translateY(-50%);
-  width: 16px;
-  height: 60px;
+  width: 12px;
+  height: 48px;
   background: white;
   border: 1px solid var(--border-color);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 6px 6px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -424,7 +424,7 @@ const handleRemoveAvatar = () => {
 }
 
 .sidebar-toggle:hover {
-  width: 20px;
+  width: 16px;
   color: var(--primary-color);
   border-color: var(--primary-color);
   background: var(--primary-color);
@@ -520,12 +520,16 @@ const handleRemoveAvatar = () => {
 
   /* 隐藏滚动条但保持功能 */
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0;
+    background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #ddd;
-    border-radius: 2px;
+    background: transparent;
   }
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE/Edge */
+  -ms-overflow-style: none;
 }
 
 .panel-placeholder {
