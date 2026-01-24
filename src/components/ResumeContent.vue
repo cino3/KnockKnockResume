@@ -41,6 +41,7 @@
   <!-- 教育经历 -->
   <section v-if="visibleEducations.length > 0" class="resume-section">
     <h2 class="section-title">教育经历</h2>
+    <div class="section-divider"></div>
     <div
       v-for="edu in visibleEducations"
       :key="edu.id"
@@ -53,12 +54,12 @@
         <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
       </div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- 专业技能 -->
   <section v-if="store.profile.skills" class="resume-section">
     <h2 class="section-title">专业技能</h2>
+    <div class="section-divider"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
@@ -67,12 +68,12 @@
         v-html="line"
       ></div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- 工作经历 -->
   <section v-if="visibleExperiences.length > 0" class="resume-section">
     <h2 class="section-title">工作经历</h2>
+    <div class="section-divider"></div>
     <div
       v-for="exp in visibleExperiences"
       :key="exp.id"
@@ -94,12 +95,12 @@
         ></div>
       </div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- 项目经历 -->
   <section v-if="visibleProjects.length > 0" class="resume-section">
     <h2 class="section-title">项目经历</h2>
+    <div class="section-divider"></div>
     <div
       v-for="proj in visibleProjects"
       :key="proj.id"
@@ -120,12 +121,12 @@
         ></div>
       </div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- 获奖经历 -->
   <section v-if="store.awards.content" class="resume-section">
     <h2 class="section-title">获奖经历</h2>
+    <div class="section-divider"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.awards.content)"
@@ -134,12 +135,12 @@
         v-html="line"
       ></div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- 个人评价 -->
   <section v-if="store.selfEvaluation.content" class="resume-section">
     <h2 class="section-title">个人评价</h2>
+    <div class="section-divider"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
@@ -148,7 +149,6 @@
         v-html="line"
       ></div>
     </div>
-    <div class="section-divider"></div>
   </section>
 </template>
 
@@ -186,7 +186,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 <style scoped>
 /* 基础样式 */
-.resume-header { border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px; }
+.resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
 .name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0; }
@@ -200,20 +200,21 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item { display: flex; align-items: center; gap: 6px; }
 .contact-item :deep(svg) { flex-shrink: 0; }
 
-.resume-section { margin-bottom: 8px; }
-.section-title { font-size: 18px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 7px; margin-top: 5px; padding-bottom: 0; }
-.section-content { margin-bottom: var(--paragraph-spacing, 8px); }
+.resume-section { margin-bottom: 16px; }
+.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
+.section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */
 .section-divider {
-  border-bottom: 2px dashed #d1d5db;
+  border-bottom: 2px solid #000000;
   margin-top: 0px;
+  margin-bottom: 11px;
 }
-.resume-section:last-child .section-divider {
-  display: none;
-}
-
-.experience-item, .project-item, .education-item { margin-bottom: var(--paragraph-spacing, 8px); }
+.experience-item, .project-item, .education-item { margin-bottom: 11px; }
+/* 教育经历：多条记录之间固定间距 */
+.education-item { margin-bottom: 8px; }
+/* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
+.education-item .item-title { margin-bottom: 0; }
 /* 每个 section 中的最后一个 item 移除下边距 */
 .resume-section .experience-item:last-child,
 .resume-section .project-item:last-child,
@@ -222,7 +223,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 }
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
-.item-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }
+.item-title { font-size: 16px; font-weight: 600; color: #333; margin: 0 0 4px 0; }
 .item-subtitle-inline { font-size: 14px; font-weight: 400; color: #666; margin-left: 8px; }
 .item-subtitle { font-size: 14px; color: #666; }
 .education-major { font-size: 13px; color: #666; }

@@ -394,7 +394,7 @@ onMounted(() => {
 
 /* Copy styles from ResumeContent */
 .page-content-wrapper :deep(.resume-header) {
-  border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 8px;
+  padding-bottom: 8px; margin-bottom: 8px;
 }
 .page-content-wrapper :deep(.header-top) {
   display: flex; align-items: center; margin-bottom: 8px; position: relative;
@@ -430,25 +430,31 @@ onMounted(() => {
   flex-shrink: 0;
 }
 .page-content-wrapper :deep(.resume-section) {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 18px; font-weight: 600; color: #2D2D29; margin-bottom: 7px; margin-top: 5px;
+  font-size: 20px; font-weight: 600; color: #2D2D29; margin-bottom: 1px; margin-top: 5px;
 }
 .page-content-wrapper :deep(.section-content) {
-  margin-bottom: var(--paragraph-spacing, 8px);
+  margin-bottom: 11px;
 }
 .page-content-wrapper :deep(.section-divider) {
-  border-bottom: 2px dashed #d1d5db;
+  border-bottom: 2px solid #000000;
   margin-top: 0px;
-}
-.page-content-wrapper :deep(.resume-section:last-child .section-divider) {
-  display: none;
+  margin-bottom: 11px;
 }
 .page-content-wrapper :deep(.experience-item),
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
-  margin-bottom: var(--paragraph-spacing, 8px);
+  margin-bottom: 11px;
+}
+/* 教育经历：多条记录之间固定间距 */
+.page-content-wrapper :deep(.education-item) {
+  margin-bottom: 8px;
+}
+/* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
+.page-content-wrapper :deep(.education-item .item-title) {
+  margin-bottom: 0;
 }
 /* 每个 section 中的最后一个 item 移除下边距 */
 .page-content-wrapper :deep(.resume-section .experience-item:last-child),
@@ -460,7 +466,7 @@ onMounted(() => {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.item-title) {
-  font-size: 16px; font-weight: 600; color: #2D2D29; margin-bottom: 4px;
+  font-size: 16px; font-weight: 600; color: #2D2D29; margin: 0 0 4px 0;
 }
 .page-content-wrapper :deep(.item-subtitle-inline) {
   font-size: 14px; font-weight: 400; color: #2D2D29; margin-left: 8px;
