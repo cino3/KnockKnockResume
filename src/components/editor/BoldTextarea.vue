@@ -9,9 +9,8 @@
         @click="toggleBold"
       >
         <template #icon>
-          <Bold :size="16" />
+          <Bold :size="14" />
         </template>
-        加粗
       </el-button>
     </div>
     <div
@@ -165,28 +164,33 @@ const handleBlur = () => {
 
 <style scoped>
 .bold-textarea-wrapper {
-  border: none;
-  border-bottom: 1px solid #dcdfe6;
-  border-radius: 0;
+  border: 1px solid var(--border-color, #E6E4DD);
+  border-radius: 6px;
   overflow: hidden;
+  background: white;
   transition: border-color 0.2s;
 }
 
 .bold-textarea-wrapper:focus-within {
-  border-bottom-color: var(--el-color-primary);
+  border-color: var(--primary-color, #465E69);
 }
 
 .toolbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 0;
-  background-color: transparent;
-  border-bottom: none;
+  padding: 6px 12px;
+  background-color: #fafafa;
+  border-bottom: 1px solid var(--border-color, #E6E4DD);
 }
 
 .toolbar .el-button {
-  padding: 4px 8px;
+  padding: 2px 8px;
+  min-width: 28px;
+  height: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-serif);
   color: var(--primary-color, #465E69);
   background-color: transparent !important;
   transition: all 0.2s;
@@ -208,12 +212,12 @@ const handleBlur = () => {
 }
 
 .editor-content {
-  padding: 8px 0;
+  padding: 8px 12px;
   min-height: 88px;
   max-height: 300px;
   overflow-y: auto;
   font-size: 11px;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #606266;
   word-break: break-word;
   white-space: pre-wrap;
