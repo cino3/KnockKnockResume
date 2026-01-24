@@ -1,29 +1,22 @@
 <template>
   <div class="self-evaluation-editor">
-    <el-form label-width="80px" size="small">
-      <el-form-item label="">
-        <el-input
-          v-model="store.selfEvaluation.content"
-          type="textarea"
-          :rows="8"
-          placeholder="请输入个人评价，支持换行"
-        />
-      </el-form-item>
-    </el-form>
+    <BoldTextarea
+      v-model="store.selfEvaluation.content"
+      placeholder="请输入个人评价，支持换行"
+      :rows="8"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useResumeStore } from '@/stores/resume'
+import BoldTextarea from './BoldTextarea.vue'
 
 const store = useResumeStore()
 </script>
 
 <style scoped>
 .self-evaluation-editor {
-  padding: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  background: #fafafa;
+  /* 样式已经由 BoldTextarea 组件处理 */
 }
 </style>
