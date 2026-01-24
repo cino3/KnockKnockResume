@@ -1,7 +1,7 @@
 <template>
   <div class="self-evaluation-editor">
     <el-form label-width="80px" size="small">
-      <el-form-item label="个人评价">
+      <el-form-item label="">
         <el-input
           v-model="store.selfEvaluation.content"
           type="textarea"

@@ -58,7 +58,7 @@
                 <span class="accordion-title">基本信息</span>
               </template>
               <div class="form-body">
-                <el-form :model="store.profile" label-position="top" class="ghost-form">
+                <el-form :model="store.profile" label-position="left" label-width="70px" class="ghost-form horizontal-form">
                   <el-form-item label="姓名">
                     <el-input v-model="store.profile.name" placeholder="请输入姓名" />
                   </el-form-item>
@@ -124,7 +124,7 @@
               </template>
               <div class="form-body">
                 <el-form :model="store.profile" label-position="top" class="ghost-form">
-                  <el-form-item label="技能">
+                  <el-form-item>
                     <BoldTextarea
                       v-model="store.profile.skills"
                       placeholder="请输入专业技能，可换行输入多个技能项，支持加粗"
@@ -633,6 +633,37 @@ const handleRemoveAvatar = () => {
   text-transform: uppercase;
   font-weight: 700 !important;
   letter-spacing: 0.5px;
+}
+
+/* === 水平表单布局 === */
+.horizontal-form {
+  /* 表单项之间更紧凑 */
+  :deep(.el-form-item) {
+    margin-bottom: 4px !important;
+  }
+
+  /* 标签样式 - 强制右对齐 */
+  :deep(.el-form-item__label) {
+    text-align: right !important;
+    justify-content: flex-end !important;
+    padding-right: 12px;
+    line-height: 22px;
+    height: 22px;
+  }
+
+  /* 输入框样式调整 - 与标签对齐 */
+  :deep(.el-input__wrapper) {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 22px;
+    min-height: 22px;
+  }
+
+  :deep(.el-input__inner) {
+    font-size: 11px !important;
+    line-height: 22px;
+    height: 22px;
+  }
 }
 
 /* === 列表容器 === */

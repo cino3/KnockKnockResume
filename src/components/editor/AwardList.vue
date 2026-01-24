@@ -1,7 +1,7 @@
 <template>
   <div class="awards-editor">
     <el-form label-width="80px" size="small">
-      <el-form-item label="获奖经历">
+      <el-form-item label="">
         <el-input
           v-model="store.awards.content"
           type="textarea"

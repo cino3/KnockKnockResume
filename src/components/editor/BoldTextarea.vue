@@ -212,7 +212,7 @@ const handleBlur = () => {
   min-height: 88px;
   max-height: 300px;
   overflow-y: auto;
-  font-size: 15px;
+  font-size: 11px;
   line-height: 1.5;
   color: #606266;
   word-break: break-word;
