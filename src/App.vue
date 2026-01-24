@@ -1,10 +1,8 @@
 <template>
   <div class="app-container">
-    <!-- 左侧编辑器 -->
-    <div class="editor-panel">
-      <Editor />
-    </div>
-    
+    <!-- 左侧：新侧边栏 -->
+    <Sidebar />
+
     <!-- 右侧预览区 -->
     <div class="preview-panel">
       <Preview />
@@ -13,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import Editor from './components/Editor.vue'
+import Sidebar from './components/Sidebar.vue'
 import Preview from './components/Preview.vue'
 </script>
 
@@ -24,17 +22,9 @@ import Preview from './components/Preview.vue'
   overflow: hidden;
 }
 
-.editor-panel {
-  width: 400px;
-  flex-shrink: 0;
-  background: #fff;
-  border-right: 1px solid #e5e7eb;
-  overflow-y: auto;
-}
-
 .preview-panel {
   flex: 1;
-  background: #525659;
+  background: var(--app-bg);
   overflow: hidden;
   display: flex;
   justify-content: center;

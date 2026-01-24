@@ -1,0 +1,154 @@
+// ========================================
+// Element Plus 组件样式覆盖
+// ========================================
+
+// === 1. 按钮 ===
+.el-button {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.el-button--primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-family: var(--font-serif);
+  font-weight: 600;
+
+  &:hover,
+  &:focus {
+    background-color: #384c55;
+    border-color: #384c55;
+  }
+}
+
+.el-button--small {
+  font-size: 13px;
+}
+
+// === 2. 输入框（非幽灵表单的普通输入框） ===
+.el-input__wrapper {
+  border-radius: 6px;
+  transition: all 0.2s;
+
+  &.is-focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px rgba(70, 94, 105, 0.1);
+  }
+}
+
+.el-input__inner {
+  font-family: var(--font-sans);
+}
+
+// === 3. 下拉菜单 ===
+.el-dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  padding: 6px 0;
+}
+
+.el-dropdown-menu__item {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: #333;
+
+  &:hover {
+    background-color: #f5f5f5;
+    color: var(--primary-color);
+  }
+
+  &.is-disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+// === 4. Tooltip ===
+.el-tooltip__popper {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+// === 5. 折叠面板 ===
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item__header {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-color);
+  background: transparent;
+  border-bottom: 1px solid #eee;
+}
+
+.el-collapse-item__wrap {
+  border: none;
+  background: transparent;
+}
+
+.el-collapse-item__content {
+  color: var(--text-main);
+  font-family: var(--font-sans);
+}
+
+// === 6. 滑块 ===
+.el-slider__runway {
+  background-color: #e4e7ed;
+  height: 4px;
+}
+
+.el-slider__bar {
+  background-color: var(--primary-color);
+  height: 4px;
+}
+
+.el-slider__button {
+  border: 2px solid var(--primary-color);
+  width: 12px;
+  height: 12px;
+  transition: all 0.2s;
+}
+
+.el-slider__button:hover {
+  transform: scale(1.2);
+}
+
+// === 7. 表单项标签 ===
+.el-form-item__label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+// === 8. 消息提示 ===
+.el-message {
+  border-radius: 6px;
+  font-family: var(--font-sans);
+}
+
+.el-message__content {
+  font-size: 14px;
+}
+
+// === 9. 确认对话框 ===
+.el-dialog {
+  border-radius: 8px;
+  font-family: var(--font-sans);
+}
+
+.el-dialog__title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.el-dialog__body {
+  color: var(--text-main);
+}

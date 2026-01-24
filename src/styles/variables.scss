@@ -1,0 +1,35 @@
+// ========================================
+// 全局样式变量 - Slate Blue Theme
+// ========================================
+
+:root {
+  /* --- 1. 配色方案 (Slate Blue Theme) --- */
+  --primary-color: #465E69;      /* 核心主色：石板蓝 */
+  --app-bg: #F2F0EB;             /* APP背景：暖米色 */
+  --sidebar-bg: #F9F8F6;         /* 侧边栏背景：极淡米白 */
+  --border-color: #E6E4DD;       /* 柔和边框 */
+  --text-main: #2D2D29;          /* 主要文字：暖炭黑 */
+  --text-secondary: #666660;     /* 次要文字 */
+
+  /* --- 2. 原生字体栈 (Native Typography) --- */
+  /* UI 氛围字体：用于标题、按钮、Logo (宋体/Georgia) */
+  --font-serif: "Georgia", "Times New Roman", "Songti SC", "SimSun", serif;
+
+  /* 内容功能字体：用于输入框、正文 (系统黑体) */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  /* --- 3. 尺寸定义 --- */
+  --sidebar-width-expanded: 380px;
+  --sidebar-width-collapsed: 72px;
+}
+
+/* ========================================
+// 全局重置
+// ======================================== */
+body {
+  margin: 0;
+  background-color: var(--app-bg);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  overflow: hidden; /* 防止双重滚动条 */
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Style Comparison</title>
+    <style>
+        :root {
+            /* === 1. 颜色变量 (Slate Theme) === */
+            --primary: #465E69;
+            --bg-color: #F2F0EB;
+            --sidebar-bg: #F9F8F6;
+            --text-main: #2D2D29;
+            
+            /* === 2. 字体堆栈 (关键！) === */
+            
+            /* [A] 普通黑体栈 (Safe Sans) - 也就是“正常字体” */
+            /* 包含：Mac的苹方, Win的微软雅黑, Segoe UI 等 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+
+            /* [B] 人文衬线栈 (System Serif) - 也就是“Claude 风格” */
+            /* 策略：英文优先用 Georgia (优雅)，中文回退到宋体 (书卷气) */
+            --font-serif: "Georgia", "Times New Roman", "Songti SC", "SimSun", serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            /* 默认先展示普通黑体，方便对比 */
+            font-family: var(--font-sans); 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* === 顶部控制栏 === */
+        .control-bar {
+            background: #fff;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 开关样式 */
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .toggle-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* === 主布局 === */
+        .layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* 左侧边栏 */
+        .sidebar {
+            width: 380px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid #E6E4DD;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 右侧预览 */
+        .preview {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            background: var(--bg-color);
+        }
+
+        /* === 字体应用逻辑 (核心代码) === */
+        
+        /* 1. Logo 和 大标题 */
+        .brand { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
+        
+        /* 2. 侧边栏的分类标题 */
+        .section-header { 
+            font-size: 16px; 
+            font-weight: 600; 
+            border-bottom: 1px solid #ddd; 
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex; 
+            justify-content: space-between;
+        }
+
+        /* 3. 输入框 (永远保持黑体，为了清晰) */
+        .ghost-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background: transparent;
+            padding: 8px 0;
+            font-size: 14px;
+            font-family: var(--font-sans) !important; /* 强制黑体 */
+            color: #333;
+        }
+        .input-label {
+            font-size: 12px; color: #666; display: block; margin-bottom: 4px;
+        }
+
+        /* === A4 纸张 (永远保持黑体，为了专业) === */
+        .a4-paper {
+            width: 210mm; height: 297mm;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* 简历内容强制用黑体，模拟打印效果 */
+            font-family: var(--font-sans) !important; 
+        }
+
+        /* === 动态切换类 === */
+        /* 当 body 加上 .claude-mode 时，UI 部分的字体变为衬线体 */
+        body.claude-mode .brand,
+        body.claude-mode .section-header,
+        body.claude-mode .toggle-btn {
+            font-family: var(--font-serif); /* 变成 Georgia/宋体 */
+        }
+        
+        /* 提示文字 */
+        .hint {
+            font-size: 12px; color: #888; margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部控制 -->
+    <div class="control-bar">
+        <div style="font-weight: bold; color: var(--primary)">Web Font Lab</div>
+        <div class="switch-container">
+            <span>当前模式：</span>
+            <button class="toggle-btn active" onclick="setMode('normal', this)">1. 普通后台模式 (Sans)</button>
+            <button class="toggle-btn" onclick="setMode('claude', this)">2. Claude 风格模式 (Serif)</button>
+            <span class="hint">← 点击这里切换感受</span>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- 左侧：UI 区域 -->
+        <aside class="sidebar">
+            <div class="brand">Resumè Craft</div>
+
+            <!-- 模块演示 -->
+            <div>
+                <div class="section-header">
+                    <span>Basic Info / 基本信息</span>
+                    <span>▼</span>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label class="input-label">FULL NAME</label>
+                    <input class="ghost-input" value="刘德华 Andy Lau">
+                </div>
+                <div>
+                    <label class="input-label">JOB TITLE</label>
+                    <input class="ghost-input" value="Senior Java Developer">
+                </div>
+            </div>
+
+            <div>
+                <div class="section-header">
+                    <span>Education / 教育经历</span>
+                    <span>▼</span>
+                </div>
+            </div>
+            
+            <div style="margin-top:auto; font-size:12px; color:#999; line-height:1.5;">
+                <p>观察指南：<br>
+                1. 切换到 Claude 模式后，看上方 "Basic Info" 和 "Resumè" 的字体。<br>
+                2. 注意 "Georgia" 字体带来的衬线细节，它比纯黑体更有“书卷气”。<br>
+                3. 注意输入框里的字没有变，依然清晰易读。</p>
+            </div>
+        </aside>
+
+        <!-- 右侧：预览区域 -->
+        <main class="preview">
+            <div class="a4-paper">
+                <h1 style="margin-top:0;">刘德华</h1>
+                <p style="color:#666; border-bottom:1px solid #eee; padding-bottom:15px;">Senior Java Developer</p>
+                
+                <h3>Professional Summary</h3>
+                <p style="font-size:14px; line-height:1.6; color:#333;">
+                    这是一个简历预览区域。无论你怎么切换上方的模式，这块区域的字体始终保持 **系统黑体 (Sans-serif)**。
+                    <br><br>
+                    <strong>为什么？</strong><br>
+                    因为简历是功能性文档，HR 的 ATS 系统和人眼扫描时，无衬线字体（如 Arial, 微软雅黑）通常被认为是最安全、最现代、最易读的选择。
+                    <br><br>
+                    我们的设计策略是：<br>
+                    <span style="background:#eee; padding:2px 5px;">UI (左侧) 用衬线体</span> 营造创作氛围。<br>
+                    <span style="background:#eee; padding:2px 5px;">内容 (右侧) 用黑体</span> 保证专业交付。
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function setMode(mode, btn) {
+            // 1. 切换按钮状态
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 2. 切换 Body 类名
+            if (mode === 'claude') {
+                document.body.classList.add('claude-mode');
+            } else {
+                document.body.classList.remove('claude-mode');
+            }
+        }
+    </script>
+</body>
+</html>
