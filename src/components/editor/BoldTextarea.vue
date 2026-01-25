@@ -320,7 +320,6 @@ const handleBlur = () => {
   background: white;
   transition: border-color 0.2s;
   width: 100%;
-  min-width: 300px;
   max-width: 100%;
   box-sizing: border-box;
 }

@@ -21,6 +21,11 @@
   /* --- 3. 尺寸定义 --- */
   --sidebar-width-expanded: 380px;
   --sidebar-width-collapsed: 72px;
+
+  /* --- 4. 字体大小变量 --- */
+  /* 项目标题字体：用于教育经历中的学校名、工作经历中的公司名、项目经历中的项目名称 */
+  --font-size-item-title: 14px;
+  --font-weight-item-title: 600;
 }
 
 /* ========================================

@@ -201,7 +201,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 16px; }
-.section-title { font-size: 20px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
+.section-title { font-size: 16px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
 .section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */
@@ -225,8 +225,8 @@ function formatDescriptionLines(text: string | undefined): string[] {
 }
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
-.item-title { font-size: 16px; font-weight: 600; color: #333; margin: 0 0 4px 0; }
-.item-subtitle-inline { font-size: 14px; font-weight: 400; color: #666; margin-left: 8px; }
+.item-title { font-size: var(--font-size-item-title); font-weight: var(--font-weight-item-title); color: #333; margin: 0 0 4px 0; }
+.item-subtitle-inline { font-size: 13px; font-weight: 400; color: #666; margin-left: 8px; }
 .item-subtitle { font-size: 14px; color: #666; }
 .education-major { font-size: 13px; color: #666; }
 .education-major-inline { font-size: 13px; font-weight: 400; color: #666; margin-left: 8px; }
@@ -237,6 +237,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {
+  font-size: 13px;
   color: #555;
   line-height: var(--line-height, 1.6);
   white-space: pre-wrap;

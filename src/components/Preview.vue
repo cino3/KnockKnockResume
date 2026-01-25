@@ -433,7 +433,7 @@ onMounted(() => {
   margin-bottom: 16px;
 }
 .page-content-wrapper :deep(.section-title) {
-  font-size: 20px; font-weight: 600; color: #2D2D29; margin-bottom: 1px; margin-top: 5px;
+  font-size: 16px; font-weight: 600; color: #2D2D29; margin-bottom: 1px; margin-top: 5px;
 }
 .page-content-wrapper :deep(.section-content) {
   margin-bottom: 11px;
@@ -471,10 +471,10 @@ onMounted(() => {
   display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.item-title) {
-  font-size: 16px; font-weight: 600; color: #2D2D29; margin: 0 0 4px 0;
+  font-size: var(--font-size-item-title); font-weight: var(--font-weight-item-title); color: #2D2D29; margin: 0 0 4px 0;
 }
 .page-content-wrapper :deep(.item-subtitle-inline) {
-  font-size: 14px; font-weight: 400; color: #2D2D29; margin-left: 8px;
+  font-size: 13px; font-weight: 400; color: #2D2D29; margin-left: 8px;
 }
 .page-content-wrapper :deep(.item-subtitle) {
   font-size: 14px; color: #2D2D29;
@@ -496,6 +496,7 @@ onMounted(() => {
   margin-bottom: 0px;
 }
 .page-content-wrapper :deep(.text-line) {
+  font-size: 13px;
   color: #2D2D29; line-height: var(--line-height, 1.6); white-space: pre-wrap;
 }
 
