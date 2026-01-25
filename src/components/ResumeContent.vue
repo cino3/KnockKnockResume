@@ -189,7 +189,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
-.name { font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0; }
+.name { font-size: 28px; font-weight: 500; color: var(--primary, #000000); margin-bottom: 0; }
 .title { font-size: 18px; color: #666; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
@@ -211,6 +211,8 @@ function formatDescriptionLines(text: string | undefined): string[] {
   margin-bottom: 11px;
 }
 .experience-item, .project-item, .education-item { margin-bottom: 11px; }
+/* 工作经历和项目经历：多条记录之间固定间距 */
+.experience-item, .project-item { margin-bottom: 16px; }
 /* 教育经历：多条记录之间固定间距 */
 .education-item { margin-bottom: 8px; }
 /* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */

@@ -12,6 +12,16 @@
           <Bold :size="14" />
         </template>
       </el-button>
+      <el-button
+        size="small"
+        type="primary"
+        text
+        @click="insertBullet"
+      >
+        <template #icon>
+          <List :size="14" />
+        </template>
+      </el-button>
     </div>
     <div
       ref="editorRef"
@@ -28,8 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick, computed } from 'vue'
-import { Bold } from 'lucide-vue-next'
+import { ref, watch, onMounted, nextTick } from 'vue'
+import { Bold, List } from 'lucide-vue-next'
 
 interface Props {
   modelValue: string
@@ -49,7 +59,6 @@ const emit = defineEmits<{
 const editorRef = ref<HTMLDivElement | null>(null)
 const content = ref('')
 const isBold = ref(false)
-const isComposing = ref(false)
 
 // 初始化内容
 onMounted(() => {
@@ -103,8 +112,70 @@ const toggleBold = () => {
   // 聚焦编辑器（如果未聚焦）
   editorRef.value.focus()
 
-  // 使用浏览器原生命令实现加粗
-  document.execCommand('bold', false)
+  // 使用现代 Selection API 实现加粗
+  let selection = window.getSelection()
+  if (!selection || selection.rangeCount === 0) {
+    // 如果没有选区，创建一个在末尾的选区
+    const range = document.createRange()
+    range.selectNodeContents(editorRef.value)
+    range.collapse(false)
+    selection = window.getSelection()
+    if (!selection) return
+    selection.removeAllRanges()
+    selection.addRange(range)
+  }
+
+  const range = selection.getRangeAt(0)
+  
+  // 检查当前选区是否已经在加粗标签内
+  let isBoldActive = false
+  let ancestor: Node | null = range.commonAncestorContainer
+  while (ancestor && ancestor !== editorRef.value) {
+    if (ancestor.nodeType === Node.ELEMENT_NODE) {
+      const el = ancestor as HTMLElement
+      if (el.tagName === 'STRONG' || el.tagName === 'B') {
+        isBoldActive = true
+        break
+      }
+    }
+    ancestor = ancestor.parentNode
+  }
+
+  if (isBoldActive) {
+    // 如果已加粗，则取消加粗：移除 strong/b 标签但保留内容
+    const strongElement = (ancestor as HTMLElement)
+    const parent = strongElement.parentNode
+    if (parent) {
+      while (strongElement.firstChild) {
+        parent.insertBefore(strongElement.firstChild, strongElement)
+      }
+      strongElement.remove()
+    }
+  } else {
+    // 如果未加粗，则添加加粗：用 strong 标签包裹选区
+    try {
+      const strong = document.createElement('strong')
+      if (range.collapsed) {
+        // 如果只是光标位置，插入一个空的 strong 标签
+        range.insertNode(strong)
+        range.setStart(strong, 0)
+        range.collapse(true)
+      } else {
+        // 如果有选中内容，用 strong 包裹
+        const contents = range.extractContents()
+        strong.appendChild(contents)
+        range.insertNode(strong)
+      }
+      if (selection) {
+        selection.removeAllRanges()
+        selection.addRange(range)
+      }
+    } catch {
+      // 如果操作失败，回退到 execCommand（虽然已弃用，但作为后备方案）
+      // eslint-disable-next-line deprecation/deprecation
+      document.execCommand('bold', false)
+    }
+  }
 
   // 更新内容
   content.value = editorRef.value.innerHTML
@@ -116,6 +187,43 @@ const toggleBold = () => {
   })
 }
 
+// 插入项目符号
+const insertBullet = () => {
+  if (!editorRef.value) return
+
+  // 聚焦编辑器（如果未聚焦）
+  editorRef.value.focus()
+
+  // 使用现代 Selection API 插入项目符号和空格
+  let selection = window.getSelection()
+  if (!selection || selection.rangeCount === 0) {
+    // 如果没有选区，在末尾插入
+    const range = document.createRange()
+    range.selectNodeContents(editorRef.value)
+    range.collapse(false)
+    selection = window.getSelection()
+    if (!selection) return
+    selection.removeAllRanges()
+    selection.addRange(range)
+  }
+
+  const range = selection.getRangeAt(0)
+  range.deleteContents()
+  
+  const textNode = document.createTextNode('  •  ')
+  range.insertNode(textNode)
+  
+  // 将光标移动到插入文本之后
+  range.setStartAfter(textNode)
+  range.collapse(true)
+  selection.removeAllRanges()
+  selection.addRange(range)
+
+  // 更新内容
+  content.value = editorRef.value.innerHTML
+  emit('update:modelValue', content.value)
+}
+
 // 检查当前选区是否加粗
 const checkBoldState = () => {
   const selection = window.getSelection()
@@ -125,8 +233,30 @@ const checkBoldState = () => {
   }
 
   try {
-    const commandValue = document.queryCommandValue('bold')
-    isBold.value = commandValue === true || commandValue === 'true'
+    // 使用现代 API 检查是否在加粗标签内
+    const range = selection.getRangeAt(0)
+    let ancestor: Node | null = range.commonAncestorContainer
+    
+    // 如果选区是空的（只是光标），检查父节点
+    if (range.collapsed) {
+      if (ancestor && ancestor.nodeType === Node.TEXT_NODE) {
+        ancestor = ancestor.parentNode
+      }
+    }
+    
+    // 向上遍历查找 strong 或 b 标签
+    while (ancestor && ancestor !== editorRef.value) {
+      if (ancestor.nodeType === Node.ELEMENT_NODE) {
+        const el = ancestor as HTMLElement
+        if (el.tagName === 'STRONG' || el.tagName === 'B') {
+          isBold.value = true
+          return
+        }
+      }
+      ancestor = ancestor.parentNode
+    }
+    
+    isBold.value = false
   } catch {
     isBold.value = false
   }
@@ -137,7 +267,27 @@ const handleKeydown = (e: KeyboardEvent) => {
   // Enter 键默认行为（插入 div），改为插入 br
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
-    document.execCommand('insertLineBreak', false)
+    
+    // 使用现代 Selection API 插入换行
+    const selection = window.getSelection()
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0)
+      const br = document.createElement('br')
+      range.deleteContents()
+      range.insertNode(br)
+      
+      // 将光标移动到 br 之后
+      range.setStartAfter(br)
+      range.collapse(true)
+      selection.removeAllRanges()
+      selection.addRange(range)
+      
+      // 触发 input 事件以更新内容
+      if (editorRef.value) {
+        content.value = editorRef.value.innerHTML
+        emit('update:modelValue', content.value)
+      }
+    }
   }
 }
 
@@ -169,6 +319,10 @@ const handleBlur = () => {
   overflow: hidden;
   background: white;
   transition: border-color 0.2s;
+  width: 100%;
+  min-width: 300px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .bold-textarea-wrapper:focus-within {

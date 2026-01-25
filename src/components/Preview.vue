@@ -403,7 +403,7 @@ onMounted(() => {
   display: flex; align-items: baseline; gap: 12px;
 }
 .page-content-wrapper :deep(.name) {
-  font-size: 32px; font-weight: 700; color: var(--primary, #000000); margin-bottom: 0;
+  font-size: 30px; font-weight: 550; color: var(--primary, #000000); margin-bottom: 0;
 }
 .page-content-wrapper :deep(.title) {
   font-size: 18px; color: #2D2D29; margin-bottom: 0;
@@ -447,6 +447,11 @@ onMounted(() => {
 .page-content-wrapper :deep(.project-item),
 .page-content-wrapper :deep(.education-item) {
   margin-bottom: 11px;
+}
+/* 工作经历和项目经历：多条记录之间固定间距 */
+.page-content-wrapper :deep(.experience-item),
+.page-content-wrapper :deep(.project-item) {
+  margin-bottom: 16px;
 }
 /* 教育经历：多条记录之间固定间距 */
 .page-content-wrapper :deep(.education-item) {
