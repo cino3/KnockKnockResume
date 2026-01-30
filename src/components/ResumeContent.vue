@@ -189,19 +189,19 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
-.name { font-size: 28px; font-weight: 500; color: var(--primary, #000000); margin-bottom: 0; }
-.title { font-size: 18px; color: #666; margin-bottom: 0; }
+.name { font-size: 28px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 0; }
+.title { font-size: 18px; color: #000000; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
-.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #666; min-height: 50px; }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #000000; min-height: 50px; }
 .contact-info.has-avatar { margin-right: 96px; }
 .contact-info-row { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 16px; }
 .contact-item { display: flex; align-items: center; gap: 6px; }
 .contact-item :deep(svg) { flex-shrink: 0; }
 
-.resume-section { margin-bottom: 16px; }
-.section-title { font-size: 16px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
+.resume-section { margin-bottom: 18px; }
+.section-title { font-size: 17px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
 .section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */
@@ -212,7 +212,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 }
 .experience-item, .project-item, .education-item { margin-bottom: 11px; }
 /* 工作经历和项目经历：多条记录之间固定间距 */
-.experience-item, .project-item { margin-bottom: 16px; }
+.experience-item, .project-item { margin-bottom: 14px; }
 /* 教育经历：多条记录之间固定间距 */
 .education-item { margin-bottom: 8px; }
 /* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
@@ -226,19 +226,19 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
 .item-title { font-size: var(--font-size-item-title); font-weight: var(--font-weight-item-title); color: #333; margin: 0 0 4px 0; }
-.item-subtitle-inline { font-size: 13px; font-weight: 400; color: #666; margin-left: 8px; }
-.item-subtitle { font-size: 14px; color: #666; }
-.education-major { font-size: 13px; color: #666; }
-.education-major-inline { font-size: 13px; font-weight: 400; color: #666; margin-left: 8px; }
+.item-subtitle-inline { font-size: 14px; font-weight: 400; color: #000000; margin-left: 8px; }
+.item-subtitle { font-size: 14px; color: #000000; }
+.education-major { font-size: 13px; color: #000000; }
+.education-major-inline { font-size: 14px; font-weight: 400; color: #000000; margin-left: 8px; }
 .education-degree { font-size: 14px; font-weight: 600; color: #333; }
-.item-date { font-size: 14px; color: #999; white-space: nowrap; }
+.item-date { font-size: 14px; color: #000000; white-space: nowrap; }
 
 .item-description-wrapper { margin-top: 0px; margin-bottom: 0px; }
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {
-  font-size: 13px;
-  color: #555;
+  font-size: 14px;
+  color: #000000;
   line-height: var(--line-height, 1.6);
   white-space: pre-wrap;
 }
