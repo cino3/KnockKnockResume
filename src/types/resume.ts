@@ -9,7 +9,7 @@ export interface Profile {
   github?: string;
   website?: string;
   summary: string;       // 个人简介
-  skills?: string;       // 专业技能
+  skills: string;        // 专业技能
 }
 
 // 经历列表项 (共用接口)

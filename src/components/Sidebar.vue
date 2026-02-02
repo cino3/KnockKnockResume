@@ -32,7 +32,7 @@
           @click="currentTab = 'content'"
         >
           <el-icon :size="18"><EditPen /></el-icon>
-          <span class="tab-text">内容编辑</span>
+          <span class="tab-text">编辑</span>
         </div>
 
         <div
@@ -41,7 +41,7 @@
           @click="currentTab = 'design'"
         >
           <el-icon :size="18"><Brush /></el-icon>
-          <span class="tab-text">外观样式</span>
+          <span class="tab-text">样式</span>
         </div>
       </div>
 
@@ -198,31 +198,19 @@
         <div v-show="currentTab === 'design'" class="panel-fade">
 
           <div class="control-group">
-            <div class="control-label">排版控制</div>
-            <div class="slider-item">
-              <span>行高</span>
-              <el-slider
-                v-model="store.theme.lineHeight"
-                :min="1.2"
-                :max="1.8"
-                :step="0.1"
-                size="small"
-              />
-            </div>
-            <div class="slider-item">
-              <span>段间距</span>
-              <el-slider
-                v-model="store.theme.paragraphSpacing"
-                :min="4"
-                :max="16"
-                :step="2"
-                size="small"
-              />
+            <div class="control-label">排版</div>
+            <div class="control-item">
+              <span class="control-item-label">行高</span>
+              <el-radio-group v-model="store.theme.lineHeight" size="small" class="line-height-radio-group">
+                <el-radio-button :value="1.6">1</el-radio-button>
+                <el-radio-button :value="1.7">2</el-radio-button>
+                <el-radio-button :value="1.8">3</el-radio-button>
+              </el-radio-group>
             </div>
           </div>
 
           <div class="control-group">
-            <div class="control-label">选择模板</div>
+            <div class="control-label">外观</div>
             <div class="template-grid">
                <div class="tpl-card active">经典</div>
                <div class="tpl-card">极简</div>
@@ -239,7 +227,7 @@
         <div class="secondary-actions">
           <el-tooltip content="保存草稿" placement="top">
             <button class="icon-btn" @click="handleSave">
-              <el-icon><DocumentCopy /></el-icon>
+              <el-icon><Save :size="18" /></el-icon>
             </button>
           </el-tooltip>
 
@@ -250,12 +238,12 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="handleExportJSON">
-                  <el-icon><DocumentCopy /></el-icon>
+                  <el-icon><FileDown :size="16" /></el-icon>
                   <span>导出 JSON</span>
                 </el-dropdown-item>
                 <el-dropdown-item disabled>
                   <el-icon><Upload /></el-icon>
-                  <span>导入配置</span>
+                  <span>导入简历</span>
                 </el-dropdown-item>
                 <el-dropdown-item divided @click="handleReset">
                   <el-icon><Delete /></el-icon>
@@ -290,6 +278,7 @@ import AwardList from './editor/AwardList.vue'
 import SelfEvaluationEditor from './editor/SelfEvaluationEditor.vue'
 import BoldTextarea from './editor/BoldTextarea.vue'
 import { Plus } from '@element-plus/icons-vue'
+import { Save, FileDown } from 'lucide-vue-next'
 
 const store = useResumeStore()
 const { printResume } = usePrint(store.resumeFileName)
@@ -556,33 +545,6 @@ const handleRemoveAvatar = () => {
   }
 }
 
-/* === 手风琴样式 === */
-.claude-accordion {
-  border: none;
-}
-.claude-accordion .el-collapse-item__header {
-  font-family: var(--font-serif);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--primary-color);
-  border-bottom: 1px solid #eee;
-  padding-left: 0;
-  background: transparent;
-}
-.claude-accordion .el-collapse-item__wrap {
-  border: none;
-  background: transparent;
-}
-.claude-accordion .el-collapse-item__content {
-  padding-bottom: 0;
-}
-
-.accordion-title {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  color: var(--primary-color);
-}
-
 /* === 幽灵表单样式 === */
 .ghost-form .el-form-item {
   margin-bottom: 16px;
@@ -687,29 +649,34 @@ const handleRemoveAvatar = () => {
 
 /* === 控件组 === */
 .control-group {
-  margin-bottom: 32px;
+  margin-bottom: 56px;
 }
 .control-label {
-  font-family: var(--font-serif);
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
   color: var(--primary-color);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
   margin-bottom: 16px;
 }
-.slider-item {
+.control-item {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
 }
-.slider-item > span {
+.control-item-label {
   font-size: 13px;
   color: var(--text-secondary);
   width: 60px;
   flex-shrink: 0;
 }
-.slider-item .el-slider {
-  flex: 1;
+
+/* === 行高选择器样式 === */
+.line-height-radio-group {
+  width: 180px;
+  flex: none;
 }
 
 /* === 模板卡片 === */

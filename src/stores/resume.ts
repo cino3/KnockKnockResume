@@ -229,7 +229,8 @@ export const useResumeStore = defineStore('resume', () => {
       title: '',
       mobile: '',
       email: '',
-      summary: ''
+      summary: '',
+      skills: ''
     }
     experiences.value = []
     projects.value = []
