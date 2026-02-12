@@ -21,7 +21,7 @@
             </template>
           </el-button>
         </div>
-        <el-form :model="proj" label-width="80px" size="small">
+        <el-form :model="proj" label-width="80px" size="small" class="ghost-form horizontal-form">
           <el-form-item label="项目名称">
             <el-input v-model="proj.name" placeholder="项目名称" />
           </el-form-item>
