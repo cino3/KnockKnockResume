@@ -655,11 +655,16 @@ const handleRemoveAvatar = () => {
 .control-label {
   font-family: var(--font-serif);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 900;
   color: var(--primary-color);
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   margin-bottom: 16px;
+  /* 用 text-shadow 增强粗细效果 */
+  text-shadow:
+    0 0 0 currentColor,
+    0 0 1px rgba(0, 0, 0, 0.2);
+  -webkit-text-stroke: 0.01em currentColor;
 }
 
 /* === 手风琴标题样式 === */
