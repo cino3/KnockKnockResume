@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+    /* 1. 引入核心字体：Merriweather (衬线，用于标题) 和 Inter (无衬线，用于正文) */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@300;400;700&display=swap');
+
+    :root {
+        /* Claude 风格色板：温暖、有机 */
+        --bg-app: #FDFBF9;       /* 极浅的米白色背景 */
+        --bg-sidebar: #F4F1ED;   /* 侧边栏：稍微深一点的暖灰/亚麻色 */
+        --bg-input: #FFFFFF;     /* 输入框：纯白，像纸张一样 */
+        
+        --text-primary: #3C3836; /* 深炭色，不是纯黑 */
+        --text-secondary: #847E78; /* 暖灰色文字 */
+        
+        --border-soft: #E6E2DD;  /* 极淡的暖色边框 */
+        --accent-color: #D97757; /* Claude 风格的赤陶色/暖橙色 */
+        
+        --shadow-warm: 0 2px 8px rgba(60, 56, 54, 0.04); /* 暖色调的投影 */
+        
+        --font-serif: "Merriweather", "Georgia", serif;
+        --font-sans: "Inter", -apple-system, sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background-color: var(--bg-app);
+        font-family: var(--font-sans);
+        color: var(--text-primary);
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* --- 左侧侧边栏设计 --- */
+    .sidebar {
+        width: 380px;
+        background-color: var(--bg-sidebar);
+        /* 甚至可以去掉右边框，只用微弱的色彩差异区分 */
+        border-right: 1px solid var(--border-soft);
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    /* 顶部品牌区 */
+    .sidebar-header {
+        padding: 32px 28px 20px 28px;
+    }
+
+    .brand {
+        font-family: var(--font-serif); /* 关键：标题使用衬线体 */
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    /* 模拟一个小logo */
+    .brand::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-color);
+        border-radius: 4px;
+        opacity: 0.9;
+    }
+
+    /* 滚动区域 */
+    .scroll-content {
+        padding: 10px 28px 40px 28px;
+        overflow-y: auto;
+    }
+
+    /* 分组标题：极简、优雅 */
+    .section-title {
+        font-family: var(--font-serif); /* 衬线体 */
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 32px 0 16px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(0,0,0,0.05); /* 极淡的分割线 */
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary); /* 暖灰色 */
+        margin-bottom: 8px;
+        font-family: var(--font-sans);
+    }
+
+    /* --- Claude 风格输入框 --- 
+       特点：白色背景、极其细腻的边框、圆角适中
+    */
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-field {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        font-size: 15px; /* 字号稍大，阅读舒适 */
+        font-family: var(--font-sans);
+        color: var(--text-primary);
+        
+        background: var(--bg-input);
+        border: 1px solid var(--border-soft);
+        border-radius: 8px;
+        box-shadow: var(--shadow-warm); /* 关键：让输入框微微浮起 */
+        
+        transition: all 0.3s ease;
+    }
+
+    /* 悬停时：边框稍微变深 */
+    .input-field:hover {
+        border-color: #D1CEC9;
+    }
+
+    /* 聚焦时：温暖的赤陶色光圈，而不是刺眼的蓝光 */
+    .input-field:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.15); 
+    }
+
+    /* 头像区域：更加像一张卡片 */
+    .avatar-card {
+        background: #fff;
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: var(--shadow-warm);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .avatar-card:hover {
+        transform: translateY(-1px);
+        border-color: #D1CEC9;
+    }
+
+    .avatar-img {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        background: #F2F0EB;
+        object-fit: cover;
+    }
+
+    /* 按钮风格：低调、圆润 */
+    .btn-action {
+        background: var(--text-primary);
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: opacity 0.2s;
+    }
+    .btn-action:hover {
+        opacity: 0.9;
+    }
+
+    /* 右侧占位，让你看清对比 */
+    .preview-placeholder {
+        flex: 1;
+        background: var(--bg-app);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-family: var(--font-serif);
+    }
+
+</style>
+</head>
+<body>
+
+    <!-- 侧边栏：Claude 风格 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">Resume Craft</div>
+        </div>
+
+        <div class="scroll-content">
+            
+            <div class="section-title">基本信息</div>
+
+            <div class="form-group">
+                <label class="label">头像</label>
+                <div class="avatar-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" class="avatar-img">
+                    <div>
+                        <div style="font-weight: 600; font-size: 14px;">更新照片</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top:4px;">JPG 或 PNG, 最大 2MB</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label">全名</label>
+                <input type="text" class="input-field" value="林家乐">
+            </div>
+
+            <div class="form-group">
+                <label class="label">职位头衔</label>
+                <input type="text" class="input-field" value="Java 后端架构师">
+            </div>
+
+            <div class="section-title">联系方式</div>
+
+            <div class="form-group">
+                <label class="label">电子邮箱</label>
+                <input type="text" class="input-field" value="zhangsan@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label class="label">个人网站</label>
+                <div class="input-wrapper">
+                    <input type="text" class="input-field" value="https://zhangsan.dev">
+                </div>
+            </div>
+
+            <button class="btn-action">生成简历 PDF</button>
+
+        </div>
+    </div>
+
+    <div class="preview-placeholder">
+        右侧预览区背景也应该是暖米色
+    </div>
+
+</body>
+</html>

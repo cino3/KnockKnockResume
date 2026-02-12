@@ -12,10 +12,10 @@
   --text-secondary: #666660;     /* 次要文字 */
 
   /* --- 2. 原生字体栈 (Native Typography) --- */
-  /* UI 氛围字体：用于标题、按钮、Logo (宋体/Georgia) */
-  --font-serif: "Georgia", "Times New Roman", "Songti SC", "SimSun", serif;
+  /* UI 氛围字体：用于标题、按钮、Logo (Merriweather/Georgia) */
+  --font-serif: "Merriweather", "Georgia", "Times New Roman", "Songti SC", "SimSun", serif;
 
-  /* 内容功能字体：用于输入框、正文 (系统黑体) */
+  /* 内容功能字体：用于输入框、正文 (Inter/系统黑体) */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
 
   /* --- 3. 尺寸定义 --- */

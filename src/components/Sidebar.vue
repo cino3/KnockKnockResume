@@ -437,7 +437,8 @@ const handleRemoveAvatar = () => {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 22px;
+  letter-spacing: -0.5px;
   white-space: nowrap;
 }
 
@@ -590,10 +591,10 @@ const handleRemoveAvatar = () => {
 
 /* === 表单标签样式 === */
 .ghost-form :deep(.el-form-item__label) {
-  font-size: 11px !important;
+  font-size: 13px !important;
   color: var(--text-secondary) !important;
   text-transform: uppercase;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
   letter-spacing: 0.5px;
 }
 
@@ -652,13 +653,33 @@ const handleRemoveAvatar = () => {
   margin-bottom: 56px;
 }
 .control-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--primary-color);
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   margin-bottom: 16px;
+}
+
+/* === 手风琴标题样式 === */
+:deep(.el-collapse-item__header) {
+  font-family: var(--font-serif) !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  color: var(--primary-color) !important;
+  /* 用 text-shadow 增强粗细效果 */
+  text-shadow:
+    0 0 0 currentColor,
+    0 0 1px rgba(0, 0, 0, 0.2);
+  -webkit-text-stroke: 0.01em currentColor;
+}
+
+:deep(.accordion-title) {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 900;
+  color: inherit;
 }
 .control-item {
   display: flex;
@@ -692,7 +713,7 @@ const handleRemoveAvatar = () => {
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-weight: 600;
   color: var(--text-secondary);
 }
