@@ -58,7 +58,7 @@
                 <span class="accordion-title">基本信息</span>
               </template>
               <div class="form-body">
-                <el-form :model="store.profile" label-position="left" label-width="70px" class="ghost-form horizontal-form">
+                <el-form :model="store.profile" label-position="top" class="ghost-form">
                   <el-form-item label="姓名">
                     <el-input v-model="store.profile.name" placeholder="请输入姓名" />
                   </el-form-item>
@@ -73,6 +73,12 @@
                   </el-form-item>
                   <el-form-item label="出生年月">
                     <el-input v-model="store.profile.birthday" placeholder="2000-01（可选）" />
+                  </el-form-item>
+                  <el-form-item label="GitHub">
+                    <el-input v-model="store.profile.github" placeholder="GitHub 链接（可选）" />
+                  </el-form-item>
+                  <el-form-item label="网站">
+                    <el-input v-model="store.profile.website" placeholder="个人网站（可选）" />
                   </el-form-item>
                   <el-form-item label="头像">
                     <input
@@ -89,13 +95,7 @@
                     <div v-if="store.profile.avatar" style="margin-top: 8px;">
                       <el-button size="small" type="danger" text @click="handleRemoveAvatar">删除头像</el-button>
                     </div>
-                    <div style="font-size: 12px; color: #999; margin-top: 4px;">建议尺寸 80x100px，最大 500KB</div>
-                  </el-form-item>
-                  <el-form-item label="GitHub">
-                    <el-input v-model="store.profile.github" placeholder="GitHub 链接（可选）" />
-                  </el-form-item>
-                  <el-form-item label="网站">
-                    <el-input v-model="store.profile.website" placeholder="个人网站（可选）" />
+                    <div class="avatar-hint">建议尺寸 80x100px，最大 500KB</div>
                   </el-form-item>
                 </el-form>
               </div>
@@ -109,8 +109,7 @@
               <div class="form-body">
                 <div class="list-container">
                   <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
-                    <el-icon><Plus /></el-icon>
-                    添加教育
+                    + 添加教育
                   </el-button>
                   <EducationList />
                 </div>
@@ -143,8 +142,7 @@
               <div class="form-body">
                 <div class="list-container">
                   <el-button type="primary" size="small" @click="store.addExperience" style="margin-bottom: 12px;">
-                    <el-icon><Plus /></el-icon>
-                    添加经历
+                    + 添加经历
                   </el-button>
                   <ExperienceList />
                 </div>
@@ -159,8 +157,7 @@
               <div class="form-body">
                 <div class="list-container">
                   <el-button type="primary" size="small" @click="store.addProject" style="margin-bottom: 12px;">
-                    <el-icon><Plus /></el-icon>
-                    添加项目
+                    + 添加项目
                   </el-button>
                   <ProjectList />
                 </div>
@@ -547,86 +544,87 @@ const handleRemoveAvatar = () => {
 }
 
 /* === 幽灵表单样式 === */
-.ghost-form .el-form-item {
-  margin-bottom: 16px;
+/* 基本信息区域使用 horizontal-form 类，不强制垂直布局 */
+.ghost-form:not(.horizontal-form) .el-form-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 输入框 - 去除所有边框和背景 */
+/* 重置表单项内容区域的样式 */
+.ghost-form :deep(.el-form-item__content) {
+  line-height: 2.5 !important;
+}
+
+/* 输入框 - 0212font.html 风格 */
 .ghost-form :deep(.el-input__wrapper) {
-  box-shadow: none !important;
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px solid #dcdfe6 !important;
-  border-radius: 0 !important;
-  padding-left: 0 !important;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-.ghost-form :deep(.el-input__wrapper:hover) {
-  box-shadow: none !important;
-}
-.ghost-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: none !important;
-  border-bottom-color: var(--primary-color) !important;
+  background: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(60, 56, 54, 0.04) !important;
+  padding: 6px 12px !important;
+  transition: all 0.3s ease !important;
 }
 
-/* 文本域 - 去除所有边框和背景 */
+.ghost-form :deep(.el-input__wrapper:hover) {
+  border-color: #D1CEC9 !important;
+}
+
+.ghost-form :deep(.el-input__wrapper.is-focus) {
+  border-color: var(--primary-color) !important;
+  box-shadow: none !important;
+}
+
+.ghost-form :deep(.el-input__inner) {
+  font-size: 13px !important;
+  font-family: var(--font-sans) !important;
+  color: var(--text-main) !important;
+  line-height: 1.5 !important;
+}
+
+/* 文本域 - 0212font.html 风格 */
 .ghost-form :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px solid #dcdfe6 !important;
-  border-radius: 0 !important;
-  padding-left: 0 !important;
-  padding-top: 8px;
+  background: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(60, 56, 54, 0.04) !important;
+  padding: 12px 14px !important;
+  font-size: 13px !important;
+  font-family: var(--font-sans) !important;
+  color: var(--text-main) !important;
+  line-height: 1.5 !important;
   resize: none;
+  transition: all 0.3s ease !important;
 }
+
 .ghost-form :deep(.el-textarea__inner:hover) {
-  box-shadow: none !important;
+  border-color: #D1CEC9 !important;
 }
+
 .ghost-form :deep(.el-textarea__inner:focus) {
-  box-shadow: none !important;
-  border-bottom-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(70, 94, 105, 0.15) !important;
 }
 
 /* === 表单标签样式 === */
 .ghost-form :deep(.el-form-item__label) {
   font-size: 13px !important;
-  color: var(--text-secondary) !important;
-  text-transform: uppercase;
   font-weight: 500 !important;
-  letter-spacing: 0.5px;
+  color: var(--text-secondary) !important;
+  font-family: var(--font-sans) !important;
+  margin-bottom: 8px !important;
+  line-height: 1.5 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
 }
 
 /* === 水平表单布局 === */
-.horizontal-form {
-  /* 表单项之间更紧凑 */
-  :deep(.el-form-item) {
-    margin-bottom: 4px !important;
-  }
+/* 基本信息区域使用全局 horizontal-form 样式（水平布局） */
 
-  /* 标签样式 - 强制右对齐 */
-  :deep(.el-form-item__label) {
-    text-align: right !important;
-    justify-content: flex-end !important;
-    padding-right: 12px;
-    line-height: 22px;
-    height: 22px;
-  }
-
-  /* 输入框样式调整 - 与标签对齐 */
-  :deep(.el-input__wrapper) {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    line-height: 22px;
-    min-height: 22px;
-  }
-
-  :deep(.el-input__inner) {
-    font-size: 11px !important;
-    line-height: 22px;
-    height: 22px;
-  }
+/* 基本信息区域：调整输入框高度 */
+.ghost-form:not(.horizontal-form) :deep(.el-input__wrapper) {
+  padding: 4px 12px !important;
+  min-height: 32px !important;
 }
 
 /* === 列表容器 === */
@@ -640,12 +638,30 @@ const handleRemoveAvatar = () => {
   flex-direction: column;
   align-items: flex-start;
 }
+
 .avatar-preview {
   width: 80px;
   height: 100px;
   object-fit: cover;
+  background: #F2F0EB;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 56, 54, 0.04);
+  transition: all 0.3s ease;
+}
+
+.avatar-preview:hover {
+  transform: translateY(-1px);
+  border-color: #D1CEC9;
+  box-shadow: 0 4px 12px rgba(60, 56, 54, 0.08);
+}
+
+.avatar-hint {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px !important;
 }
 
 /* === 控件组 === */
@@ -654,7 +670,7 @@ const handleRemoveAvatar = () => {
 }
 .control-label {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 900;
   color: var(--primary-color);
   border-bottom: 1px solid #eee;
@@ -670,7 +686,7 @@ const handleRemoveAvatar = () => {
 /* === 手风琴标题样式 === */
 :deep(.el-collapse-item__header) {
   font-family: var(--font-serif) !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
   font-weight: 900 !important;
   color: var(--primary-color) !important;
   /* 用 text-shadow 增强粗细效果 */
@@ -682,7 +698,7 @@ const handleRemoveAvatar = () => {
 
 :deep(.accordion-title) {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 900;
   color: inherit;
 }

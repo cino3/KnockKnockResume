@@ -21,7 +21,7 @@
             </template>
           </el-button>
         </div>
-        <el-form :model="exp" label-width="80px" size="small">
+        <el-form :model="exp" label-width="80px" size="small" class="ghost-form horizontal-form">
           <el-form-item label="公司">
             <el-input v-model="exp.company" placeholder="公司名称" />
           </el-form-item>

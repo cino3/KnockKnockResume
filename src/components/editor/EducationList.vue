@@ -21,7 +21,7 @@
             </template>
           </el-button>
         </div>
-        <el-form :model="edu" label-width="80px" size="small">
+        <el-form :model="edu" label-width="80px" size="small" class="ghost-form horizontal-form">
           <el-form-item label="学校">
             <el-input v-model="edu.school" placeholder="学校名称" />
           </el-form-item>
