@@ -14,7 +14,7 @@
       <div class="sidebar-header" v-show="!isCollapsed">
         <!-- 品牌 -->
         <div class="brand">
-          <span class="brand-text">Resume Craft</span>
+          <span class="brand-text">KnockKnock</span>
         </div>
 
         <!-- 语言切换 -->
@@ -31,7 +31,7 @@
           :class="{ active: currentTab === 'content' }"
           @click="currentTab = 'content'"
         >
-          <el-icon :size="18"><EditPen /></el-icon>
+          <el-icon :size="18"><Pencil /></el-icon>
           <span class="tab-text">编辑</span>
         </div>
 
@@ -40,7 +40,7 @@
           :class="{ active: currentTab === 'design' }"
           @click="currentTab = 'design'"
         >
-          <el-icon :size="18"><Brush /></el-icon>
+          <el-icon :size="18"><Palette /></el-icon>
           <span class="tab-text">样式</span>
         </div>
       </div>
@@ -195,6 +195,28 @@
         <div v-show="currentTab === 'design'" class="panel-fade">
 
           <div class="control-group">
+            <div class="control-label">颜色</div>
+            <div class="control-item">
+              <span class="control-item-label">标题</span>
+              <el-color-picker
+                v-model="store.theme.primaryColor"
+                show-alpha
+                size="small"
+                :predefine="predefineColors"
+              />
+            </div>
+            <div class="control-item">
+              <span class="control-item-label">分割线</span>
+              <el-color-picker
+                v-model="store.theme.dividerColor"
+                show-alpha
+                size="small"
+                :predefine="predefineColors"
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
             <div class="control-label">排版</div>
             <div class="control-item">
               <span class="control-item-label">行高</span>
@@ -275,7 +297,7 @@ import AwardList from './editor/AwardList.vue'
 import SelfEvaluationEditor from './editor/SelfEvaluationEditor.vue'
 import BoldTextarea from './editor/BoldTextarea.vue'
 import { Plus } from '@element-plus/icons-vue'
-import { Save, FileDown } from 'lucide-vue-next'
+import { Save, FileDown, Pencil, Palette } from 'lucide-vue-next'
 
 const store = useResumeStore()
 const { printResume } = usePrint(store.resumeFileName)
@@ -284,6 +306,18 @@ const isCollapsed = ref(false)
 const currentTab = ref<'content' | 'design'>('content')
 const activeNames = ref(['profile'])
 const avatarInput = ref<HTMLInputElement | null>(null)
+
+// 预定义颜色
+const predefineColors = ref([
+  '#000000',  // 黑色
+  '#465E69',  // 石板蓝
+  '#2C3E50',  // 深蓝灰
+  '#C0392B',  // 深红
+  '#2980B9',  // 蓝色
+  '#27AE60',  // 绿色
+  '#8E44AD',  // 紫色
+  '#D35400'   // 橙色
+])
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value

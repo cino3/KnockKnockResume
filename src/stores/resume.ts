@@ -149,6 +149,7 @@ export const useResumeStore = defineStore('resume', () => {
   // 主题配置
   const theme = ref<ThemeConfig>({
     primaryColor: '#000000',
+    dividerColor: '#000000',
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     lineHeight: 1.6,
     paragraphSpacing: 8
@@ -239,6 +240,7 @@ export const useResumeStore = defineStore('resume', () => {
     selfEvaluation.value = { content: '' }
     theme.value = {
       primaryColor: '#000000',
+      dividerColor: '#000000',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       lineHeight: 1.6,
       paragraphSpacing: 8

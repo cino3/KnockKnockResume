@@ -3,7 +3,7 @@
   <header class="resume-header">
     <div class="header-top">
       <div class="header-left">
-        <h1 class="name">{{ store.profile.name }}</h1>
+        <h1 class="name" :style="{ color: store.theme.primaryColor }">{{ store.profile.name }}</h1>
         <p class="title">{{ store.profile.title }}</p>
       </div>
       <div v-if="store.profile.avatar" class="avatar-wrapper">
@@ -40,8 +40,8 @@
 
   <!-- 教育经历 -->
   <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title">教育经历</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">教育经历</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="edu in visibleEducations"
       :key="edu.id"
@@ -58,8 +58,8 @@
 
   <!-- 专业技能 -->
   <section v-if="store.profile.skills" class="resume-section">
-    <h2 class="section-title">专业技能</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">专业技能</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
@@ -72,8 +72,8 @@
 
   <!-- 工作经历 -->
   <section v-if="visibleExperiences.length > 0" class="resume-section">
-    <h2 class="section-title">工作经历</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">工作经历</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="exp in visibleExperiences"
       :key="exp.id"
@@ -99,8 +99,8 @@
 
   <!-- 项目经历 -->
   <section v-if="visibleProjects.length > 0" class="resume-section">
-    <h2 class="section-title">项目经历</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">项目经历</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="proj in visibleProjects"
       :key="proj.id"
@@ -125,8 +125,8 @@
 
   <!-- 获奖经历 -->
   <section v-if="store.awards.content" class="resume-section">
-    <h2 class="section-title">获奖经历</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">获奖经历</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.awards.content)"
@@ -139,8 +139,8 @@
 
   <!-- 个人评价 -->
   <section v-if="store.selfEvaluation.content" class="resume-section">
-    <h2 class="section-title">个人评价</h2>
-    <div class="section-divider"></div>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">个人评价</h2>
+    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
         v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
@@ -189,7 +189,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
-.name { font-size: 28px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 0; }
+.name { font-size: 28px; font-weight: 600; margin-bottom: 0; letter-spacing: 1px; }
 .title { font-size: 18px; color: #000000; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
@@ -201,7 +201,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 18px; }
-.section-title { font-size: 17px; font-weight: 600; color: var(--primary, #000000); margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; }
+.section-title { font-size: 17px; font-weight: 600; margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; letter-spacing: 1px; }
 .section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */

@@ -53,6 +53,7 @@ export interface SelfEvaluation {
 // 主题配置
 export interface ThemeConfig {
   primaryColor: string; // 主色调
+  dividerColor: string; // 分割线颜色
   fontFamily: string;
   lineHeight: number;   // 1.2 ~ 1.8
   paragraphSpacing: number; // 段间距
