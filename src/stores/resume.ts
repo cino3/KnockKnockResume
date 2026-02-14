@@ -247,7 +247,7 @@ export const useResumeStore = defineStore('resume', () => {
       lineHeight: 1.6,
       paragraphSpacing: 8,
       titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
-      titleFontWeight: 500  // 500 细 / 600 粗
+      titleFontWeight: 700  // 500 细 / 700 粗（默认）  
     }
   }
 
