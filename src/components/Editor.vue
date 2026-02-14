@@ -174,6 +174,7 @@
 import { ref } from 'vue'
 import { useResumeStore } from '@/stores/resume'
 import { usePrint } from '@/composables/usePrint'
+import { useExport } from '@/composables/useExport'
 import { Download, RotateCcw, Plus, Save } from 'lucide-vue-next'
 import { ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
@@ -185,54 +186,26 @@ import SelfEvaluationEditor from './editor/SelfEvaluationEditor.vue'
 import BoldTextarea from './editor/BoldTextarea.vue'
 
 const store = useResumeStore()
+const { printResume } = usePrint(store.resumeFileName)
+const { exportJSON, save, reset } = useExport(store.resumeFileName)
 const activeNames = ref(['profile'])
 const avatarInput = ref<HTMLInputElement | null>(null)
-
-const { printResume } = usePrint(store.resumeFileName)
 
 const handleExport = () => {
   printResume()
 }
 
 const handleSave = () => {
-  // 更新保存时间（数据已经通过 pinia-plugin-persistedstate 自动保存到 localStorage）
-  store.updateLastSavedTime()
-
-  // 显示成功提示
-  ElMessage.success({
-    message: '简历已保存',
-    duration: 2000
-  })
+  save(() => store.updateLastSavedTime())
 }
 
 const handleExportJSON = () => {
-  // 获取导出数据
   const data = store.getExportData()
-  const jsonString = JSON.stringify(data, null, 2)
-  const blob = new Blob([jsonString], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-
-  // 创建下载链接
-  const link = document.createElement('a')
-  const timestamp = dayjs().format('YYYYMMDD_HHmmss')
-  link.href = url
-  link.download = `${store.resumeFileName}_${timestamp}.json`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
-
-  // 显示成功提示
-  ElMessage.success({
-    message: 'JSON 文件已导出',
-    duration: 2000
-  })
+  exportJSON(data)
 }
 
 const handleReset = () => {
-  if (confirm('确定要重置所有数据吗？此操作不可恢复。')) {
-    store.resetData()
-  }
+  reset(() => store.resetData())
 }
 
 const triggerFileInput = () => {
