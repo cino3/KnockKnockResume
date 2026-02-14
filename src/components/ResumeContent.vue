@@ -3,7 +3,7 @@
   <header class="resume-header">
     <div class="header-top">
       <div class="header-left">
-        <h1 class="name" :style="{ color: store.theme.primaryColor }">{{ store.profile.name }}</h1>
+        <h1 class="name" :style="{ color: store.theme.primaryColor, fontSize: store.theme.titleFontSize + 'px', fontWeight: store.theme.titleFontWeight }">{{ store.profile.name }}</h1>
         <p class="title">{{ store.profile.title }}</p>
       </div>
       <div v-if="store.profile.avatar" class="avatar-wrapper">
@@ -40,7 +40,7 @@
 
   <!-- 教育经历 -->
   <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">教育经历</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">教育经历</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="edu in visibleEducations"
@@ -58,7 +58,7 @@
 
   <!-- 专业技能 -->
   <section v-if="store.profile.skills" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">专业技能</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">专业技能</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -72,7 +72,7 @@
 
   <!-- 工作经历 -->
   <section v-if="visibleExperiences.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">工作经历</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">工作经历</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="exp in visibleExperiences"
@@ -99,7 +99,7 @@
 
   <!-- 项目经历 -->
   <section v-if="visibleProjects.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">项目经历</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">项目经历</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="proj in visibleProjects"
@@ -125,7 +125,7 @@
 
   <!-- 获奖经历 -->
   <section v-if="store.awards.content" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">获奖经历</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">获奖经历</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -139,7 +139,7 @@
 
   <!-- 个人评价 -->
   <section v-if="store.selfEvaluation.content" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor }">个人评价</h2>
+    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">个人评价</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -189,7 +189,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
-.name { font-size: 28px; font-weight: 600; margin-bottom: 0; letter-spacing: 1px; }
+.name { font-size: 28px; margin-bottom: 0; letter-spacing: 1px; }
 .title { font-size: 18px; color: #000000; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
@@ -201,7 +201,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 18px; }
-.section-title { font-size: 17px; font-weight: 600; margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; letter-spacing: 1px; }
+.section-title { font-size: 17px; margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; letter-spacing: 1px; }
 .section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */

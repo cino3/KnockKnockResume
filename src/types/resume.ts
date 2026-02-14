@@ -57,6 +57,8 @@ export interface ThemeConfig {
   fontFamily: string;
   lineHeight: number;   // 1.2 ~ 1.8
   paragraphSpacing: number; // 段间距
+  titleFontSize: number; // 标题字体大小
+  titleFontWeight: number; // 标题字体粗细
 }
 
 // Resume 完整数据结构

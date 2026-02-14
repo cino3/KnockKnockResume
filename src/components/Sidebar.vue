@@ -217,6 +217,26 @@
           </div>
 
           <div class="control-group">
+            <div class="control-label">字体</div>
+            <div class="control-item">
+              <span class="control-item-label">标题大小</span>
+              <el-radio-group v-model="store.theme.titleFontSize" size="small" class="font-size-radio-group">
+                <el-radio-button :value="28">S</el-radio-button>
+                <el-radio-button :value="29">M</el-radio-button>
+                <el-radio-button :value="30">L</el-radio-button>
+                <el-radio-button :value="31">XL</el-radio-button>
+              </el-radio-group>
+            </div>
+            <div class="control-item">
+              <span class="control-item-label">标题粗细</span>
+              <el-radio-group v-model="store.theme.titleFontWeight" size="small" class="font-weight-radio-group">
+                <el-radio-button :value="500">细</el-radio-button>
+                <el-radio-button :value="600">粗</el-radio-button>
+              </el-radio-group>
+            </div>
+          </div>
+
+          <div class="control-group">
             <div class="control-label">排版</div>
             <div class="control-item">
               <span class="control-item-label">行高</span>
@@ -229,10 +249,10 @@
           </div>
 
           <div class="control-group">
-            <div class="control-label">外观</div>
+            <div class="control-label">语言</div>
             <div class="template-grid">
-               <div class="tpl-card active">经典</div>
-               <div class="tpl-card">极简</div>
+               <div class="tpl-card active">中文</div>
+               <div class="tpl-card">English</div>
             </div>
           </div>
 
@@ -755,6 +775,18 @@ const handleRemoveAvatar = () => {
   flex: none;
 }
 
+/* === 字体大小选择器样式 === */
+.font-size-radio-group {
+  width: 220px;
+  flex: none;
+}
+
+/* === 字体粗细选择器样式 === */
+.font-weight-radio-group {
+  width: 120px;
+  flex: none;
+}
+
 /* === 模板卡片 === */
 .template-grid {
   display: grid;
@@ -762,7 +794,7 @@ const handleRemoveAvatar = () => {
   gap: 12px;
 }
 .tpl-card {
-  padding: 16px;
+  padding: 10px;
   border: 2px solid var(--border-color);
   border-radius: 8px;
   text-align: center;
@@ -770,6 +802,7 @@ const handleRemoveAvatar = () => {
   transition: all 0.2s;
   font-family: var(--font-sans);
   font-weight: 600;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 .tpl-card:hover {

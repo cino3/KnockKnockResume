@@ -152,7 +152,9 @@ export const useResumeStore = defineStore('resume', () => {
     dividerColor: '#000000',
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     lineHeight: 1.6,
-    paragraphSpacing: 8
+    paragraphSpacing: 8,
+    titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
+    titleFontWeight: 500  // 500 细 / 600 粗
   })
 
   // 预览缩放（默认 74%）
@@ -243,7 +245,9 @@ export const useResumeStore = defineStore('resume', () => {
       dividerColor: '#000000',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       lineHeight: 1.6,
-      paragraphSpacing: 8
+      paragraphSpacing: 8,
+      titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
+      titleFontWeight: 500  // 500 细 / 600 粗
     }
   }
 
