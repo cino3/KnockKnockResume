@@ -172,7 +172,7 @@
   /* 适中的粗细增强 */
   text-shadow:
     0 0 0 currentColor,
-    0 0 2px rgba(0, 0, 0, 0);
+    0 0 2px rgba(0, 0, 0, 0.15);
 }
 
 .el-collapse-item__wrap {
