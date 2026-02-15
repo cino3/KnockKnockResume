@@ -60,7 +60,6 @@ import { useResumeStore } from '@/stores/resume'
 import draggable from 'vuedraggable'
 import { GripVertical, Trash2 } from 'lucide-vue-next'
 import BoldTextarea from './BoldTextarea.vue'
-import ListItemBase from '@/components/shared/ListItemBase.vue'
 
 const store = useResumeStore()
 </script>
@@ -70,6 +69,31 @@ const store = useResumeStore()
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.list-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drag-handle {
+  cursor: move;
+  color: #9ca3af;
+}
+
+.drag-handle:hover {
+  color: #6b7280;
 }
 </style>
 
