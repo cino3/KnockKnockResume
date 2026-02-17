@@ -13,6 +13,7 @@ export const MAX_CONTENT_HEIGHT = A4_HEIGHT_PX - PAGE_PADDING_Y
 const OVERFLOW_THRESHOLD = 2   // 容差阈值：允许内容溢出 2px（解决计算误差）
 const TARGET_MARGIN = 12       // 目标留白：12px
 const MARGIN_TOLERANCE = 8     // 留白容差：±8px，即 4-20px 范围
+const TITLE_DIVIDER_MARGIN_THRESHOLD = 50 // 标题+分割线距离底部阈值：小于50px时分页
 
 // ================= 类型定义 =================
 type ClassList = string[]
@@ -311,8 +312,13 @@ function calculateWithBuffer(sourceRoot: HTMLElement, safetyBuffer: number): { p
         const combinedActualHeight = titleActualResult.height + dividerActualResult.height
         prevMarginBottom = dividerActualResult.marginBottom
 
-        // 应用容差策略判断（整体判断）
-        if (!shouldFitInPage(currentHeight, combinedHeight)) {
+        // 计算放入后的剩余空间
+        const remainingMargin = MAX_CONTENT_HEIGHT - (currentHeight + combinedActualHeight)
+
+        // 应用容差策略判断（整体判断）+ 标题距离底部阈值判断
+        if (!shouldFitInPage(currentHeight, combinedHeight) || remainingMargin < TITLE_DIVIDER_MARGIN_THRESHOLD) {
+          const reason = !shouldFitInPage(currentHeight, combinedHeight) ? '超出页面' : `距离底部仅${remainingMargin.toFixed(1)}px (<${TITLE_DIVIDER_MARGIN_THRESHOLD}px)`
+          console.log(`   📍 标题+分割线${reason}，移到下一页`)
           startNewPage()
           prevMarginBottom = 0 // 新页重置
           currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
@@ -393,32 +399,76 @@ function findOptimalBufferGoldenSection(
     // 计算两个分割点的得分
     const result1 = calculateWithBuffer(sourceRoot, mid1)
     const score1 = calculateScore(result1.heights, dynamicTarget, dynamicTolerance)
+    const margin1 = result1.heights.length > 0 ? MAX_CONTENT_HEIGHT - result1.heights[0] : Infinity
+    const isOverflow1 = margin1 < 0 || score1 === Infinity
 
     const result2 = calculateWithBuffer(sourceRoot, mid2)
     const score2 = calculateScore(result2.heights, dynamicTarget, dynamicTolerance)
+    const margin2 = result2.heights.length > 0 ? MAX_CONTENT_HEIGHT - result2.heights[0] : Infinity
+    const isOverflow2 = margin2 < 0 || score2 === Infinity
 
-    // 选择更优的分割点
+    // 🔧 新增：详细日志（只输出前3次和最后一次）
+    if (i < 3 || i === iterations - 1) {
+      console.log(`  🔍 迭代${i+1}/${iterations}:`)
+      const margin1Str = isOverflow1 ? '溢出' : `${margin1.toFixed(1)}px`
+      const margin2Str = isOverflow2 ? '溢出' : `${margin2.toFixed(1)}px`
+      console.log(`    mid1=${mid1.toFixed(2)}px → 第1页留白=${margin1Str}, 得分=${score1 === Infinity ? '∞' : score1.toFixed(1)}`)
+      console.log(`    mid2=${mid2.toFixed(2)}px → 第1页留白=${margin2Str}, 得分=${score2 === Infinity ? '∞' : score2.toFixed(1)}`)
+    }
+
+    // 选择更优的分割点（跳过溢出的方案）
     if (score1 < score2) {
       right = mid2
-      if (score1 < bestScore) {
+      if (score1 < bestScore && !isOverflow1) {
         bestScore = score1
         bestBuffer = mid1
         bestPages = result1.pages
         bestHeights = result1.heights
-        bestMargin = MAX_CONTENT_HEIGHT - result1.heights[0]
+        bestMargin = margin1
+        if (i < 3 || i === iterations - 1) {
+          console.log(`    ✅ 更新最优解: safetyBuffer=${mid1.toFixed(2)}px, 第1页留白=${margin1.toFixed(1)}px`)
+        }
       }
     } else {
       left = mid1
-      if (score2 < bestScore) {
+      if (score2 < bestScore && !isOverflow2) {
         bestScore = score2
         bestBuffer = mid2
         bestPages = result2.pages
         bestHeights = result2.heights
-        bestMargin = MAX_CONTENT_HEIGHT - result2.heights[0]
+        bestMargin = margin2
+        if (i < 3 || i === iterations - 1) {
+          console.log(`    ✅ 更新最优解: safetyBuffer=${mid2.toFixed(2)}px, 第1页留白=${margin2.toFixed(1)}px`)
+        }
       }
     }
-
-    console.log(`  🔍 黄金分割迭代${i+1}/${iterations}: [${left.toFixed(2)}, ${right.toFixed(2)}], mid1=${mid1.toFixed(2)}(score=${score1 === Infinity ? '∞' : score1.toFixed(1)}), mid2=${mid2.toFixed(2)}(score=${score2 === Infinity ? '∞' : score2.toFixed(1)})`)
+  }
+  
+  // 🔧 修复：处理所有方案都溢出的情况
+  if (bestMargin === Infinity || bestMargin < 0) {
+    console.log(`  ⚠️  警告: 所有候选方案都导致页面溢出，使用safetyBuffer=0的初测结果`)
+    const fallbackResult = calculateWithBuffer(sourceRoot, 0)
+    if (fallbackResult.heights.length > 0) {
+      bestBuffer = 0
+      bestPages = fallbackResult.pages
+      bestHeights = fallbackResult.heights
+      bestMargin = MAX_CONTENT_HEIGHT - fallbackResult.heights[0]
+      bestScore = calculateScore(fallbackResult.heights, dynamicTarget, dynamicTolerance)
+      console.log(`  🔄 回退方案: safetyBuffer=0px, 第1页留白=${bestMargin.toFixed(1)}px`)
+    }
+  }
+  
+  const bestMarginStr = bestMargin === Infinity || bestMargin < 0 ? '溢出' : bestMargin.toFixed(1)
+  const bestScoreStr = bestScore === Infinity ? '∞' : bestScore.toFixed(1)
+  console.log(`  🏆 最终最优解: safetyBuffer=${bestBuffer.toFixed(2)}px, 第1页留白=${bestMarginStr}px, 得分=${bestScoreStr}`)
+  
+  // 🔧 新增：分析结果（只处理非溢出的情况）
+  if (bestMargin !== Infinity && bestMargin >= 0 && bestMargin > dynamicTarget + dynamicTolerance) {
+    const excess = bestMargin - (dynamicTarget + dynamicTolerance)
+    console.log(`  ⚠️  第1页留白超出目标范围 ${excess.toFixed(1)}px`)
+    console.log(`     可能原因: 某个元素太大，即使safetyBuffer=${bestBuffer.toFixed(2)}px也无法放入第一页`)
+  } else if (bestMargin === Infinity || bestMargin < 0) {
+    console.log(`  ❌ 第1页溢出，无法放入所有内容`)
   }
 
   return { bestBuffer, bestPages, bestHeights, bestMargin, bestScore }
@@ -442,12 +492,17 @@ function calculateScore(pageHeights: number[], dynamicTarget: number, dynamicTol
     }
 
     if (i === 0) {
-      // 第1页：使用动态容差
+      // 🔧 优化：第1页留白过大时给予更重惩罚
       const deviation = Math.abs(margin - dynamicTarget)
       if (margin >= dynamicTarget - dynamicTolerance && margin <= dynamicTarget + dynamicTolerance) {
         totalScore -= 10 // 奖励
+      } else if (margin > dynamicTarget + dynamicTolerance) {
+        // 🔧 加强：第1页留白超过目标上限时，给予更重惩罚（权重从2+3改为3+5）
+        const excess = margin - (dynamicTarget + dynamicTolerance)
+        totalScore += deviation * 3 + excess * 5 // 基础偏差惩罚 + 超出部分的额外惩罚
       } else {
-        totalScore += deviation * 2 // 惩罚（权重2倍）
+        // 留白小于目标下限，给予较轻惩罚（允许稍微紧凑）
+        totalScore += deviation * 1.5
       }
     } else {
       // 其他页：留白越大，惩罚越大
@@ -481,6 +536,15 @@ export function usePagination() {
 
     const initialMargins = initialTest.heights.map(h => MAX_CONTENT_HEIGHT - h)
     console.log('📊 初测结果 (safetyBuffer=0):', initialMargins.map((m, i) => `第${i+1}页=${m.toFixed(1)}px`).join(', '))
+    
+    // 🔧 新增：详细分析初测结果
+    console.log('📊 初测详细分析:')
+    console.log(`  第1页高度: ${initialTest.heights[0].toFixed(1)}px / ${MAX_CONTENT_HEIGHT}px`)
+    console.log(`  第1页留白: ${initialMargins[0].toFixed(1)}px`)
+    if (initialMargins.length > 1) {
+      console.log(`  第2页留白: ${initialMargins[1].toFixed(1)}px`)
+      console.log(`  第2页留白较大，将调整第1页策略`)
+    }
 
     // 第2步：根据第2页留白情况，动态调整第1页的目标和容差（多级策略）
     let dynamicTarget = TARGET_MARGIN  // 默认12px
@@ -490,21 +554,21 @@ export function usePagination() {
     if (initialMargins.length > 1) {
       const secondPageMargin = initialMargins[1]
 
-      // 多级宽松策略：根据第2页留白大小，动态调整第1页容差
+      // 🔧 优化：多级宽松策略，但更保守，避免第1页留白过大
       if (secondPageMargin > 300) {
-        // 极度宽松：第2页留白>300px，第1页允许60-100px
-        dynamicTarget = 80
-        dynamicTolerance = 20
+        // 极度宽松：第2页留白>300px，第1页允许40-70px（从50-80降低）
+        dynamicTarget = 55  // 从65降低到55
+        dynamicTolerance = 15
         strategy = '极度宽松（大幅为第2页腾空间）'
       } else if (secondPageMargin > 150) {
-        // 宽松：第2页留白>150px，第1页允许30-60px
-        dynamicTarget = 45
-        dynamicTolerance = 15
+        // 宽松：第2页留白>150px，第1页允许20-40px（从25-50降低）
+        dynamicTarget = 30  // 从37降低到30
+        dynamicTolerance = 10  // 从12降低到10
         strategy = '宽松（为第2页腾空间）'
       } else if (secondPageMargin > 100) {
-        // 适中：第2页留白>100px，第1页允许20-40px
-        dynamicTarget = 30
-        dynamicTolerance = 10
+        // 适中：第2页留白>100px，第1页允许12-28px（从15-35降低）
+        dynamicTarget = 20  // 从25降低到20
+        dynamicTolerance = 8  // 从10降低到8
         strategy = '适中（适度为第2页腾空间）'
       } else {
         // 标准：第2页留白≤100px，第1页保持4-20px
@@ -522,14 +586,16 @@ export function usePagination() {
 
     // 第3步：使用黄金分割搜索优化safetyBuffer（性能提升40%）
     console.log('🔍 使用黄金分割搜索优化safetyBuffer...')
+    console.log(`  🎯 搜索目标: 第1页留白=${dynamicTarget}px ± ${dynamicTolerance}px (范围: ${dynamicTarget - dynamicTolerance}-${dynamicTarget + dynamicTolerance}px)`)
 
+    // 🔧 优化：扩大负值搜索范围，允许更激进的填充第一页
     const optimalResult = findOptimalBufferGoldenSection(
       sourceRoot,
       dynamicTarget,
       dynamicTolerance,
-      -15,  // 左边界
+      -25,  // 🔧 扩大左边界：从-15到-25，允许更负的safetyBuffer
       15,   // 右边界
-      12    // 迭代次数（12次即可收敛）
+      14    // 🔧 增加迭代次数：从12到14，更精确搜索
     )
 
     let bestPagesData = optimalResult.bestPages
@@ -537,13 +603,73 @@ export function usePagination() {
     let bestMargin = optimalResult.bestMargin
     let bestSafetyBuffer = optimalResult.bestBuffer
 
-    console.log(`✅ 选择方案: safetyBuffer=${bestSafetyBuffer.toFixed(2)}px, 第1页留白=${bestMargin.toFixed(1)}px`)
+    // 🔧 修复：处理 Infinity 情况
+    const bestMarginStr = bestMargin === Infinity || bestMargin < 0 ? '溢出' : bestMargin.toFixed(1)
+    console.log(`✅ 选择方案: safetyBuffer=${bestSafetyBuffer.toFixed(2)}px, 第1页留白=${bestMarginStr}px`)
+    
+    // 🔧 新增：分析为什么留白这么大（只处理非溢出的情况）
+    if (bestMargin !== Infinity && bestMargin >= 0) {
+      if (bestMargin > dynamicTarget + dynamicTolerance) {
+        const excess = bestMargin - (dynamicTarget + dynamicTolerance)
+        console.log(`⚠️  第1页留白超出目标范围 ${excess.toFixed(1)}px`)
+        console.log(`   可能原因:`)
+        console.log(`   1. 某个元素太大，即使safetyBuffer=${bestSafetyBuffer.toFixed(2)}px也无法放入`)
+        console.log(`   2. 评分函数可能没有足够惩罚留白过大`)
+        console.log(`   3. 动态容差策略选择了较大的目标值`)
+      }
+    } else {
+      console.log(`❌ 第1页溢出，无法放入所有内容`)
+    }
+    
+    // 🔧 新增：如果第1页留白仍然很大，尝试更激进的优化（只处理非溢出的情况）
+    if (bestMargin !== Infinity && bestMargin >= 0 && bestMargin > 50) {
+      console.log(`⚠️  第1页留白${bestMargin.toFixed(1)}px仍然过大，尝试更激进的优化...`)
+      
+      // 尝试更负的safetyBuffer范围
+      const aggressiveResult = findOptimalBufferGoldenSection(
+        sourceRoot,
+        Math.min(dynamicTarget, 20), // 降低目标到20px
+        Math.min(dynamicTolerance, 8), // 降低容差到8px
+        -30,  // 更负的左边界
+        -5,   // 只搜索负值范围
+        10    // 减少迭代次数
+      )
+      
+      if (aggressiveResult.bestMargin < bestMargin) {
+        console.log(`✨ 激进优化成功: 第1页留白从${bestMargin.toFixed(1)}px降至${aggressiveResult.bestMargin.toFixed(1)}px`)
+        bestPagesData = aggressiveResult.bestPages
+        bestPageHeights = aggressiveResult.bestHeights
+        bestMargin = aggressiveResult.bestMargin
+        bestSafetyBuffer = aggressiveResult.bestBuffer
+      } else {
+        console.log(`   ⚠️  激进优化未改善结果，保持原方案`)
+      }
+    }
 
     // ================= 方案2：压缩行高优化 =================
-    // 对留白过大的页面应用行高压缩（从第2页开始）
+    // 🔧 优化：对留白过大的页面应用行高压缩（包括第1页）
     console.log(`🔧 应用行高压缩优化...`)
     const compressionThreshold = 300 // 留白超过300px时触发压缩
+    const firstPageCompressionThreshold = 50 // 🔧 新增：第1页留白超过50px时也压缩
 
+    // 🔧 新增：如果第1页留白仍然很大，也尝试压缩
+    if (bestMargin > firstPageCompressionThreshold) {
+      console.log(`   🔧 第1页留白${bestMargin.toFixed(1)}px过大，尝试压缩...`)
+      const targetReduction = bestMargin - 30 // 目标：压缩到留白30px左右
+      const saved = compressLineHeight(bestPagesData[0], targetReduction, 1.6)
+
+      if (saved > 0) {
+        console.log(`   ✨ 第1页压缩完成，节省约${saved.toFixed(1)}px`)
+
+        // 压缩后重新测量实际高度
+        const newHeight = measurePageHeight(bestPagesData[0])
+        const newMargin = MAX_CONTENT_HEIGHT - newHeight
+        bestPageHeights[0] = newHeight
+        console.log(`   📐 第1页实际高度: ${bestPageHeights[0].toFixed(1)}px, 留白: ${newMargin.toFixed(1)}px`)
+      }
+    }
+
+    // 对留白过大的其他页面应用行高压缩（从第2页开始）
     for (let i = 1; i < bestPageHeights.length; i++) {
       const margin = MAX_CONTENT_HEIGHT - bestPageHeights[i]
 
