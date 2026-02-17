@@ -257,9 +257,13 @@ function calculateWithBuffer(sourceRoot: HTMLElement, safetyBuffer: number): { p
 
     const sectionChildren = Array.from(sectionNode.children) as HTMLElement[]
 
-    for (const childNode of sectionChildren) {
+    // 🔧 新增：使用索引遍历，以便处理标题和分割线的绑定
+    for (let i = 0; i < sectionChildren.length; i++) {
+      const childNode = sectionChildren[i]
       const isItem = itemClassNames.some(cls => childNode.classList.contains(cls))
       const isContent = childNode.classList.contains('section-content')
+      const isTitle = childNode.classList.contains('section-title')
+      const isDivider = childNode.classList.contains('section-divider')
 
       if (isItem || isContent) {
         const atoms = collectAtoms(childNode)
@@ -290,6 +294,39 @@ function calculateWithBuffer(sourceRoot: HTMLElement, safetyBuffer: number): { p
           currentHeight += atomHeight
           currentActualHeight += actualAtomHeight
         }
+      } else if (isTitle && i + 1 < sectionChildren.length && sectionChildren[i + 1].classList.contains('section-divider')) {
+        // 🔧 特殊处理：标题和分割线绑定在一起
+        const dividerNode = sectionChildren[i + 1]
+
+        // 计算标题的高度
+        const titleResult = getOuterHeightWithCollapse(childNode, prevMarginBottom, safetyBuffer)
+        const titleActualResult = getOuterHeightWithCollapse(childNode, prevMarginBottom, 0)
+
+        // 计算分割线的高度（使用标题的marginBottom）
+        const dividerResult = getOuterHeightWithCollapse(dividerNode, titleActualResult.marginBottom, safetyBuffer)
+        const dividerActualResult = getOuterHeightWithCollapse(dividerNode, titleActualResult.marginBottom, 0)
+
+        // 组合高度
+        const combinedHeight = titleResult.height + dividerResult.height
+        const combinedActualHeight = titleActualResult.height + dividerActualResult.height
+        prevMarginBottom = dividerActualResult.marginBottom
+
+        // 应用容差策略判断（整体判断）
+        if (!shouldFitInPage(currentHeight, combinedHeight)) {
+          startNewPage()
+          prevMarginBottom = 0 // 新页重置
+          currentSectionWrapper = sectionNode.cloneNode(false) as HTMLElement
+          currentPageNodes.push(currentSectionWrapper)
+        }
+
+        // 添加标题和分割线
+        currentSectionWrapper.appendChild(childNode.cloneNode(true))
+        currentSectionWrapper.appendChild(dividerNode.cloneNode(true))
+        currentHeight += combinedHeight
+        currentActualHeight += combinedActualHeight
+
+        // 跳过分割线（因为已经处理了）
+        i++
       } else {
         // 🔧 优化：使用考虑margin折叠的高度计算
         const hResult = getOuterHeightWithCollapse(childNode, prevMarginBottom, safetyBuffer)
