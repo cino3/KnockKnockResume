@@ -13,12 +13,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     AwardList: typeof import('./src/components/editor/AwardList.vue')['default']
     BoldTextarea: typeof import('./src/components/editor/BoldTextarea.vue')['default']
-    BoldTextarea_New: typeof import('./src/components/editor/BoldTextarea_New.vue')['default']
     ContentEditor: typeof import('./src/components/sidebar/ContentEditor.vue')['default']
     DesignEditor: typeof import('./src/components/sidebar/DesignEditor.vue')['default']
-    Editor: typeof import('./src/components/Editor.vue')['default']
-    EditorContent: typeof import('./src/components/editor/EditorContent.vue')['default']
-    EditorToolbar: typeof import('./src/components/editor/EditorToolbar.vue')['default']
     EducationList: typeof import('./src/components/editor/EducationList.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']

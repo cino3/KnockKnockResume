@@ -23,7 +23,7 @@
               <span>导入简历</span>
             </el-dropdown-item>
             <el-dropdown-item divided @click="$emit('reset')">
-              <el-icon><Delete /></el-icon>
+              <el-icon><RotateCw /></el-icon>
               <span style="color:#f56c6c">重置</span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { Save, FileDown, Upload, Delete, Download, MoreHorizontal } from 'lucide-vue-next'
+import { Save, FileDown, Upload, RotateCw, Download, MoreHorizontal } from 'lucide-vue-next'
 
 defineEmits<{
   save: []
