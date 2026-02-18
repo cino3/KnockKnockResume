@@ -210,6 +210,8 @@
 // === 6.1 单选按钮组（用于行高选择）===
 .el-radio-group {
   flex: 1;
+  display: flex;
+  gap: 0; /* 移除间距，让按钮连在一起 */
 }
 
 .el-radio-button {
@@ -217,21 +219,42 @@
 
   .el-radio-button__inner {
     width: 100%;
-    border-color: var(--border-color);
     color: var(--text-secondary);
     font-family: var(--font-sans);
-    font-size: 13px;
-    padding: 8px 0;
+    font-size: 12px;
+    padding: 7px 8px; /* 上下减少1px，让按钮变矮 */
     transition: all 0.2s;
+    margin-left: 0 !important;
+    border-radius: 0 !important; /* 默认无圆角 */
+    border: 1px solid var(--border-color);
 
     &:hover {
       color: var(--primary-color);
     }
   }
 
+  /* 第一个按钮：左边圆角 */
+  &:first-child .el-radio-button__inner {
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+    border-left: 1px solid var(--border-color) !important;
+  }
+
+  /* 最后一个按钮：右边圆角 */
+  &:last-child .el-radio-button__inner {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+    border-right: 1px solid var(--border-color) !important;
+  }
+
+  /* 中间按钮：移除左边框（与上一个按钮共享） */
+  &:not(:first-child) .el-radio-button__inner {
+    border-left: none !important;
+  }
+
   &.is-active .el-radio-button__inner {
     background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    border-color: var(--primary-color) !important;
     color: white;
   }
 }
@@ -239,7 +262,7 @@
 /* 行高选择器特定样式 */
 .line-height-radio-group {
   .el-radio-button__inner {
-    padding: 6px 0; /* 更紧凑的内边距 */
+    padding: 7px 8px; /* 统一的内边距，与主样式保持一致 */
   }
 }
 
