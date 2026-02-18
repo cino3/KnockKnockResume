@@ -175,6 +175,11 @@
     0 0 2px rgba(0, 0, 0, 0.15);
 }
 
+// 展开时隐藏分割线
+.el-collapse-item.is-active .el-collapse-item__header {
+  border-bottom: none !important;
+}
+
 .el-collapse-item__wrap {
   border: none;
   background: transparent;
