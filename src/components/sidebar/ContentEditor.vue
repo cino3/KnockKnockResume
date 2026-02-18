@@ -8,7 +8,7 @@
           <span class="accordion-title">基本信息</span>
         </template>
         <div class="form-body">
-          <el-form :model="store.profile" label-position="top" class="ghost-form">
+          <el-form :model="store.profile" label-position="top" class="ghost-form basic-info-form">
             <el-form-item label="姓名">
               <el-input v-model="store.profile.name" placeholder="请输入姓名" />
             </el-form-item>
@@ -39,7 +39,12 @@
                 @change="handleAvatarChange"
               />
               <div class="avatar-uploader">
-                <img v-if="store.profile.avatar" :src="store.profile.avatar" class="avatar-preview" />
+                <img
+                  v-if="store.profile.avatar"
+                  :src="store.profile.avatar"
+                  class="avatar-preview"
+                  alt="头像预览"
+                />
                 <el-button v-else size="small" type="primary" @click="triggerFileInput">选择图片</el-button>
               </div>
               <div v-if="store.profile.avatar" style="margin-top: 8px;">

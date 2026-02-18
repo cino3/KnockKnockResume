@@ -42,7 +42,7 @@
               size="small"
             />
           </el-form-item>
-          <el-form-item label="描述">
+          <el-form-item label="描述" class="top-align-item">
             <BoldTextarea
               v-model="exp.description"
               placeholder="工作内容描述，支持换行和加粗"

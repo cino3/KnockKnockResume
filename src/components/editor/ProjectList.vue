@@ -42,7 +42,7 @@
               size="small"
             />
           </el-form-item>
-          <el-form-item label="描述">
+          <el-form-item label="描述" class="top-align-item">
             <BoldTextarea
               v-model="proj.description"
               placeholder="项目描述，支持换行和加粗"
@@ -60,7 +60,6 @@ import { useResumeStore } from '@/stores/resume'
 import draggable from 'vuedraggable'
 import { GripVertical, Trash2 } from 'lucide-vue-next'
 import BoldTextarea from './BoldTextarea.vue'
-import ListItemBase from '@/components/shared/ListItemBase.vue'
 
 const store = useResumeStore()
 </script>

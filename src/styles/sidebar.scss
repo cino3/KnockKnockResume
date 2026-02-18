@@ -193,86 +193,23 @@
 /* === 幽灵表单样式 === */
 /* 基本信息区域使用 horizontal-form 类，不强制垂直布局 */
 .ghost-form:not(.horizontal-form) .el-form-item {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   display: flex;
   flex-direction: column;
 }
 
-/* 重置表单项内容区域的样式 */
-.ghost-form :deep(.el-form-item__content) {
-  line-height: 2.5 !important;
+/* 基本信息：label-top（如“姓名”）标签与输入框之间的间距统一为 4px */
+.basic-info-form .el-form-item__label {
+  margin-bottom: 4px !important;
+  padding-top: 0 !important;
 }
 
-/* 输入框 - 0212font.html 风格 */
-.ghost-form :deep(.el-input__wrapper) {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(60, 56, 54, 0.04) !important;
-  padding: 6px 12px !important;
-  transition: all 0.3s ease !important;
-}
-
-.ghost-form :deep(.el-input__wrapper:hover) {
-  border-color: #D1CEC9 !important;
-}
-
-.ghost-form :deep(.el-input__wrapper.is-focus) {
-  border-color: var(--primary-color) !important;
-  box-shadow: none !important;
-}
-
-.ghost-form :deep(.el-input__inner) {
-  font-size: 13px !important;
-  font-family: var(--font-sans) !important;
-  color: var(--text-main) !important;
-  line-height: 1.5 !important;
-}
-
-/* 文本域 - 0212font.html 风格 */
-.ghost-form :deep(.el-textarea__inner) {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(60, 56, 54, 0.04) !important;
-  padding: 12px 14px !important;
-  font-size: 13px !important;
-  font-family: var(--font-sans) !important;
-  color: var(--text-main) !important;
-  line-height: 1.5 !important;
-  resize: none;
-  transition: all 0.3s ease !important;
-}
-
-.ghost-form :deep(.el-textarea__inner:hover) {
-  border-color: #D1CEC9 !important;
-}
-
-.ghost-form :deep(.el-textarea__inner:focus) {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 3px rgba(70, 94, 105, 0.15) !important;
-}
-
-/* === 表单标签样式 === */
-.ghost-form :deep(.el-form-item__label) {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: var(--text-secondary) !important;
-  font-family: var(--font-sans) !important;
-  margin-bottom: 8px !important;
-  line-height: 1.5 !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-}
+/* 说明：
+   sidebar.scss 作为全局样式引入时，:deep/::deep 不会被 Vue 编译处理，属于无效选择器；
+   这里移除这些无效规则，避免“看似写了但不生效”的维护困惑。 */
 
 /* === 水平表单布局 === */
 /* 基本信息区域使用全局 horizontal-form 样式（水平布局） */
-
-/* 基本信息区域：调整输入框高度 */
-.ghost-form:not(.horizontal-form) :deep(.el-input__wrapper) {
-  padding: 4px 12px !important;
-  min-height: 32px !important;
-}
 
 /* === 列表容器 === */
 .list-container {
@@ -284,6 +221,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+/* 头像存在时，“删除头像”按钮与左侧图片的水平间距微调（+2px） */
+.basic-info-form .avatar-uploader + div {
+  margin-left: 8px;
 }
 
 .avatar-preview {
@@ -307,7 +249,7 @@
   display: block;
   width: 100%;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: rgba(102, 102, 96, 0.7); /* 比 --text-secondary 更浅一点 */
   margin-top: 2px !important;
 }
 
@@ -341,31 +283,7 @@
 }
 
 /* === 手风琴标题样式 === */
-:deep(.el-collapse-item__header) {
-  font-family: var(--font-serif) !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  color: var(--primary-color) !important;
-  position: relative !important;
-  /* 增强的粗细效果 */
-  text-shadow:
-    0 0 0 currentColor,
-    0 0 1px currentColor,
-    0 0 2px rgba(0, 0, 0, 0.15);
-}
-
-:deep(.accordion-title) {
-  font-family: var(--font-serif) !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  color: inherit !important;
-  position: relative !important;
-  /* 增强的粗细效果 */
-  text-shadow:
-    0 0 0 currentColor,
-    0 0 1px currentColor,
-    0 0 2px rgba(0, 0, 0, 0.15);
-}
+/* 折叠面板标题样式已在 element-plus-overrides.scss 用普通选择器覆盖。 */
 
 .control-item {
   display: flex;
@@ -416,6 +334,11 @@
   flex: none;
 }
 
+/* 标题粗细（细/粗）：跟“导出 PDF”主按钮一致，使用衬线字体栈 */
+.font-weight-radio-group .el-radio-button__inner {
+  font-family: var(--font-serif) !important;
+}
+
 /* === 模板卡片 === */
 .template-grid {
   display: flex;
@@ -431,7 +354,8 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: var(--font-sans);
+  /* 语言切换：跟“导出 PDF”主按钮一致，使用衬线字体栈 */
+  font-family: var(--font-serif);
   font-weight: 600;
   font-size: 13px;
   color: var(--text-secondary);
@@ -540,19 +464,4 @@
 }
 
 /* === 下拉菜单样式优化 === */
-:deep(.el-dropdown-menu__item) {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  font-size: 13px;
-}
-
-:deep(.el-dropdown-menu__item .el-icon) {
-  font-size: 16px;
-  color: #888;
-}
-
-:deep(.el-dropdown-menu__item:hover .el-icon) {
-  color: var(--primary-color);
-}
+/* 下拉菜单相关全局样式统一放在 element-plus-overrides.scss。 */
