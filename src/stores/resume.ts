@@ -51,9 +51,9 @@ export const useResumeStore = defineStore('resume', () => {
   // 头像上传
   function uploadAvatar(file: File): Promise<void> {
     return new Promise((resolve, reject) => {
-      // 检查文件大小（500KB）
-      if (file.size > 500 * 1024) {
-        reject(new Error('图片大小不能超过 500KB'))
+      // 检查文件大小（2MB）
+      if (file.size > 2 * 1024 * 1024) {
+        reject(new Error('图片大小不能超过 2MB'))
         return
       }
 

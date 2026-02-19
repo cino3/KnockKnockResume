@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
 
 /**
  * 文件上传Composable
@@ -11,16 +12,16 @@ export function useFileUpload() {
    * 上传图片文件
    * @param file 文件对象
    * @param onSuccess 成功回调,接收base64数据
-   * @param maxSize 最大文件大小(字节),默认500KB
+   * @param maxSize 最大文件大小(字节),默认2MB
    */
   const uploadImage = async (
     file: File,
     onSuccess: (base64: string) => void,
-    maxSize: number = 500 * 1024
+    maxSize: number = 2 * 1024 * 1024
   ) => {
     // 验证文件大小
     if (file.size > maxSize) {
-      ElMessage.error(`图片大小不能超过 ${maxSize / 1024}KB`)
+      ElMessage.error(`图片大小不能超过 ${maxSize / 1024 / 1024}MB`)
       throw new Error('File too large')
     }
 

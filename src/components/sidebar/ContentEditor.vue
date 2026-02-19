@@ -50,7 +50,7 @@
               <div v-if="store.profile.avatar" style="margin-top: 8px;">
                 <el-button size="small" type="danger" text @click="handleRemoveAvatar">删除头像</el-button>
               </div>
-              <div class="avatar-hint">建议尺寸 80x100px，最大 500KB</div>
+              <div class="avatar-hint">建议尺寸 80x100px，最大 2MB</div>
             </el-form-item>
           </el-form>
         </div>
