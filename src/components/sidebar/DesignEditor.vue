@@ -6,18 +6,16 @@
         <span class="control-item-label">标题</span>
         <el-color-picker
           v-model="store.theme.primaryColor"
-          show-alpha
-          size="small"
           :predefine="predefineColors"
+          size="small"
         />
       </div>
       <div class="control-item">
         <span class="control-item-label">分割线</span>
         <el-color-picker
           v-model="store.theme.dividerColor"
-          show-alpha
-          size="small"
           :predefine="predefineColors"
+          size="small"
         />
       </div>
     </div>
@@ -36,8 +34,8 @@
       <div class="control-item">
         <span class="control-item-label">标题粗细</span>
         <el-radio-group v-model="store.theme.titleFontWeight" size="small" class="font-weight-radio-group">
-          <el-radio-button :value="500">细</el-radio-button>
-          <el-radio-button :value="600">粗</el-radio-button>
+          <el-radio-button :value="600">细</el-radio-button>
+          <el-radio-button :value="800">粗</el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -82,3 +80,7 @@ const predefineColors = ref([
   '#D35400'   // 橙色
 ])
 </script>
+
+<style scoped>
+/* Compact 组件本身就很紧凑，如果需要进一步调整大小可以在这里添加样式 */
+</style>

@@ -189,7 +189,13 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .resume-header { padding-bottom: 8px; margin-bottom: 8px; }
 .header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
-.name { font-size: 28px; margin-bottom: 0; letter-spacing: 1px; }
+.name {
+  font-size: 28px;
+  margin-bottom: 0;
+  letter-spacing: 1px;
+  /* 名字与大标题使用同一套中文衬线字体 */
+  font-family: var(--font-serif-cn);
+}
 .title { font-size: 18px; color: #000000; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
@@ -201,7 +207,15 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item :deep(svg) { flex-shrink: 0; }
 
 .resume-section { margin-bottom: 18px; }
-.section-title { font-size: 17px; margin-bottom: 1px; margin-top: 5px; padding-bottom: 0; letter-spacing: 1px; }
+.section-title {
+  font-size: 17px;
+  margin-bottom: 1px;
+  margin-top: 5px;
+  padding-bottom: 0;
+  letter-spacing: 1px;
+  /* 模块标题（教育经历、专业技能等）使用中文人文宋体栈 */
+  font-family: var(--font-serif-cn);
+}
 .section-content { margin-bottom: 11px; }
 
 /* 模块间分隔线 */
@@ -225,7 +239,12 @@ function formatDescriptionLines(text: string | undefined): string[] {
 }
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
-.item-title { font-size: var(--font-size-item-title); font-weight: var(--font-weight-item-title); color: #333; margin: 0 0 4px 0; }
+.item-title {
+  font-size: var(--font-size-item-title);
+  font-weight: var(--font-weight-item-title);
+  color: #333;
+  margin: 0 0 4px 0;
+}
 .item-subtitle-inline { font-size: 14px; font-weight: 400; color: #000000; margin-left: 8px; }
 .item-subtitle { font-size: 14px; color: #000000; }
 .education-major { font-size: 13px; color: #000000; }

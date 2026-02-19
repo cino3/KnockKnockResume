@@ -15,6 +15,9 @@
   /* UI 氛围字体：用于标题、按钮、Logo (Merriweather/Georgia) */
   --font-serif: "Merriweather", "Georgia", "Times New Roman", "Songti SC", "SimSun", serif;
 
+  /* 中文标题用的人文宋体系：只使用 Noto Serif SC（浏览器会在加载失败时兜底 serif） */
+  --font-serif-cn: "Noto Serif SC", serif;
+
   /* 内容功能字体：用于输入框、正文 (Inter/系统黑体) */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
 
