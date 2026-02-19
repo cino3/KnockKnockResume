@@ -21,6 +21,9 @@
   /* 内容功能字体：用于输入框、正文 (Inter/系统黑体) */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
 
+  /* 英文字体：用于英文模式下的标题（Lora 衬线字体） */
+  --font-sans-en: "Lora", "Georgia", "Times New Roman", serif;
+
   /* --- 3. 尺寸定义 --- */
   --sidebar-width-expanded: 380px;
   --sidebar-width-collapsed: 72px;

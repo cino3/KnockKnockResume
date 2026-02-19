@@ -55,8 +55,20 @@
     <div class="control-group">
       <div class="control-label">语言</div>
       <div class="template-grid">
-        <div class="tpl-card active">中文</div>
-        <div class="tpl-card">English</div>
+        <div 
+          class="tpl-card" 
+          :class="{ active: store.theme.language === 'zh' }"
+          @click="store.theme.language = 'zh'"
+        >
+          中文
+        </div>
+        <div 
+          class="tpl-card" 
+          :class="{ active: store.theme.language === 'en' }"
+          @click="store.theme.language = 'en'"
+        >
+          English
+        </div>
       </div>
     </div>
   </div>

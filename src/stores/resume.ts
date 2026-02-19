@@ -154,7 +154,8 @@ export const useResumeStore = defineStore('resume', () => {
     lineHeight: 1.6,
     paragraphSpacing: 8,
     titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
-    titleFontWeight: 600  // 600 细 / 800 粗（默认细）
+    titleFontWeight: 600,  // 600 细 / 800 粗（默认细）
+    language: 'zh'  // 默认中文
   })
 
   // 预览缩放（默认 74%）
@@ -247,7 +248,8 @@ export const useResumeStore = defineStore('resume', () => {
       lineHeight: 1.6,
       paragraphSpacing: 8,
       titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
-      titleFontWeight: 700  // 500 细 / 700 粗（默认）  
+      titleFontWeight: 700,  // 500 细 / 700 粗（默认）
+      language: 'zh'  // 默认中文
     }
   }
 
@@ -306,7 +308,7 @@ export const useResumeStore = defineStore('resume', () => {
 }, {
   persist: {
     key: 'resume',
-    // 只持久化简历内容数据，不持久化 theme 配置
+    // 只持久化简历内容数据和语言设置，不持久化其他 theme 配置
     // 这样修改默认主题配置后可以立即生效
     paths: [
       'profile',
@@ -314,7 +316,8 @@ export const useResumeStore = defineStore('resume', () => {
       'projects',
       'educations',
       'awards',
-      'selfEvaluation'
+      'selfEvaluation',
+      'theme.language'  // 持久化语言选择
     ]
   }
 })

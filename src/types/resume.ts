@@ -59,6 +59,7 @@ export interface ThemeConfig {
   paragraphSpacing: number; // 段间距
   titleFontSize: number; // 标题字体大小
   titleFontWeight: number; // 标题字体粗细
+  language: 'zh' | 'en'; // 语言：中文或英文
 }
 
 // Resume 完整数据结构

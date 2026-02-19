@@ -157,7 +157,6 @@ import ProjectList from '../editor/ProjectList.vue'
 import AwardList from '../editor/AwardList.vue'
 import SelfEvaluationEditor from '../editor/SelfEvaluationEditor.vue'
 import BoldTextarea from '../editor/BoldTextarea.vue'
-
 const store = useResumeStore()
 const activeNames = ref(['profile'])
 const avatarInput = ref<HTMLInputElement | null>(null)

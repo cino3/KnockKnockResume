@@ -3,7 +3,7 @@
   <header class="resume-header">
     <div class="header-top">
       <div class="header-left">
-        <h1 class="name" :style="{ color: store.theme.primaryColor, fontSize: store.theme.titleFontSize + 'px', fontWeight: store.theme.titleFontWeight }">{{ store.profile.name }}</h1>
+        <h1 class="name" :style="{ color: store.theme.primaryColor, fontSize: store.theme.titleFontSize + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: nameFont, letterSpacing: titleLetterSpacing }">{{ store.profile.name }}</h1>
         <p class="title">{{ store.profile.title }}</p>
       </div>
       <div v-if="store.profile.avatar" class="avatar-wrapper">
@@ -40,7 +40,7 @@
 
   <!-- 教育经历 -->
   <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">教育经历</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.education }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="edu in visibleEducations"
@@ -58,7 +58,7 @@
 
   <!-- 专业技能 -->
   <section v-if="store.profile.skills" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">专业技能</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.skills }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -72,7 +72,7 @@
 
   <!-- 工作经历 -->
   <section v-if="visibleExperiences.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">工作经历</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.experience }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="exp in visibleExperiences"
@@ -99,7 +99,7 @@
 
   <!-- 项目经历 -->
   <section v-if="visibleProjects.length > 0" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">项目经历</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.project }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div
       v-for="proj in visibleProjects"
@@ -125,7 +125,7 @@
 
   <!-- 获奖经历 -->
   <section v-if="store.awards.content" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">获奖经历</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.award }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -139,7 +139,7 @@
 
   <!-- 个人评价 -->
   <section v-if="store.selfEvaluation.content" class="resume-section">
-    <h2 class="section-title" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight }">个人评价</h2>
+    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.selfEvaluation }}</h2>
     <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
     <div class="section-content">
       <div
@@ -157,12 +157,35 @@ import { computed } from 'vue'
 import { useResumeStore } from '@/stores/resume'
 import { Phone, Mail, Link, Globe, Cake } from 'lucide-vue-next'
 import dayjs from 'dayjs'
+import { useI18n } from '@/composables/useI18n'
 
 const store = useResumeStore()
+const { t } = useI18n()
 
 const visibleExperiences = computed(() => store.experiences.filter(exp => exp.isVisible))
 const visibleProjects = computed(() => store.projects.filter(proj => proj.isVisible))
 const visibleEducations = computed(() => store.educations.filter(edu => edu.isVisible))
+
+// 根据语言计算标题字体
+const sectionTitleFont = computed(() => {
+  return store.theme.language === 'en' 
+    ? 'var(--font-sans-en)'  // 英文：系统无衬线字体
+    : 'var(--font-serif-cn)'  // 中文：Noto Serif SC
+})
+
+// 根据语言计算名字字体
+const nameFont = computed(() => {
+  return store.theme.language === 'en'
+    ? 'var(--font-sans-en)'  // 英文：Lora 衬线字体
+    : 'var(--font-serif-cn)'  // 中文：Noto Serif SC
+})
+
+// 根据语言计算标题间距
+const titleLetterSpacing = computed(() => {
+  return store.theme.language === 'en'
+    ? 'normal'  // 英文：默认间距
+    : '1px'     // 中文：1px 间距
+})
 
 function formatDateRange(start: string, end: string): string {
   if (!start && !end) return ''
@@ -179,8 +202,8 @@ function formatDescriptionLines(text: string | undefined): string[] {
   // 先过滤掉纯空白行，再 trim 剩余行
   return normalizedText
     .split('\n')
-    .filter(line => line.trim() !== '') // 先过滤纯空白行
-    .map(line => line.trimEnd()) // 只去除行尾空白，保留行首缩进
+    .filter((line: string) => line.trim() !== '') // 先过滤纯空白行
+    .map((line: string) => line.trimEnd()) // 只去除行尾空白，保留行首缩进
 }
 </script>
 
@@ -215,6 +238,11 @@ function formatDescriptionLines(text: string | undefined): string[] {
   letter-spacing: 1px;
   /* 模块标题（教育经历、专业技能等）使用中文人文宋体栈 */
   font-family: var(--font-serif-cn);
+}
+
+/* 英文模式下标题首字母放大 */
+.section-title.en-title::first-letter {
+  font-size: 1.3em; /* 首字母比正常字母大 30% */
 }
 .section-content { margin-bottom: 11px; }
 
