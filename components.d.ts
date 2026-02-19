@@ -21,6 +21,8 @@ declare module 'vue' {
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
@@ -45,5 +47,6 @@ declare module 'vue' {
     SidebarHeader: typeof import('./src/components/sidebar/SidebarHeader.vue')['default']
     SidebarTabs: typeof import('./src/components/sidebar/SidebarTabs.vue')['default']
     SidebarToggle: typeof import('./src/components/sidebar/SidebarToggle.vue')['default']
+    SponsorButton: typeof import('./src/components/SponsorButton.vue')['default']
   }
 }

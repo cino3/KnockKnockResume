@@ -66,15 +66,6 @@
   box-sizing: border-box;
 }
 
-.page-number {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  font-size: 12px;
-  color: #999;
-  pointer-events: none;
-}
-
 /* ================= 打印样式 (使用打印专用容器) ================= */
 @media print {
   /* 设置打印页边距：0，由容器 padding 提供 */
@@ -86,7 +77,6 @@
   /* 隐藏不需要的元素 */
   .scale-control,
   .measure-container,
-  .page-number,
   .print-only-container {
     display: none !important;
   }

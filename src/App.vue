@@ -7,12 +7,16 @@
     <div class="preview-panel">
       <Preview />
     </div>
+
+    <!-- 打赏按钮 -->
+    <SponsorButton />
   </div>
 </template>
 
 <script setup lang="ts">
 import Sidebar from './components/Sidebar.vue'
 import Preview from './components/Preview.vue'
+import SponsorButton from './components/SponsorButton.vue'
 </script>
 
 <style scoped>

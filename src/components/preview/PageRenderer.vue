@@ -6,7 +6,6 @@
     :style="resumeStyle"
   >
     <div :id="`page-content-${index}`" class="page-content-wrapper"></div>
-    <div class="page-number">{{ index + 1 }} / {{ renderPages.length }}</div>
   </div>
 </template>
 
