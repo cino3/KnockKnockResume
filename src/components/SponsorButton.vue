@@ -140,6 +140,13 @@ const qrcodeUrl = ref('/img/wechat.jpg')
   font-family: 'Consolas', 'Monaco', monospace;
 }
 
+/* 打印时隐藏打赏按钮和弹窗，避免出现在导出的简历中 */
+@media print {
+  .sponsor-container {
+    display: none !important;
+  }
+}
+
 .wechat-container {
   display: flex;
   align-items: center;

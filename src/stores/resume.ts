@@ -282,6 +282,80 @@ export const useResumeStore = defineStore('resume', () => {
     return exportData
   }
 
+  function importData(data: any) {
+    try {
+      // 验证数据结构
+      if (!data || typeof data !== 'object') {
+        throw new Error('无效的数据格式')
+      }
+
+      // 导入个人基本信息
+      if (data.profile) {
+        profile.value = {
+          ...profile.value,
+          name: data.profile.name || '',
+          title: data.profile.title || '',
+          mobile: data.profile.mobile || '',
+          email: data.profile.email || '',
+          birthday: data.profile.birthday || '',
+          github: data.profile.github || '',
+          website: data.profile.website || '',
+          skills: data.profile.skills || '',
+          summary: profile.value.summary, // 保持原有的 summary
+          avatar: profile.value.avatar // 保持原有的头像
+        }
+      }
+
+      // 导入工作经历
+      if (Array.isArray(data.experiences)) {
+        experiences.value = data.experiences
+      }
+
+      // 导入项目经历
+      if (Array.isArray(data.projects)) {
+        projects.value = data.projects
+      }
+
+      // 导入教育背景
+      if (Array.isArray(data.educations)) {
+        educations.value = data.educations
+      }
+
+      // 导入获奖经历
+      if (data.awards && typeof data.awards === 'object') {
+        awards.value = {
+          content: data.awards.content || ''
+        }
+      }
+
+      // 导入自我评价
+      if (data.selfEvaluation && typeof data.selfEvaluation === 'object') {
+        selfEvaluation.value = {
+          content: data.selfEvaluation.content || ''
+        }
+      }
+
+      // 导入主题设置
+      if (data.theme && typeof data.theme === 'object') {
+        theme.value = {
+          primaryColor: data.theme.primaryColor || '#000000',
+          dividerColor: data.theme.dividerColor || '#000000',
+          fontFamily: data.theme.fontFamily || 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          lineHeight: data.theme.lineHeight || 1.6,
+          paragraphSpacing: data.theme.paragraphSpacing || 8,
+          titleFontSize: data.theme.titleFontSize || 28,
+          titleFontWeight: data.theme.titleFontWeight || 700,
+          language: data.theme.language || 'zh'
+        }
+      }
+
+      return true
+    } catch (error) {
+      console.error('导入数据失败:', error)
+      return false
+    }
+  }
+
   return {
     profile,
     experiences,
@@ -302,6 +376,7 @@ export const useResumeStore = defineStore('resume', () => {
     resetData,
     updateLastSavedTime,
     getExportData,
+    importData,
     uploadAvatar,
     removeAvatar
   }

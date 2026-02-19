@@ -18,7 +18,7 @@
               <el-icon><FileDown :size="16" /></el-icon>
               <span>导出 JSON</span>
             </el-dropdown-item>
-            <el-dropdown-item disabled>
+            <el-dropdown-item @click="$emit('import-json')">
               <el-icon><Upload /></el-icon>
               <span>导入简历</span>
             </el-dropdown-item>
@@ -45,6 +45,7 @@ import { Save, FileDown, Upload, RotateCw, Download, MoreHorizontal } from 'luci
 defineEmits<{
   save: []
   'export-json': []
+  'import-json': []
   'export-pdf': []
   reset: []
 }>()

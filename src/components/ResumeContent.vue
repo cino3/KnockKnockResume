@@ -4,7 +4,7 @@
     <div class="header-top">
       <div class="header-left">
         <h1 class="name" :style="{ color: store.theme.primaryColor, fontSize: store.theme.titleFontSize + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: nameFont, letterSpacing: titleLetterSpacing }">{{ store.profile.name }}</h1>
-        <p class="title">{{ store.profile.title }}</p>
+        <p class="title" :style="{ fontFamily: sectionTitleFont }">{{ store.profile.title }}</p>
       </div>
       <div v-if="store.profile.avatar" class="avatar-wrapper">
         <img :src="store.profile.avatar" class="avatar" alt="头像" />
@@ -49,9 +49,24 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ edu.school || '(未填写学校)' }}  -  <span class="education-degree">{{ edu.degree || '' }}</span> <span class="education-major-inline">{{ edu.major || '' }}</span></h3>
+          <h3
+            class="item-title"
+            :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+          >
+            <span class="education-school">
+              {{ edu.school || '(未填写学校)' }}
+            </span>
+            -
+            <span class="education-degree">{{ edu.degree || '' }}</span>
+            <span class="education-major-inline">{{ edu.major || '' }}</span>
+          </h3>
         </div>
-        <span class="item-date">{{ formatDateRange(edu.startDate, edu.endDate) }}</span>
+        <span
+          class="item-date"
+          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+        >
+          {{ formatDateRange(edu.startDate, edu.endDate) }}
+        </span>
       </div>
     </div>
   </section>
@@ -65,6 +80,7 @@
         v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
         :key="index"
         class="text-line"
+        :style="textLineStyle"
         v-html="line"
       ></div>
     </div>
@@ -81,9 +97,19 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ exp.company }} <span class="item-subtitle-inline">{{ exp.position }}</span></h3>
+          <h3
+            class="item-title"
+            :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+          >
+            {{ exp.company }} <span class="item-subtitle-inline">{{ exp.position }}</span>
+          </h3>
         </div>
-        <span class="item-date">{{ formatDateRange(exp.startDate, exp.endDate) }}</span>
+        <span
+          class="item-date"
+          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+        >
+          {{ formatDateRange(exp.startDate, exp.endDate) }}
+        </span>
       </div>
       <!-- 描述文本拆分为多行 -->
       <div v-if="exp.description" class="item-description-wrapper">
@@ -91,6 +117,7 @@
           v-for="(line, index) in formatDescriptionLines(exp.description)"
           :key="index"
           class="text-line"
+          :style="textLineStyle"
           v-html="line"
         ></div>
       </div>
@@ -108,15 +135,26 @@
     >
       <div class="item-header">
         <div>
-          <h3 class="item-title">{{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span></h3>
+          <h3
+            class="item-title"
+            :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+          >
+            {{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span>
+          </h3>
         </div>
-        <span class="item-date">{{ formatDateRange(proj.startDate, proj.endDate) }}</span>
+        <span
+          class="item-date"
+          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+        >
+          {{ formatDateRange(proj.startDate, proj.endDate) }}
+        </span>
       </div>
       <div v-if="proj.description" class="item-description-wrapper">
         <div
           v-for="(line, index) in formatDescriptionLines(proj.description)"
           :key="index"
           class="text-line"
+          :style="textLineStyle"
           v-html="line"
         ></div>
       </div>
@@ -132,6 +170,7 @@
         v-for="(line, index) in formatDescriptionLines(store.awards.content)"
         :key="index"
         class="text-line"
+        :style="textLineStyle"
         v-html="line"
       ></div>
     </div>
@@ -146,6 +185,7 @@
         v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
         :key="index"
         class="text-line"
+        :style="textLineStyle"
         v-html="line"
       ></div>
     </div>
@@ -187,10 +227,21 @@ const titleLetterSpacing = computed(() => {
     : '1px'     // 中文：1px 间距
 })
 
+// 英文模式下，正文与英文标题使用同一套英文字体；中文模式下保持默认正文字体
+const textLineStyle = computed(() => {
+  return store.theme.language === 'en'
+    ? { fontFamily: sectionTitleFont.value }
+    : {}
+})
+
 function formatDateRange(start: string, end: string): string {
   if (!start && !end) return ''
   const startStr = start ? dayjs(start).format('YYYY.MM') : ''
-  const endStr = end ? dayjs(end).format('YYYY.MM') : '至今'
+
+  // 根据语言切换“至今”文案：中文用“至今”，英文用“Present”
+  const openEndLabel = store.theme.language === 'en' ? 'Present' : '至今'
+  const endStr = end ? dayjs(end).format('YYYY.MM') : openEndLabel
+
   return `${startStr} - ${endStr}`
 }
 
@@ -242,7 +293,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 /* 英文模式下标题首字母放大 */
 .section-title.en-title::first-letter {
-  font-size: 1.3em; /* 首字母比正常字母大 30% */
+  font-size: 1.2em; /* 首字母比正常字母大 30% */
 }
 .section-content { margin-bottom: 11px; }
 
@@ -259,6 +310,10 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .education-item { margin-bottom: 8px; }
 /* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
 .education-item .item-title { margin-bottom: 0; }
+/* 教育经历中学校名称保持加粗强调 */
+.education-school {
+  font-weight: var(--font-weight-item-title);
+}
 /* 每个 section 中的最后一个 item 移除下边距 */
 .resume-section .experience-item:last-child,
 .resume-section .project-item:last-child,

@@ -22,6 +22,7 @@
         v-show="!isCollapsed"
         @save="handleSave"
         @export-json="handleExportJSON"
+        @import-json="handleImportJSON"
         @export-pdf="handleExportPDF"
         @reset="handleReset"
       />
@@ -43,7 +44,7 @@ import SidebarFooter from './sidebar/SidebarFooter.vue'
 
 const store = useResumeStore()
 const { printResume } = usePrint(store.resumeFileName)
-const { exportJSON, save, reset } = useExport(store.resumeFileName)
+const { exportJSON, importJSON, save, reset } = useExport(store.resumeFileName)
 
 const isCollapsed = ref(false)
 const currentTab = ref<'content' | 'design'>('content')
@@ -67,6 +68,12 @@ const handleExportJSON = () => {
 
 const handleReset = () => {
   reset(() => store.resetData())
+}
+
+const handleImportJSON = () => {
+  importJSON((data) => {
+    return store.importData(data)
+  })
 }
 </script>
 
