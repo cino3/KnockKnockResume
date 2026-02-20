@@ -1,6 +1,9 @@
 {
   "name": "pure-resume",
   "version": "1.0.0",
+  "engines": {
+    "node": "22.19"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
