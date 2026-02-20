@@ -48,12 +48,13 @@
 import { ref } from 'vue'
 import { Coffee } from 'lucide-vue-next'
 import { Message } from '@element-plus/icons-vue'
+import wechatQrcode from '@/assets/wechat.jpg'
 
 // 控制弹窗显示
 const dialogVisible = ref(false)
 
 // 微信打赏码图片地址
-const qrcodeUrl = ref('/img/wechat.jpg')
+const qrcodeUrl = ref(wechatQrcode)
 </script>
 
 <style scoped>

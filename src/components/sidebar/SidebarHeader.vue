@@ -2,7 +2,7 @@
   <div class="sidebar-header">
     <!-- 品牌 -->
     <div class="brand">
-      <img class="brand-logo" src="/img/logo0220.png" alt="KnockKnock logo" />
+      <img class="brand-logo" :src="logoUrl" alt="KnockKnock logo" />
       <span class="brand-text">KnockKnock</span>
     </div>
 
@@ -15,5 +15,5 @@
 </template>
 
 <script setup lang="ts">
-// 组件暂时没有逻辑，纯UI展示
+import logoUrl from '@/assets/logo0220.png'
 </script>
