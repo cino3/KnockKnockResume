@@ -2,6 +2,7 @@
   <div class="sidebar-header">
     <!-- 品牌 -->
     <div class="brand">
+      <img class="brand-logo" src="/img/logo0220.png" alt="KnockKnock logo" />
       <span class="brand-text">KnockKnock</span>
     </div>
 
