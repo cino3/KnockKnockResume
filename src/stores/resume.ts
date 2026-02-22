@@ -37,15 +37,15 @@ export const useResumeStore = defineStore('resume', () => {
 
   // 基础信息
   const profile = ref<Profile>({
-    name: '张三',
-    title: '前端工程师',
-    mobile: '138-0000-0000',
-    email: 'zhangsan@example.com',
-    birthday: '2000-01',
-    github: 'https://github.com/zhangsan',
-    website: 'https://zhangsan.dev',
-    summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。',
-    skills: 'Vue.js, React, TypeScript, Node.js,Webpack, Vite'
+    name: '你好乔',
+    title: '后端开发',
+    mobile: '18939393333',
+    email: 'linjiale333@gmail.com',
+    birthday: '2002-03',
+    github: '',
+    website: 'knockknockresume.top',
+    summary: '',
+    skills: '  •  <strong>Java基础</strong><strong>：</strong>掌握 Java 基础知识，集合框架、I/O流、反射机制等，了解HashMap存储原理；中常见的设计模<br>      式，如工厂模式、代理模式、单例模式等\n  •  <strong>MySQL</strong><strong>：</strong> 熟练使用 MySQL，掌握索引、事务、锁、日志等核心概念，了解sql优化<br>  •  <strong>MQ</strong><strong>：</strong>了解RabbitMQ 消息队列，例如交换机、消息确认机制、TTL机制、死信队列<br>  •  <strong>并发编程</strong><strong>：</strong>了解 Java 多线程，例如线程池、锁、ThreadLocal 等关键知识点的原理\n'
   })
 
   // 头像上传
@@ -84,20 +84,11 @@ export const useResumeStore = defineStore('resume', () => {
     {
       id: generateUUID(),
       isVisible: true,
-      company: 'ABC科技有限公司',
-      position: '高级前端工程师',
-      startDate: '2021-01',
-      endDate: '2024-12',
-      description: '负责公司核心产品的前端架构设计与开发\n• 使用 Vue 3 + TypeScript 重构了主要业务模块，性能提升 40%\n• 建立了前端工程化体系，包括 CI/CD、代码规范、组件库等\n• 指导团队技术成长，组织技术分享会'
-    },
-    {
-      id: generateUUID(),
-      isVisible: true,
-      company: 'XYZ互联网公司',
-      position: '前端工程师',
-      startDate: '2019-06',
-      endDate: '2020-12',
-      description: '参与多个 B 端和 C 端项目的开发\n• 使用 React + Redux 开发了电商平台前端\n• 优化页面加载速度，首屏时间减少 30%\n• 与后端协作完成 API 接口设计与联调'
+      company: '比特跳动',
+      position: '初级开发工程师',
+      startDate: '2025-10',
+      endDate: '2026-01',
+      description: '  •  工作内容：主要负责平台<strong>从零到一</strong>的<strong>设计</strong>与<strong>实现</strong>'
     }
   ])
 
@@ -106,20 +97,20 @@ export const useResumeStore = defineStore('resume', () => {
     {
       id: generateUUID(),
       isVisible: true,
-      name: '企业级管理系统',
-      role: '前端负责人',
-      startDate: '2022-03',
-      endDate: '2023-06',
-      description: '基于 Vue 3 + Element Plus 构建的企业级后台管理系统，支持多租户、权限管理、数据可视化等功能。项目采用微前端架构，提升了系统的可维护性和扩展性。'
+      name: '在线电商平台',
+      role: '后端开发',
+      startDate: '2025-10',
+      endDate: '2025-12',
+      description: '<p style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;">  •  设计并实现了一个完整的B2C电商平台，包含商品管理、订单处理、支付集成、用户管理等模块<br></p><p>  •  采用微服务架构，将系统拆分为用户服务、商品服务、订单服务等独立模块</p><p>  •  实现JWT身份认证和RBAC权限控制，保证系统安全</p><p>  •  使用Redis实现购物车缓存和会话管理，提升系统性能</p>'
     },
     {
       id: generateUUID(),
       isVisible: true,
-      name: '移动端 H5 应用',
-      role: '核心开发者',
-      startDate: '2021-08',
-      endDate: '2022-02',
-      description: '使用 Vue 3 + Vant 开发的移动端应用，支持 PWA，实现了离线缓存、推送通知等功能。通过性能优化，在低端设备上也能流畅运行。'
+      name: '智能校园社交APP',
+      role: '后端开发',
+      startDate: '2025-12',
+      endDate: '2026-02',
+      description: '<p style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;">  •  开发了一款面向高校学生的社交应用，支持动态发布、活动组织、即时通讯等功能</p><p>  •  实现实时聊天功能，支持文字、图片和文件传输</p><p>  •  集成第三方登录和地图服务，提升用户体验</p>'
     }
   ])
 
@@ -128,22 +119,31 @@ export const useResumeStore = defineStore('resume', () => {
     {
       id: generateUUID(),
       isVisible: true,
-      school: 'XX大学',
-      major: '计算机科学与技术',
+      school: '瀚海大学',
+      major: '软件工程',
+      degree: '硕士',
+      startDate: '2025-09',
+      endDate: ''
+    },
+    {
+      id: generateUUID(),
+      isVisible: true,
+      school: '北辰理工大学',
+      major: '软件工程',
       degree: '本科',
-      startDate: '2015-09',
-      endDate: '2019-06'
+      startDate: '2021-09',
+      endDate: '2025-06'
     }
   ])
 
   // 获奖经历
   const awards = ref<Awards>({
-    content: '2023年 全国大学生数学建模竞赛一等奖\n2022年 省级程序设计竞赛银奖\n2021年 校级优秀学生干部\n2020年 国家励志奖学金'
+    content: '证书：CET-4，CET-6<br>第三十三届"软件杯"省赛一等奖'
   })
 
   // 个人评价
   const selfEvaluation = ref<SelfEvaluation>({
-    content: '具有良好的沟通能力和团队协作精神，工作积极主动，能够快速适应新环境。热爱技术，持续学习，追求代码质量和用户体验的完美结合。'
+    content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
   })
 
   // 主题配置
@@ -153,9 +153,9 @@ export const useResumeStore = defineStore('resume', () => {
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     lineHeight: 1.6,
     paragraphSpacing: 8,
-    titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
-    titleFontWeight: 600,  // 600 细 / 800 粗（默认细）
-    language: 'zh'  // 默认中文
+    titleFontSize: 28,
+    titleFontWeight: 800,
+    language: 'zh'
   })
 
   // 预览缩放（默认 74%）
@@ -230,73 +230,73 @@ export const useResumeStore = defineStore('resume', () => {
   // 初始模板数据（重置时恢复到此状态）
   const initialTemplate = {
     profile: {
-      name: '张三',
-      title: '前端工程师',
-      mobile: '138-0000-0000',
-      email: 'zhangsan@example.com',
-      birthday: '2000-01',
-      github: 'https://github.com/zhangsan',
-      website: 'https://zhangsan.dev',
-      summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。',
-      skills: 'Vue.js, React, TypeScript, Node.js,Webpack, Vite',
+      name: '你好乔',
+      title: '后端开发',
+      mobile: '18939393333',
+      email: 'linjiale333@gmail.com',
+      birthday: '2002-03',
+      github: '',
+      website: 'knockknockresume.top',
+      summary: '',
+      skills: '  •  <strong>Java基础</strong><strong>：</strong>掌握 Java 基础知识，集合框架、I/O流、反射机制等，了解HashMap存储原理；中常见的设计模<br>      式，如工厂模式、代理模式、单例模式等\n  •  <strong>MySQL</strong><strong>：</strong> 熟练使用 MySQL，掌握索引、事务、锁、日志等核心概念，了解sql优化<br>  •  <strong>MQ</strong><strong>：</strong>了解RabbitMQ 消息队列，例如交换机、消息确认机制、TTL机制、死信队列<br>  •  <strong>并发编程</strong><strong>：</strong>了解 Java 多线程，例如线程池、锁、ThreadLocal 等关键知识点的原理\n',
       avatar: undefined as string | undefined
     },
     experiences: [
       {
         id: '',
         isVisible: true,
-        company: 'ABC科技有限公司',
-        position: '高级前端工程师',
-        startDate: '2021-01',
-        endDate: '2024-12',
-        description: '负责公司核心产品的前端架构设计与开发\n• 使用 Vue 3 + TypeScript 重构了主要业务模块，性能提升 40%\n• 建立了前端工程化体系，包括 CI/CD、代码规范、组件库等\n• 指导团队技术成长，组织技术分享会'
-      },
-      {
-        id: '',
-        isVisible: true,
-        company: 'XYZ互联网公司',
-        position: '前端工程师',
-        startDate: '2019-06',
-        endDate: '2020-12',
-        description: '参与多个 B 端和 C 端项目的开发\n• 使用 React + Redux 开发了电商平台前端\n• 优化页面加载速度，首屏时间减少 30%\n• 与后端协作完成 API 接口设计与联调'
+        company: '比特跳动',
+        position: '初级开发工程师',
+        startDate: '2025-10',
+        endDate: '2026-01',
+        description: '  •  工作内容：主要负责平台<strong>从零到一</strong>的<strong>设计</strong>与<strong>实现</strong>'
       }
     ],
     projects: [
       {
         id: '',
         isVisible: true,
-        name: '企业级管理系统',
-        role: '前端负责人',
-        startDate: '2022-03',
-        endDate: '2023-06',
-        description: '基于 Vue 3 + Element Plus 构建的企业级后台管理系统，支持多租户、权限管理、数据可视化等功能。项目采用微前端架构，提升了系统的可维护性和扩展性。'
+        name: '在线电商平台',
+        role: '后端开发',
+        startDate: '2025-10',
+        endDate: '2025-12',
+        description: '<p style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;">  •  设计并实现了一个完整的B2C电商平台，包含商品管理、订单处理、支付集成、用户管理等模块<br></p><p>  •  采用微服务架构，将系统拆分为用户服务、商品服务、订单服务等独立模块</p><p>  •  实现JWT身份认证和RBAC权限控制，保证系统安全</p><p>  •  使用Redis实现购物车缓存和会话管理，提升系统性能</p>'
       },
       {
         id: '',
         isVisible: true,
-        name: '移动端 H5 应用',
-        role: '核心开发者',
-        startDate: '2021-08',
-        endDate: '2022-02',
-        description: '使用 Vue 3 + Vant 开发的移动端应用，支持 PWA，实现了离线缓存、推送通知等功能。通过性能优化，在低端设备上也能流畅运行。'
+        name: '智能校园社交APP',
+        role: '后端开发',
+        startDate: '2025-12',
+        endDate: '2026-02',
+        description: '<p style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;">  •  开发了一款面向高校学生的社交应用，支持动态发布、活动组织、即时通讯等功能</p><p>  •  实现实时聊天功能，支持文字、图片和文件传输</p><p>  •  集成第三方登录和地图服务，提升用户体验</p>'
       }
     ],
     educations: [
       {
         id: '',
         isVisible: true,
-        school: 'XX大学',
-        major: '计算机科学与技术',
+        school: '瀚海大学',
+        major: '软件工程',
+        degree: '硕士',
+        startDate: '2025-09',
+        endDate: ''
+      },
+      {
+        id: '',
+        isVisible: true,
+        school: '北辰理工大学',
+        major: '软件工程',
         degree: '本科',
-        startDate: '2015-09',
-        endDate: '2019-06'
+        startDate: '2021-09',
+        endDate: '2025-06'
       }
     ],
     awards: {
-      content: '2023年 全国大学生数学建模竞赛一等奖\n2022年 省级程序设计竞赛银奖\n2021年 校级优秀学生干部\n2020年 国家励志奖学金'
+      content: '证书：CET-4，CET-6<br>第三十三届"软件杯"省赛一等奖'
     },
     selfEvaluation: {
-      content: '具有良好的沟通能力和团队协作精神，工作积极主动，能够快速适应新环境。热爱技术，持续学习，追求代码质量和用户体验的完美结合。'
+      content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
     },
     theme: {
       primaryColor: '#000000',
@@ -305,7 +305,7 @@ export const useResumeStore = defineStore('resume', () => {
       lineHeight: 1.6,
       paragraphSpacing: 8,
       titleFontSize: 28,
-      titleFontWeight: 600,
+      titleFontWeight: 800,
       language: 'zh' as const
     }
   }
