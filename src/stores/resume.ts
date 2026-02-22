@@ -227,29 +227,120 @@ export const useResumeStore = defineStore('resume', () => {
     }
   }
 
-  function resetData() {
-    profile.value = {
-      name: '',
-      title: '',
-      mobile: '',
-      email: '',
-      summary: '',
-      skills: ''
-    }
-    experiences.value = []
-    projects.value = []
-    educations.value = []
-    awards.value = { content: '' }
-    selfEvaluation.value = { content: '' }
-    theme.value = {
+  // 初始模板数据（重置时恢复到此状态）
+  const initialTemplate = {
+    profile: {
+      name: '张三',
+      title: '前端工程师',
+      mobile: '138-0000-0000',
+      email: 'zhangsan@example.com',
+      birthday: '2000-01',
+      github: 'https://github.com/zhangsan',
+      website: 'https://zhangsan.dev',
+      summary: '拥有5年前端开发经验，精通 Vue.js、React 等现代前端框架，擅长构建高性能、可维护的 Web 应用。',
+      skills: 'Vue.js, React, TypeScript, Node.js,Webpack, Vite',
+      avatar: undefined as string | undefined
+    },
+    experiences: [
+      {
+        id: '',
+        isVisible: true,
+        company: 'ABC科技有限公司',
+        position: '高级前端工程师',
+        startDate: '2021-01',
+        endDate: '2024-12',
+        description: '负责公司核心产品的前端架构设计与开发\n• 使用 Vue 3 + TypeScript 重构了主要业务模块，性能提升 40%\n• 建立了前端工程化体系，包括 CI/CD、代码规范、组件库等\n• 指导团队技术成长，组织技术分享会'
+      },
+      {
+        id: '',
+        isVisible: true,
+        company: 'XYZ互联网公司',
+        position: '前端工程师',
+        startDate: '2019-06',
+        endDate: '2020-12',
+        description: '参与多个 B 端和 C 端项目的开发\n• 使用 React + Redux 开发了电商平台前端\n• 优化页面加载速度，首屏时间减少 30%\n• 与后端协作完成 API 接口设计与联调'
+      }
+    ],
+    projects: [
+      {
+        id: '',
+        isVisible: true,
+        name: '企业级管理系统',
+        role: '前端负责人',
+        startDate: '2022-03',
+        endDate: '2023-06',
+        description: '基于 Vue 3 + Element Plus 构建的企业级后台管理系统，支持多租户、权限管理、数据可视化等功能。项目采用微前端架构，提升了系统的可维护性和扩展性。'
+      },
+      {
+        id: '',
+        isVisible: true,
+        name: '移动端 H5 应用',
+        role: '核心开发者',
+        startDate: '2021-08',
+        endDate: '2022-02',
+        description: '使用 Vue 3 + Vant 开发的移动端应用，支持 PWA，实现了离线缓存、推送通知等功能。通过性能优化，在低端设备上也能流畅运行。'
+      }
+    ],
+    educations: [
+      {
+        id: '',
+        isVisible: true,
+        school: 'XX大学',
+        major: '计算机科学与技术',
+        degree: '本科',
+        startDate: '2015-09',
+        endDate: '2019-06'
+      }
+    ],
+    awards: {
+      content: '2023年 全国大学生数学建模竞赛一等奖\n2022年 省级程序设计竞赛银奖\n2021年 校级优秀学生干部\n2020年 国家励志奖学金'
+    },
+    selfEvaluation: {
+      content: '具有良好的沟通能力和团队协作精神，工作积极主动，能够快速适应新环境。热爱技术，持续学习，追求代码质量和用户体验的完美结合。'
+    },
+    theme: {
       primaryColor: '#000000',
       dividerColor: '#000000',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       lineHeight: 1.6,
       paragraphSpacing: 8,
-      titleFontSize: 28,  // S=28 / M=29 / L=30 / XL=31
-      titleFontWeight: 700,  // 500 细 / 700 粗（默认）
-      language: 'zh'  // 默认中文
+      titleFontSize: 28,
+      titleFontWeight: 600,
+      language: 'zh' as const
+    }
+  }
+
+  function resetData() {
+    const t = initialTemplate
+    profile.value = {
+      name: t.profile.name,
+      title: t.profile.title,
+      mobile: t.profile.mobile,
+      email: t.profile.email,
+      birthday: t.profile.birthday,
+      github: t.profile.github,
+      website: t.profile.website,
+      summary: t.profile.summary,
+      skills: t.profile.skills,
+      avatar: undefined
+    }
+    experiences.value = t.experiences.map((e) => ({
+      ...e,
+      id: generateUUID()
+    }))
+    projects.value = t.projects.map((p) => ({
+      ...p,
+      id: generateUUID()
+    }))
+    educations.value = t.educations.map((edu) => ({
+      ...edu,
+      id: generateUUID()
+    }))
+    awards.value = { content: t.awards.content }
+    selfEvaluation.value = { content: t.selfEvaluation.content }
+    theme.value = {
+      ...t.theme,
+      language: theme.value.language  // 保留用户选择的语言
     }
   }
 

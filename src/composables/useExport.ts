@@ -101,7 +101,7 @@ export function useExport(filename: string) {
    * @param onReset 重置回调
    */
   const reset = (onReset: () => void) => {
-    if (confirm('确定要重置所有数据吗？此操作不可恢复。')) {
+    if (confirm('确定要重置到初始模板吗？当前内容将被覆盖。')) {
       onReset()
       ElMessage.success('简历已重置')
     }

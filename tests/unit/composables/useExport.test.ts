@@ -32,7 +32,7 @@ describe('useExport', () => {
 
     reset(onReset)
 
-    expect(global.confirm).toHaveBeenCalledWith('确定要重置所有数据吗？此操作不可恢复。')
+    expect(global.confirm).toHaveBeenCalledWith('确定要重置到初始模板吗？当前内容将被覆盖。')
     expect(onReset).toHaveBeenCalled()
   })
 })
