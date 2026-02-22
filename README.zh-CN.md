@@ -6,6 +6,18 @@
 
 **敲敲简历-简单快速的简历编辑器**
 
+<div align="center">
+
+<i>
+
+KnockKnock<br>
+Who's there?<br>
+A Better Future
+
+</i>
+
+</div>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
@@ -27,6 +39,12 @@
 
 ### 英文简历
 <img src="img/英文版模版.png" alt="英文简历模板" width="800">
+
+## 🎬 视频介绍
+
+**【简历导出还要收费？模板不好看？自己整一个】**
+
+📺 [Bilibili 视频链接](https://www.bilibili.com/video/BV12ufwBcEZo)
 
 ## 🚀 快速开始
 

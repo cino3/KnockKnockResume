@@ -6,6 +6,18 @@
 
 **A Modern, Elegant Online Resume Editor**
 
+<div align="center">
+
+<i>
+
+KnockKnock<br>
+Who's there?<br>
+A Better Future
+
+</i>
+
+</div>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
