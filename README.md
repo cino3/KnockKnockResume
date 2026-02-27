@@ -40,6 +40,12 @@ A Better Future
 ### English Template
 <img src="img/英文版模版.png" alt="English Resume Template" width="800">
 
+## 🎬 Video Introduction
+
+**【简历导出还要收费？模板不好看？自己整一个】**
+
+📺 [Bilibili 视频链接](https://www.bilibili.com/video/BV12ufwBcEZo)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
