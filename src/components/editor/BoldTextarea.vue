@@ -22,6 +22,19 @@
           <List :size="14" />
         </template>
       </el-button>
+      <el-tooltip
+        content="对齐上一行列表缩进"
+        placement="top"
+      >
+        <el-button
+          size="small"
+          type="primary"
+          text
+          @click="insertListIndent"
+        >
+          <span class="indent-icon">↳</span>
+        </el-button>
+      </el-tooltip>
     </div>
     <div
       ref="editorRef"
@@ -224,6 +237,44 @@ const insertBullet = () => {
   emit('update:modelValue', content.value)
 }
 
+// 插入列表续行缩进（固定 6 个空格）
+const insertListIndent = () => {
+  if (!editorRef.value) return
+
+  editorRef.value.focus()
+
+  let selection = window.getSelection()
+  if (!selection || selection.rangeCount === 0) {
+    const range = document.createRange()
+    range.selectNodeContents(editorRef.value)
+    range.collapse(false)
+    selection = window.getSelection()
+    if (!selection) return
+    selection.removeAllRanges()
+    selection.addRange(range)
+  }
+
+  const range = selection.getRangeAt(0)
+  range.deleteContents()
+
+  const br = document.createElement('br')
+  range.insertNode(br)
+
+  range.setStartAfter(br)
+  range.collapse(true)
+
+  const spacesNode = document.createTextNode('      ')
+  range.insertNode(spacesNode)
+
+  range.setStartAfter(spacesNode)
+  range.collapse(true)
+  selection.removeAllRanges()
+  selection.addRange(range)
+
+  content.value = editorRef.value.innerHTML
+  emit('update:modelValue', content.value)
+}
+
 // 检查当前选区是否加粗
 const checkBoldState = () => {
   const selection = window.getSelection()
@@ -362,6 +413,13 @@ const handleBlur = () => {
 .toolbar .el-button.is-active:hover {
   background-color: #384c55 !important;
   color: white !important;
+}
+
+.toolbar .indent-icon {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
 .editor-content {

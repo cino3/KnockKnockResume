@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useResumeStore } from '@/stores/resume'
+import { storeToRefs } from 'pinia'
 import { usePrint } from '@/composables/usePrint'
 import { useExport } from '@/composables/useExport'
 import SidebarToggle from './sidebar/SidebarToggle.vue'
@@ -43,8 +44,9 @@ import DesignEditor from './sidebar/DesignEditor.vue'
 import SidebarFooter from './sidebar/SidebarFooter.vue'
 
 const store = useResumeStore()
-const { printResume } = usePrint(store.resumeFileName)
-const { exportJSON, importJSON, save, reset } = useExport(store.resumeFileName)
+const { resumeFileName } = storeToRefs(store)
+const { printResume } = usePrint(resumeFileName)
+const { exportJSON, importJSON, save, reset } = useExport(resumeFileName)
 
 const isCollapsed = ref(false)
 const currentTab = ref<'content' | 'design'>('content')

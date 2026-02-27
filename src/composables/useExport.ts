@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
+import { unref } from 'vue'
+import type { MaybeRef } from 'vue'
 
 /**
  * 简历导出Composable
  * 提供导出、保存、重置等通用操作
  */
-export function useExport(filename: string) {
+export function useExport(filename: MaybeRef<string>) {
   /**
    * 导出JSON文件
    * @param data 要导出的数据
@@ -17,8 +19,9 @@ export function useExport(filename: string) {
 
     const link = document.createElement('a')
     const timestamp = dayjs().format('YYYYMMDD_HHmmss')
+    const resolvedFilename = unref(filename) || '我的简历'
     link.href = url
-    link.download = `${prefix || filename}_${timestamp}.json`
+    link.download = `${prefix || resolvedFilename}_${timestamp}.json`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

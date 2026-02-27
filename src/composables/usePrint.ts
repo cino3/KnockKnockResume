@@ -1,11 +1,14 @@
-export function usePrint(resumeName: string) {
+import { unref } from 'vue'
+import type { MaybeRef } from 'vue'
+
+export function usePrint(resumeName: MaybeRef<string>) {
   const printResume = () => {
     // 1. 备份当前页面标题
     const originalTitle = document.title;
     
     // 2. 修改标题为文件名 (例如: 张三_前端工程师_简历)
     // 这样用户保存 PDF 时，文件名会自动变成这个
-    document.title = resumeName || '我的简历';
+    document.title = unref(resumeName) || '我的简历';
     
     // 3. 调用系统打印
     window.print();
@@ -19,4 +22,3 @@ export function usePrint(resumeName: string) {
 
   return { printResume };
 }
-

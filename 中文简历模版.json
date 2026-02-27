@@ -1,0 +1,89 @@
+{
+  "profile": {
+    "name": "你好乔",
+    "title": "后端开发",
+    "mobile": "18939393333",
+    "email": "linjiale333@gmail.com",
+    "birthday": "2002-03",
+    "github": "",
+    "website": "knockknockresume.top",
+    "skills": "  •  <strong>Java基础</strong><strong>：</strong>掌握 Java 基础知识，集合框架、I/O流、反射机制等，了解HashMap存储原理；中常见的设计模<br>      式，如工厂模式、代理模式、单例模式等\n  •  <strong>MySQL</strong><strong>：</strong> 熟练使用 MySQL，掌握索引、事务、锁、日志等核心概念，了解sql优化<br>  •  <strong>MQ</strong><strong>：</strong>了解RabbitMQ 消息队列，例如交换机、消息确认机制、TTL机制、死信队列<br>  •  <strong>并发编程</strong><strong>：</strong>了解 Java 多线程，例如线程池、锁、ThreadLocal 等关键知识点的原理\n"
+  },
+  "experiences": [
+    {
+      "id": "5b565d27-c404-43f1-a94c-22e1c797d659",
+      "isVisible": true,
+      "company": "比特跳动",
+      "position": "初级开发工程师",
+      "startDate": "2025-10",
+      "endDate": "2026-01",
+      "description": "  •  工作内容：主要负责平台<strong>从零到一</strong>的<strong>设计</strong>与<strong>实现</strong>"
+    }
+  ],
+  "projects": [
+    {
+      "id": "5bf21dd3-a5c8-47c8-a8ba-799510fce225",
+      "isVisible": true,
+      "name": "在线电商平台",
+      "role": "后端开发",
+      "startDate": "2025-10",
+      "endDate": "2025-12",
+      "description": "<p style=\"--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;\">  •  设计并实现了一个完整的B2C电商平台，包含商品管理、订单处理、支付集成、用户管理等模块<br></p><p>  •  采用微服务架构，将系统拆分为用户服务、商品服务、订单服务等独立模块</p><p>  •  实现JWT身份认证和RBAC权限控制，保证系统安全</p><p>  •  使用Redis实现购物车缓存和会话管理，提升系统性能</p>"
+    },
+    {
+      "id": "e5d8938f-dba7-400b-bb4b-4efe27ca6a2d",
+      "isVisible": true,
+      "name": "智能校园社交APP",
+      "role": "后端开发",
+      "startDate": "2025-12",
+      "endDate": "2026-02",
+      "description": "<p style=\"--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;\">  •  开发了一款面向高校学生的社交应用，支持动态发布、活动组织、即时通讯等功能</p><p>  •  实现实时聊天功能，支持文字、图片和文件传输</p><p>  •  集成第三方登录和地图服务，提升用户体验</p>"
+    },
+    {
+      "id": "167576d2-a008-48f6-a5a2-87e1a30553f6",
+      "isVisible": false,
+      "name": "123",
+      "role": "123123",
+      "startDate": "123",
+      "endDate": "123",
+      "description": "a 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊a1啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+    }
+  ],
+  "educations": [
+    {
+      "id": "ad7b115b-36e1-4eb5-b902-8ccadbea3335",
+      "isVisible": true,
+      "school": "瀚海大学",
+      "major": "软件工程",
+      "degree": "硕士",
+      "startDate": "2025-09",
+      "endDate": ""
+    },
+    {
+      "id": "84469e31-837d-4368-99fc-9ab21dee4d9a",
+      "isVisible": true,
+      "school": "北辰理工大学",
+      "major": "软件工程",
+      "degree": "本科",
+      "startDate": "2021-09",
+      "endDate": "2025-06"
+    }
+  ],
+  "awards": {
+    "content": "证书：CET-4，CET-6<br>第三十三届“软件杯”省赛一等奖"
+  },
+  "selfEvaluation": {
+    "content": "喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍"
+  },
+  "theme": {
+    "primaryColor": "#000000",
+    "dividerColor": "#000000",
+    "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "lineHeight": 1.6,
+    "paragraphSpacing": 8,
+    "titleFontSize": 28,
+    "titleFontWeight": 800,
+    "language": "zh"
+  },
+  "exportTime": "2026-02-19 21:50:56"
+}
