@@ -59,6 +59,7 @@ export interface ThemeConfig {
   paragraphSpacing: number; // 段间距
   titleFontSize: number; // 标题字体大小
   titleFontWeight: number; // 标题字体粗细
+  bodyFontSize: 'sm' | 'md' | 'lg'; // 正文字体大小档位
   language: 'zh' | 'en'; // 语言：中文或英文
 }
 
@@ -72,4 +73,3 @@ export interface ResumeData {
   selfEvaluation: SelfEvaluation;
   theme: ThemeConfig;
 }
-

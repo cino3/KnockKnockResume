@@ -32,6 +32,14 @@
         </el-radio-group>
       </div>
       <div class="control-item">
+        <span class="control-item-label">正文字号</span>
+        <el-radio-group v-model="store.theme.bodyFontSize" size="small" class="font-size-radio-group">
+          <el-radio-button value="sm">小</el-radio-button>
+          <el-radio-button value="md">中</el-radio-button>
+          <el-radio-button value="lg">大</el-radio-button>
+        </el-radio-group>
+      </div>
+      <div class="control-item">
         <span class="control-item-label">标题粗细</span>
         <el-radio-group v-model="store.theme.titleFontWeight" size="small" class="font-weight-radio-group">
           <el-radio-button :value="600">细</el-radio-button>

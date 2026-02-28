@@ -273,7 +273,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .title { font-size: 18px; color: #000000; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
-.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: #000000; min-height: 50px; }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: var(--font-size-body); color: #000000; min-height: 50px; }
 .contact-info.has-avatar { margin-right: 96px; }
 .contact-info-row { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -323,23 +323,23 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px; }
 .item-title {
-  font-size: var(--font-size-item-title);
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-item-title);
   color: #333;
   margin: 0 0 4px 0;
 }
-.item-subtitle-inline { font-size: 14px; font-weight: 400; color: #000000; margin-left: 8px; }
-.item-subtitle { font-size: 14px; color: #000000; }
-.education-major { font-size: 13px; color: #000000; }
-.education-major-inline { font-size: 14px; font-weight: 400; color: #000000; margin-left: 8px; }
-.education-degree { font-size: 14px; font-weight: 600; color: #333; }
-.item-date { font-size: 14px; color: #000000; white-space: nowrap; }
+.item-subtitle-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
+.item-subtitle { font-size: var(--font-size-body); color: #000000; }
+.education-major { font-size: var(--font-size-body); color: #000000; }
+.education-major-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
+.education-degree { font-size: var(--font-size-body); font-weight: 600; color: #333; }
+.item-date { font-size: var(--font-size-body); color: #000000; white-space: nowrap; }
 
 .item-description-wrapper { margin-top: 0px; margin-bottom: 0px; }
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {
-  font-size: 14px;
+  font-size: var(--font-size-body);
   color: #000000;
   line-height: var(--line-height, 1.6);
   white-space: pre-wrap;

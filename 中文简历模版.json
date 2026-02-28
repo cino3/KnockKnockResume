@@ -83,6 +83,7 @@
     "paragraphSpacing": 8,
     "titleFontSize": 28,
     "titleFontWeight": 800,
+    "bodyFontSize": "md",
     "language": "zh"
   },
   "exportTime": "2026-02-19 21:50:56"

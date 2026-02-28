@@ -155,6 +155,7 @@ export const useResumeStore = defineStore('resume', () => {
     paragraphSpacing: 8,
     titleFontSize: 28,
     titleFontWeight: 800,
+    bodyFontSize: 'md',
     language: 'zh'
   })
 
@@ -306,6 +307,7 @@ export const useResumeStore = defineStore('resume', () => {
       paragraphSpacing: 8,
       titleFontSize: 28,
       titleFontWeight: 800,
+      bodyFontSize: 'md',
       language: 'zh' as const
     }
   }
@@ -436,6 +438,7 @@ export const useResumeStore = defineStore('resume', () => {
           paragraphSpacing: data.theme.paragraphSpacing || 8,
           titleFontSize: data.theme.titleFontSize || 28,
           titleFontWeight: data.theme.titleFontWeight || 700,
+          bodyFontSize: data.theme.bodyFontSize || 'md',
           language: data.theme.language || 'zh'
         }
       }
@@ -487,4 +490,3 @@ export const useResumeStore = defineStore('resume', () => {
     ]
   }
 })
-

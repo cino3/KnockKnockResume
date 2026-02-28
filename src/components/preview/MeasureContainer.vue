@@ -16,10 +16,17 @@ import ResumeContent from '../ResumeContent.vue'
 const store = useResumeStore()
 const measureRef = ref<HTMLElement | null>(null)
 
+const bodyFontSizeMap = {
+  sm: '13px',
+  md: '14px',
+  lg: '15px'
+} as const
+
 const resumeStyle = computed(() => ({
   '--primary': store.theme.primaryColor,
   '--line-height': store.theme.lineHeight,
-  '--paragraph-spacing': `${store.theme.paragraphSpacing}px`
+  '--paragraph-spacing': `${store.theme.paragraphSpacing}px`,
+  '--font-size-body': bodyFontSizeMap[store.theme.bodyFontSize] || '14px'
 }))
 
 defineExpose({
