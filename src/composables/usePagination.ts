@@ -519,6 +519,16 @@ function calculateScore(pageHeights: number[], dynamicTarget: number, dynamicTol
 export function usePagination() {
   const renderPages = ref<number[]>([1])
 
+  const getComputedLineHeight = (sourceRoot: HTMLElement): number => {
+    const style = window.getComputedStyle(sourceRoot)
+    const raw = style.getPropertyValue('--line-height-body') || style.getPropertyValue('--line-height')
+    const parsed = parseFloat(raw)
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed
+    }
+    return 1.6
+  }
+
   /**
    * 计算分页
    * @param measureRef - 测量容器元素
@@ -528,6 +538,7 @@ export function usePagination() {
     if (!measureRef) return
 
     const sourceRoot = measureRef
+    const currentLineHeight = getComputedLineHeight(sourceRoot)
 
     // ================= 方案B：动态容差范围 =================
     // 第1步：先用 safetyBuffer=0 粗测一次，了解各页留白情况
@@ -656,7 +667,7 @@ export function usePagination() {
     if (bestMargin > firstPageCompressionThreshold) {
       console.log(`   🔧 第1页留白${bestMargin.toFixed(1)}px过大，尝试压缩...`)
       const targetReduction = bestMargin - 30 // 目标：压缩到留白30px左右
-      const saved = compressLineHeight(bestPagesData[0], targetReduction, 1.6)
+      const saved = compressLineHeight(bestPagesData[0], targetReduction, currentLineHeight)
 
       if (saved > 0) {
         console.log(`   ✨ 第1页压缩完成，节省约${saved.toFixed(1)}px`)
@@ -675,7 +686,7 @@ export function usePagination() {
 
       if (margin > compressionThreshold) {
         const targetReduction = margin - 200 // 目标：压缩到留白200px左右
-        const saved = compressLineHeight(bestPagesData[i], targetReduction, 1.6)
+        const saved = compressLineHeight(bestPagesData[i], targetReduction, currentLineHeight)
 
         if (saved > 0) {
           console.log(`   ✨ 第${i+1}页压缩完成，节省约${saved.toFixed(1)}px`)

@@ -260,8 +260,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 
 <style scoped>
 /* 基础样式 */
-.resume-header { padding-bottom: 8px; margin-bottom: 8px; }
-.header-top { display: flex; align-items: center; margin-bottom: 8px; position: relative; }
+.header-top { display: flex; align-items: center; position: relative; }
 .header-left { display: flex; align-items: baseline; gap: 12px; }
 .name {
   font-size: 28px;
@@ -280,11 +279,15 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .contact-item { display: flex; align-items: center; gap: 6px; }
 .contact-item :deep(svg) { flex-shrink: 0; }
 
-.resume-section { margin-bottom: 18px; }
+/* Spacing tokens (rounded) are injected via preview/print containers */
+.resume-header { padding-bottom: var(--space-header, 8px); margin-bottom: var(--space-header, 8px); }
+.header-top { margin-bottom: var(--space-header, 8px); }
+
+.resume-section { margin-bottom: var(--space-section, 18px); }
 .section-title {
   font-size: 17px;
   margin-bottom: 1px;
-  margin-top: 5px;
+  margin-top: var(--space-title-top, 5px);
   padding-bottom: 0;
   letter-spacing: 1px;
   /* 模块标题（教育经历、专业技能等）使用中文人文宋体栈 */
@@ -295,19 +298,19 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .section-title.en-title::first-letter {
   font-size: 1.2em; /* 首字母比正常字母大 30% */
 }
-.section-content { margin-bottom: 11px; }
+.section-content { margin-bottom: var(--space-divider, 11px); }
 
 /* 模块间分隔线 */
 .section-divider {
   border-bottom: 2px solid #000000;
   margin-top: 0px;
-  margin-bottom: 11px;
+  margin-bottom: var(--space-divider, 11px);
 }
-.experience-item, .project-item, .education-item { margin-bottom: 11px; }
+.experience-item, .project-item, .education-item { margin-bottom: var(--space-item, 11px); }
 /* 工作经历和项目经历：多条记录之间固定间距 */
-.experience-item, .project-item { margin-bottom: 14px; }
+.experience-item, .project-item { margin-bottom: var(--space-item-lg, 14px); }
 /* 教育经历：多条记录之间固定间距 */
-.education-item { margin-bottom: 8px; }
+.education-item { margin-bottom: var(--space-header, 8px); }
 /* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
 .education-item .item-title { margin-bottom: 0; }
 /* 教育经历中学校名称保持加粗强调 */
@@ -326,7 +329,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-item-title);
   color: #333;
-  margin: 0 0 4px 0;
+  margin: 0 0 var(--space-title-bottom, 4px) 0;
 }
 .item-subtitle-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
 .item-subtitle { font-size: var(--font-size-body); color: #000000; }
@@ -346,6 +349,6 @@ function formatDescriptionLines(text: string | undefined): string[] {
 }
 
 @media print {
-  .resume-section { margin-bottom: 20px; }
+  .resume-section { margin-bottom: var(--space-section-print, 20px); }
 }
 </style>
