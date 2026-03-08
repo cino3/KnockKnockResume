@@ -1,13 +1,15 @@
 <template>
   <div v-if="isMobileDevice" class="mobile-guide">
-    <div class="mobile-brand">
-      <img class="mobile-brand-logo" :src="logoUrl" alt="KnockKnock logo" />
-      <span class="mobile-brand-text">KnockKnock</span>
+    <div class="mobile-guide-content">
+      <div class="mobile-brand">
+        <img class="mobile-brand-logo" :src="logoUrl" alt="KnockKnock logo" />
+        <span class="mobile-brand-text">KnockKnock</span>
+      </div>
+      <p class="mobile-guide-text">看来这扇门只能在 PC 端上打开呢</p>
+      <button type="button" class="mobile-copy-btn" @click="copyCurrentLink">
+        {{ copied ? '已复制链接' : '复制链接，去PC上打开' }}
+      </button>
     </div>
-    <p class="mobile-guide-text">看来这扇门只能在 PC 端上打开呢</p>
-    <button type="button" class="mobile-copy-btn" @click="copyCurrentLink">
-      {{ copied ? '已复制链接' : '复制链接，去PC上打开' }}
-    </button>
   </div>
 
   <div v-else class="app-container">
@@ -29,7 +31,7 @@ import { onMounted, ref } from 'vue'
 import Sidebar from './components/Sidebar.vue'
 import Preview from './components/Preview.vue'
 import SponsorButton from './components/SponsorButton.vue'
-import logoUrl from '@/assets/logo0220.png'
+const logoUrl = '/logoNoBackground.png'
 
 const isMobileDevice = ref(false)
 const copied = ref(false)
@@ -80,16 +82,21 @@ onMounted(() => {
   text-align: center;
 }
 
+.mobile-guide-content {
+  transform: translateY(-36px);
+}
+
 .mobile-brand {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 18px;
 }
 
 .mobile-brand-logo {
-  width: 64px;
-  height: 64px;
+  width: 104px;
+  height: 104px;
   object-fit: contain;
 }
 
