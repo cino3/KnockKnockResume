@@ -4,7 +4,10 @@
       <img class="mobile-brand-logo" :src="logoUrl" alt="KnockKnock logo" />
       <span class="mobile-brand-text">KnockKnock</span>
     </div>
-    <p class="mobile-guide-text">移动端暂时不支持使用噢，请使用 PC 端打开。</p>
+    <p class="mobile-guide-text">看来这扇门只能在 PC 端上打开呢</p>
+    <button type="button" class="mobile-copy-btn" @click="copyCurrentLink">
+      {{ copied ? '已复制链接' : '复制链接，去PC上打开' }}
+    </button>
   </div>
 
   <div v-else class="app-container">
@@ -29,12 +32,35 @@ import SponsorButton from './components/SponsorButton.vue'
 import logoUrl from '@/assets/logo0220.png'
 
 const isMobileDevice = ref(false)
-
+const copied = ref(false)
 const detectMobileDevice = () => {
   const ua = navigator.userAgent || ''
   const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|Mobile/i.test(ua)
   const isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
   isMobileDevice.value = isMobileUA || isIPadOS
+}
+
+const copyCurrentLink = async () => {
+  const url = 'https://www.knockknockresume.top/'
+
+  try {
+    await navigator.clipboard.writeText(url)
+  } catch {
+    const textArea = document.createElement('textarea')
+    textArea.value = url
+    textArea.setAttribute('readonly', 'true')
+    textArea.style.position = 'fixed'
+    textArea.style.opacity = '0'
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+  }
+
+  copied.value = true
+  window.setTimeout(() => {
+    copied.value = false
+  }, 1800)
 }
 
 onMounted(() => {
@@ -45,19 +71,25 @@ onMounted(() => {
 <style scoped>
 .mobile-guide {
   min-height: 100vh;
-  background: var(--app-bg);
-  padding: 20px;
+  background: #fff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .mobile-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .mobile-brand-logo {
-  width: 37px;
-  height: 37px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
 }
 
@@ -65,15 +97,31 @@ onMounted(() => {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--primary-color);
-  font-size: 22px;
-  letter-spacing: -0.5px;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.8px;
 }
 
 .mobile-guide-text {
-  margin-top: 14px;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.6;
+  max-width: 360px;
+  color: var(--primary-color);
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.mobile-copy-btn {
+  margin-top: 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 18px;
+  cursor: pointer;
 }
 
 .app-container {
