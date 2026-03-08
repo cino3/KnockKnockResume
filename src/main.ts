@@ -21,10 +21,16 @@ import './styles/sidebar.scss'
 
 import App from './App.vue'
 
+const showStartupEasterEgg = () => {
+  console.log('Knock,Knock')
+  console.log("Who's there?")
+  console.log('A Better Future')
+}
+
 const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
 app.mount('#app')
-
+showStartupEasterEgg()

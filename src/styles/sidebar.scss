@@ -340,6 +340,12 @@
   flex: none;
 }
 
+/* 正文字号（小/中/大）：3格，每格55px，和上下行保持同一网格节奏 */
+.body-font-size-radio-group {
+  width: 165px;
+  flex: none;
+}
+
 /* === 字体粗细选择器样式 === */
 .font-weight-radio-group {
   width: 110px; /* 2个按钮，每个55px，总宽度110px */

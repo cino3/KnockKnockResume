@@ -33,7 +33,7 @@
       </div>
       <div class="control-item">
         <span class="control-item-label">正文字号</span>
-        <el-radio-group v-model="store.theme.bodyFontSize" size="small" class="font-size-radio-group">
+        <el-radio-group v-model="store.theme.bodyFontSize" size="small" class="body-font-size-radio-group">
           <el-radio-button value="sm">小</el-radio-button>
           <el-radio-button value="md">中</el-radio-button>
           <el-radio-button value="lg">大</el-radio-button>

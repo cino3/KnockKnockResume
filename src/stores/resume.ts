@@ -31,7 +31,7 @@ export const useResumeStore = defineStore('resume', () => {
         localStorage.setItem('resume', JSON.stringify(parsed))
       }
     } catch (e) {
-      console.error('数据迁移失败:', e)
+      // console.error('数据迁移失败:', e)
     }
   }
 
@@ -445,7 +445,7 @@ export const useResumeStore = defineStore('resume', () => {
 
       return true
     } catch (error) {
-      console.error('导入数据失败:', error)
+      // console.error('导入数据失败:', error)
       return false
     }
   }
