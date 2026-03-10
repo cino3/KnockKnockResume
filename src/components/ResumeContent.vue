@@ -38,163 +38,166 @@
     </div>
   </header>
 
-  <!-- 教育经历 -->
-  <section v-if="visibleEducations.length > 0" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.education }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div
-      v-for="edu in visibleEducations"
-      :key="edu.id"
-      class="education-item"
-    >
-      <div class="item-header">
-        <div>
-          <h3
-            class="item-title"
-            :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
-          >
-            <span class="education-school">
-              {{ edu.school || '(未填写学校)' }}
-            </span>
-            -
-            <span class="education-degree">{{ edu.degree || '' }}</span>
-            <span class="education-major-inline">{{ edu.major || '' }}</span>
-          </h3>
-        </div>
-        <span
-          class="item-date"
-          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
-        >
-          {{ formatDateRange(edu.startDate, edu.endDate) }}
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 专业技能 -->
-  <section v-if="store.profile.skills" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.skills }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div class="section-content">
+  <template v-for="sectionKey in orderedSections" :key="sectionKey">
+    <!-- 教育经历 -->
+    <section v-if="sectionKey === 'education' && visibleEducations.length > 0" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.education }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
       <div
-        v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
-        :key="index"
-        class="text-line"
-        :style="textLineStyle"
-        v-html="line"
-      ></div>
-    </div>
-  </section>
-
-  <!-- 工作经历 -->
-  <section v-if="visibleExperiences.length > 0" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.experience }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div
-      v-for="exp in visibleExperiences"
-      :key="exp.id"
-      class="experience-item"
-    >
-      <div class="item-header">
-        <div>
-          <h3
-            class="item-title"
+        v-for="edu in visibleEducations"
+        :key="edu.id"
+        class="education-item"
+      >
+        <div class="item-header">
+          <div>
+            <h3
+              class="item-title"
+              :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+            >
+              <span class="education-school">
+                {{ edu.school || '(未填写学校)' }}
+              </span>
+              -
+              <span class="education-degree">{{ edu.degree || '' }}</span>
+              <span class="education-major-inline">{{ edu.major || '' }}</span>
+            </h3>
+          </div>
+          <span
+            class="item-date"
             :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
           >
-            {{ exp.company }} <span class="item-subtitle-inline">{{ exp.position }}</span>
-          </h3>
+            {{ formatDateRange(edu.startDate, edu.endDate) }}
+          </span>
         </div>
-        <span
-          class="item-date"
-          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
-        >
-          {{ formatDateRange(exp.startDate, exp.endDate) }}
-        </span>
       </div>
-      <!-- 描述文本拆分为多行 -->
-      <div v-if="exp.description" class="item-description-wrapper">
+    </section>
+
+    <!-- 专业技能 -->
+    <section v-else-if="sectionKey === 'skills' && store.profile.skills" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.skills }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div class="section-content">
         <div
-          v-for="(line, index) in formatDescriptionLines(exp.description)"
+          v-for="(line, index) in formatDescriptionLines(store.profile.skills)"
           :key="index"
           class="text-line"
           :style="textLineStyle"
           v-html="line"
         ></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 项目经历 -->
-  <section v-if="visibleProjects.length > 0" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.project }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div
-      v-for="proj in visibleProjects"
-      :key="proj.id"
-      class="project-item"
-    >
-      <div class="item-header">
-        <div>
-          <h3
-            class="item-title"
+    <!-- 工作经历 -->
+    <section v-else-if="sectionKey === 'experience' && visibleExperiences.length > 0" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.experience }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div
+        v-for="exp in visibleExperiences"
+        :key="exp.id"
+        class="experience-item"
+      >
+        <div class="item-header">
+          <div>
+            <h3
+              class="item-title"
+              :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+            >
+              {{ exp.company }} <span class="item-subtitle-inline">{{ exp.position }}</span>
+            </h3>
+          </div>
+          <span
+            class="item-date"
             :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
           >
-            {{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span>
-          </h3>
+            {{ formatDateRange(exp.startDate, exp.endDate) }}
+          </span>
         </div>
-        <span
-          class="item-date"
-          :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
-        >
-          {{ formatDateRange(proj.startDate, proj.endDate) }}
-        </span>
+        <!-- 描述文本拆分为多行 -->
+        <div v-if="exp.description" class="item-description-wrapper">
+          <div
+            v-for="(line, index) in formatDescriptionLines(exp.description)"
+            :key="index"
+            class="text-line"
+            :style="textLineStyle"
+            v-html="line"
+          ></div>
+        </div>
       </div>
-      <div v-if="proj.description" class="item-description-wrapper">
+    </section>
+
+    <!-- 项目经历 -->
+    <section v-else-if="sectionKey === 'project' && visibleProjects.length > 0" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.project }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div
+        v-for="proj in visibleProjects"
+        :key="proj.id"
+        class="project-item"
+      >
+        <div class="item-header">
+          <div>
+            <h3
+              class="item-title"
+              :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+            >
+              {{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span>
+            </h3>
+          </div>
+          <span
+            class="item-date"
+            :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
+          >
+            {{ formatDateRange(proj.startDate, proj.endDate) }}
+          </span>
+        </div>
+        <div v-if="proj.description" class="item-description-wrapper">
+          <div
+            v-for="(line, index) in formatDescriptionLines(proj.description)"
+            :key="index"
+            class="text-line"
+            :style="textLineStyle"
+            v-html="line"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 获奖经历 -->
+    <section v-else-if="sectionKey === 'award' && store.awards.content" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.award }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div class="section-content">
         <div
-          v-for="(line, index) in formatDescriptionLines(proj.description)"
+          v-for="(line, index) in formatDescriptionLines(store.awards.content)"
           :key="index"
           class="text-line"
           :style="textLineStyle"
           v-html="line"
         ></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 获奖经历 -->
-  <section v-if="store.awards.content" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.award }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div class="section-content">
-      <div
-        v-for="(line, index) in formatDescriptionLines(store.awards.content)"
-        :key="index"
-        class="text-line"
-        :style="textLineStyle"
-        v-html="line"
-      ></div>
-    </div>
-  </section>
-
-  <!-- 个人评价 -->
-  <section v-if="store.selfEvaluation.content" class="resume-section">
-    <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.selfEvaluation }}</h2>
-    <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
-    <div class="section-content">
-      <div
-        v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
-        :key="index"
-        class="text-line"
-        :style="textLineStyle"
-        v-html="line"
-      ></div>
-    </div>
-  </section>
+    <!-- 个人评价 -->
+    <section v-else-if="sectionKey === 'selfEvaluation' && store.selfEvaluation.content" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.selfEvaluation }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div class="section-content">
+        <div
+          v-for="(line, index) in formatDescriptionLines(store.selfEvaluation.content)"
+          :key="index"
+          class="text-line"
+          :style="textLineStyle"
+          v-html="line"
+        ></div>
+      </div>
+    </section>
+  </template>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useResumeStore } from '@/stores/resume'
+import type { ResumeSectionKey } from '@/types/resume'
 import { Phone, Mail, Link, Globe, Cake } from 'lucide-vue-next'
 import dayjs from 'dayjs'
 import { useI18n } from '@/composables/useI18n'
@@ -205,6 +208,7 @@ const { t } = useI18n()
 const visibleExperiences = computed(() => store.experiences.filter(exp => exp.isVisible))
 const visibleProjects = computed(() => store.projects.filter(proj => proj.isVisible))
 const visibleEducations = computed(() => store.educations.filter(edu => edu.isVisible))
+const orderedSections = computed<ResumeSectionKey[]>(() => store.sectionOrder)
 
 // 根据语言计算标题字体
 const sectionTitleFont = computed(() => {

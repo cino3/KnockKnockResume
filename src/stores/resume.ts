@@ -1,8 +1,44 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
-import type { Profile, Experience, Project, Education, Awards, SelfEvaluation, ThemeConfig, ResumeData } from '@/types/resume'
+import type { Profile, Experience, Project, Education, Awards, SelfEvaluation, ThemeConfig, ResumeSectionKey } from '@/types/resume'
 import { generateUUID } from '@/utils/uuid'
+
+const DEFAULT_SECTION_ORDER: ResumeSectionKey[] = [
+  'education',
+  'skills',
+  'experience',
+  'project',
+  'award',
+  'selfEvaluation'
+]
+
+const SECTION_KEYS = new Set<ResumeSectionKey>(DEFAULT_SECTION_ORDER)
+
+function normalizeSectionOrder(order: unknown): ResumeSectionKey[] {
+  if (!Array.isArray(order)) {
+    return [...DEFAULT_SECTION_ORDER]
+  }
+
+  const seen = new Set<ResumeSectionKey>()
+  const normalized: ResumeSectionKey[] = []
+
+  for (const rawKey of order) {
+    if (typeof rawKey !== 'string') continue
+    const key = rawKey as ResumeSectionKey
+    if (!SECTION_KEYS.has(key) || seen.has(key)) continue
+    seen.add(key)
+    normalized.push(key)
+  }
+
+  for (const key of DEFAULT_SECTION_ORDER) {
+    if (!seen.has(key)) {
+      normalized.push(key)
+    }
+  }
+
+  return normalized
+}
 
 export const useResumeStore = defineStore('resume', () => {
   // ================= 数据迁移：从旧格式迁移到新格式 =================
@@ -11,6 +47,8 @@ export const useResumeStore = defineStore('resume', () => {
   if (storedData) {
     try {
       const parsed = JSON.parse(storedData)
+      let shouldPersist = false
+
       // 如果 awards 是数组，转换为对象格式
       if (parsed.awards && Array.isArray(parsed.awards)) {
         const oldAwards = parsed.awards as any[]
@@ -26,8 +64,22 @@ export const useResumeStore = defineStore('resume', () => {
             })
             .join('\n')
         }
-        // 更新 localStorage
         parsed.awards = newAwards
+        shouldPersist = true
+      }
+
+      const normalizedOrder = normalizeSectionOrder(parsed.sectionOrder)
+      const currentOrder = Array.isArray(parsed.sectionOrder) ? parsed.sectionOrder : null
+      const isOrderChanged = !currentOrder
+        || currentOrder.length !== normalizedOrder.length
+        || currentOrder.some((key: string, index: number) => key !== normalizedOrder[index])
+
+      if (isOrderChanged) {
+        parsed.sectionOrder = normalizedOrder
+        shouldPersist = true
+      }
+
+      if (shouldPersist) {
         localStorage.setItem('resume', JSON.stringify(parsed))
       }
     } catch (e) {
@@ -145,6 +197,9 @@ export const useResumeStore = defineStore('resume', () => {
   const selfEvaluation = ref<SelfEvaluation>({
     content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
   })
+
+  // 模块顺序（左侧编辑与右侧预览共用）
+  const sectionOrder = ref<ResumeSectionKey[]>([...DEFAULT_SECTION_ORDER])
 
   // 主题配置
   const theme = ref<ThemeConfig>({
@@ -299,6 +354,7 @@ export const useResumeStore = defineStore('resume', () => {
     selfEvaluation: {
       content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
     },
+    sectionOrder: [...DEFAULT_SECTION_ORDER],
     theme: {
       primaryColor: '#000000',
       dividerColor: '#000000',
@@ -340,6 +396,7 @@ export const useResumeStore = defineStore('resume', () => {
     }))
     awards.value = { content: t.awards.content }
     selfEvaluation.value = { content: t.selfEvaluation.content }
+    sectionOrder.value = [...t.sectionOrder]
     theme.value = {
       ...t.theme,
       language: theme.value.language  // 保留用户选择的语言
@@ -368,6 +425,7 @@ export const useResumeStore = defineStore('resume', () => {
       educations: educations.value,
       awards: awards.value,
       selfEvaluation: selfEvaluation.value,
+      sectionOrder: sectionOrder.value,
       theme: theme.value,
       exportTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
     }
@@ -428,6 +486,8 @@ export const useResumeStore = defineStore('resume', () => {
         }
       }
 
+      sectionOrder.value = normalizeSectionOrder(data.sectionOrder)
+
       // 导入主题设置
       if (data.theme && typeof data.theme === 'object') {
         theme.value = {
@@ -450,6 +510,10 @@ export const useResumeStore = defineStore('resume', () => {
     }
   }
 
+  function setSectionOrder(order: ResumeSectionKey[]) {
+    sectionOrder.value = normalizeSectionOrder(order)
+  }
+
   return {
     profile,
     experiences,
@@ -457,6 +521,7 @@ export const useResumeStore = defineStore('resume', () => {
     educations,
     awards,
     selfEvaluation,
+    sectionOrder,
     theme,
     previewScale,
     lastSavedTime,
@@ -471,6 +536,7 @@ export const useResumeStore = defineStore('resume', () => {
     updateLastSavedTime,
     getExportData,
     importData,
+    setSectionOrder,
     uploadAvatar,
     removeAvatar
   }
@@ -486,6 +552,7 @@ export const useResumeStore = defineStore('resume', () => {
       'educations',
       'awards',
       'selfEvaluation',
+      'sectionOrder',
       'theme.language'  // 持久化语言选择
     ]
   }

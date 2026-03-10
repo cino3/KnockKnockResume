@@ -1,11 +1,11 @@
 <template>
   <div class="panel-fade">
-    <el-collapse v-model="activeNames" accordion class="cloud-accordion">
+    <el-collapse v-model="activeName" accordion class="cloud-accordion">
 
-      <!-- 基本信息 -->
+      <!-- 基本信息（固定置顶，不参与拖拽） -->
       <el-collapse-item name="profile">
         <template #title>
-          <span class="accordion-title">基本信息</span>
+          <span class="accordion-title basic-title">基本信息</span>
         </template>
         <div class="form-body">
           <el-form :model="store.profile" label-position="top" class="ghost-form basic-info-form">
@@ -56,100 +56,85 @@
         </div>
       </el-collapse-item>
 
-      <!-- 教育经历 -->
-      <el-collapse-item name="education">
-        <template #title>
-          <span class="accordion-title">教育经历</span>
-        </template>
-        <div class="form-body">
-          <div class="list-container">
-            <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
-              + 添加教育
-            </el-button>
-            <EducationList />
-          </div>
-        </div>
-      </el-collapse-item>
+      <draggable
+        v-model="draggableSections"
+        item-key="key"
+        handle=".drag-handle"
+        tag="div"
+        class="sortable-sections"
+        :animation="180"
+        ghost-class="drag-ghost"
+        chosen-class="drag-chosen"
+      >
+        <template #item="{ element }">
+          <el-collapse-item :name="element.key">
+            <template #title>
+              <div class="section-title-row">
+                <GripVertical class="drag-handle" :size="16" @mousedown.stop @click.stop />
+                <span class="accordion-title">{{ element.title }}</span>
+              </div>
+            </template>
 
-      <!-- 专业技能 -->
-      <el-collapse-item name="skills">
-        <template #title>
-          <span class="accordion-title">专业技能</span>
-        </template>
-        <div class="form-body">
-          <el-form :model="store.profile" label-position="top" class="ghost-form">
-            <el-form-item>
-              <BoldTextarea
-                v-model="store.profile.skills"
-                placeholder="请输入专业技能，可换行输入多个技能项，支持加粗"
-                :rows="6"
-              />
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-collapse-item>
+            <div class="form-body">
+              <!-- 教育经历 -->
+              <div v-if="element.key === 'education'" class="list-container">
+                <el-button type="primary" size="small" @click="store.addEducation" style="margin-bottom: 12px;">
+                  + 添加教育
+                </el-button>
+                <EducationList />
+              </div>
 
-      <!-- 工作经历 -->
-      <el-collapse-item name="experience">
-        <template #title>
-          <span class="accordion-title">工作经历</span>
-        </template>
-        <div class="form-body">
-          <div class="list-container">
-            <el-button type="primary" size="small" @click="store.addExperience" style="margin-bottom: 12px;">
-              + 添加经历
-            </el-button>
-            <ExperienceList />
-          </div>
-        </div>
-      </el-collapse-item>
+              <!-- 专业技能 -->
+              <el-form v-else-if="element.key === 'skills'" :model="store.profile" label-position="top" class="ghost-form">
+                <el-form-item>
+                  <BoldTextarea
+                    v-model="store.profile.skills"
+                    placeholder="请输入专业技能，可换行输入多个技能项，支持加粗"
+                    :rows="6"
+                  />
+                </el-form-item>
+              </el-form>
 
-      <!-- 项目经历 -->
-      <el-collapse-item name="project">
-        <template #title>
-          <span class="accordion-title">项目经历</span>
-        </template>
-        <div class="form-body">
-          <div class="list-container">
-            <el-button type="primary" size="small" @click="store.addProject" style="margin-bottom: 12px;">
-              + 添加项目
-            </el-button>
-            <ProjectList />
-          </div>
-        </div>
-      </el-collapse-item>
+              <!-- 工作经历 -->
+              <div v-else-if="element.key === 'experience'" class="list-container">
+                <el-button type="primary" size="small" @click="store.addExperience" style="margin-bottom: 12px;">
+                  + 添加经历
+                </el-button>
+                <ExperienceList />
+              </div>
 
-      <!-- 获奖经历 -->
-      <el-collapse-item name="award">
-        <template #title>
-          <span class="accordion-title">获奖经历</span>
-        </template>
-        <div class="form-body">
-          <div class="list-container">
-            <AwardList />
-          </div>
-        </div>
-      </el-collapse-item>
+              <!-- 项目经历 -->
+              <div v-else-if="element.key === 'project'" class="list-container">
+                <el-button type="primary" size="small" @click="store.addProject" style="margin-bottom: 12px;">
+                  + 添加项目
+                </el-button>
+                <ProjectList />
+              </div>
 
-      <!-- 个人评价 -->
-      <el-collapse-item name="self-evaluation">
-        <template #title>
-          <span class="accordion-title">个人评价</span>
+              <!-- 获奖经历 -->
+              <div v-else-if="element.key === 'award'" class="list-container">
+                <AwardList />
+              </div>
+
+              <!-- 个人评价 -->
+              <div v-else-if="element.key === 'selfEvaluation'" class="list-container">
+                <SelfEvaluationEditor />
+              </div>
+            </div>
+          </el-collapse-item>
         </template>
-        <div class="form-body">
-          <div class="list-container">
-            <SelfEvaluationEditor />
-          </div>
-        </div>
-      </el-collapse-item>
+      </draggable>
 
     </el-collapse>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import draggable from 'vuedraggable'
+import { GripVertical } from 'lucide-vue-next'
 import { useResumeStore } from '@/stores/resume'
+import type { ResumeSectionKey } from '@/types/resume'
 import { ElMessage } from 'element-plus'
 import EducationList from '../editor/EducationList.vue'
 import ExperienceList from '../editor/ExperienceList.vue'
@@ -157,9 +142,31 @@ import ProjectList from '../editor/ProjectList.vue'
 import AwardList from '../editor/AwardList.vue'
 import SelfEvaluationEditor from '../editor/SelfEvaluationEditor.vue'
 import BoldTextarea from '../editor/BoldTextarea.vue'
+
+interface SortableSection {
+  key: ResumeSectionKey;
+  title: string;
+}
+
+const SECTION_TITLES: Record<ResumeSectionKey, string> = {
+  education: '教育经历',
+  skills: '专业技能',
+  experience: '工作经历',
+  project: '项目经历',
+  award: '获奖经历',
+  selfEvaluation: '个人评价'
+}
+
 const store = useResumeStore()
-const activeNames = ref(['profile'])
+const activeName = ref<'profile' | ResumeSectionKey>('profile')
 const avatarInput = ref<HTMLInputElement | null>(null)
+
+const draggableSections = computed<SortableSection[]>({
+  get: () => store.sectionOrder.map((key) => ({ key, title: SECTION_TITLES[key] })),
+  set: (sections) => {
+    store.setSectionOrder(sections.map((section) => section.key))
+  }
+})
 
 const triggerFileInput = () => {
   avatarInput.value?.click()
@@ -188,3 +195,34 @@ const handleRemoveAvatar = () => {
   ElMessage.success('头像已删除')
 }
 </script>
+
+<style scoped>
+.section-title-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.basic-title {
+  display: inline-block;
+  padding-left: 24px;
+}
+
+.drag-handle {
+  cursor: move;
+  color: #9ca3af;
+}
+
+.drag-handle:hover {
+  color: #6b7280;
+}
+
+.sortable-sections :deep(.drag-ghost) {
+  opacity: 0.55;
+}
+
+.sortable-sections :deep(.drag-chosen) {
+  background: rgba(64, 158, 255, 0.06);
+}
+</style>

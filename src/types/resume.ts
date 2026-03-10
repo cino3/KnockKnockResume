@@ -50,6 +50,14 @@ export interface SelfEvaluation {
   content: string;     // 个人评价内容，支持换行
 }
 
+export type ResumeSectionKey =
+  | 'education'
+  | 'skills'
+  | 'experience'
+  | 'project'
+  | 'award'
+  | 'selfEvaluation'
+
 // 主题配置
 export interface ThemeConfig {
   primaryColor: string; // 主色调
@@ -71,5 +79,6 @@ export interface ResumeData {
   educations: Education[];
   awards: Awards;
   selfEvaluation: SelfEvaluation;
+  sectionOrder: ResumeSectionKey[];
   theme: ThemeConfig;
 }
