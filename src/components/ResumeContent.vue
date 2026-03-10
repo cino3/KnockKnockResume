@@ -177,6 +177,21 @@
       </div>
     </section>
 
+    <!-- 发表文章 -->
+    <section v-else-if="sectionKey === 'publication' && store.publishedArticles.content" class="resume-section">
+      <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.publication }}</h2>
+      <div class="section-divider" :style="{ borderBottomColor: store.theme.dividerColor }"></div>
+      <div class="section-content">
+        <div
+          v-for="(line, index) in formatDescriptionLines(store.publishedArticles.content)"
+          :key="index"
+          class="text-line"
+          :style="textLineStyle"
+          v-html="line"
+        ></div>
+      </div>
+    </section>
+
     <!-- 个人评价 -->
     <section v-else-if="sectionKey === 'selfEvaluation' && store.selfEvaluation.content" class="resume-section">
       <h2 class="section-title" :class="{ 'en-title': store.theme.language === 'en' }" :style="{ color: store.theme.primaryColor, fontSize: (store.theme.titleFontSize - 11) + 'px', fontWeight: store.theme.titleFontWeight, fontFamily: sectionTitleFont, letterSpacing: titleLetterSpacing }">{{ t.selfEvaluation }}</h2>

@@ -116,6 +116,11 @@
                 <AwardList />
               </div>
 
+              <!-- 发表文章 -->
+              <div v-else-if="element.key === 'publication'" class="list-container">
+                <PublishedArticlesEditor />
+              </div>
+
               <!-- 个人评价 -->
               <div v-else-if="element.key === 'selfEvaluation'" class="list-container">
                 <SelfEvaluationEditor />
@@ -140,6 +145,7 @@ import EducationList from '../editor/EducationList.vue'
 import ExperienceList from '../editor/ExperienceList.vue'
 import ProjectList from '../editor/ProjectList.vue'
 import AwardList from '../editor/AwardList.vue'
+import PublishedArticlesEditor from '../editor/PublishedArticlesEditor.vue'
 import SelfEvaluationEditor from '../editor/SelfEvaluationEditor.vue'
 import BoldTextarea from '../editor/BoldTextarea.vue'
 
@@ -154,6 +160,7 @@ const SECTION_TITLES: Record<ResumeSectionKey, string> = {
   experience: '工作经历',
   project: '项目经历',
   award: '获奖经历',
+  publication: '发表文章',
   selfEvaluation: '个人评价'
 }
 

@@ -9,6 +9,7 @@ const translations = {
     experience: '工作经历',
     project: '项目经历',
     award: '获奖经历',
+    publication: '发表文章',
     selfEvaluation: '个人评价',
     profile: '基本信息'
   },
@@ -18,6 +19,7 @@ const translations = {
     experience: 'EXPERIENCE',
     project: 'PROJECTS',
     award: 'AWARDS',
+    publication: 'PUBLICATIONS',
     selfEvaluation: 'SELF EVALUATION',
     profile: 'BASIC INFO'
   }
@@ -33,4 +35,3 @@ export function useI18n() {
   
   return { t }
 }
-

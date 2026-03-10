@@ -47,7 +47,7 @@ const pagesContainerStyle = computed(() => {
 
 // ================= 监听与生命周期 =================
 watch(
-  [() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.awards, () => store.selfEvaluation, () => store.sectionOrder, () => store.theme],
+  [() => store.profile, () => store.experiences, () => store.projects, () => store.educations, () => store.awards, () => store.publishedArticles, () => store.selfEvaluation, () => store.sectionOrder, () => store.theme],
   () => {
     calculatePages(measureContainerRef.value?.measureRef || null)
   },

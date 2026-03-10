@@ -50,12 +50,17 @@ export interface SelfEvaluation {
   content: string;     // 个人评价内容，支持换行
 }
 
+export interface PublishedArticles {
+  content: string;     // 发表文章内容，支持换行
+}
+
 export type ResumeSectionKey =
   | 'education'
   | 'skills'
   | 'experience'
   | 'project'
   | 'award'
+  | 'publication'
   | 'selfEvaluation'
 
 // 主题配置
@@ -78,6 +83,7 @@ export interface ResumeData {
   projects: Project[];
   educations: Education[];
   awards: Awards;
+  publishedArticles: PublishedArticles;
   selfEvaluation: SelfEvaluation;
   sectionOrder: ResumeSectionKey[];
   theme: ThemeConfig;

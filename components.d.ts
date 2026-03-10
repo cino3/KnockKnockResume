@@ -40,6 +40,7 @@ declare module 'vue' {
     Preview: typeof import('./src/components/Preview.vue')['default']
     PrintContainer: typeof import('./src/components/preview/PrintContainer.vue')['default']
     ProjectList: typeof import('./src/components/editor/ProjectList.vue')['default']
+    PublishedArticlesEditor: typeof import('./src/components/editor/PublishedArticlesEditor.vue')['default']
     ResumeContent: typeof import('./src/components/ResumeContent.vue')['default']
     SelfEvaluationEditor: typeof import('./src/components/editor/SelfEvaluationEditor.vue')['default']
     Sidebar: typeof import('./src/components/Sidebar.vue')['default']

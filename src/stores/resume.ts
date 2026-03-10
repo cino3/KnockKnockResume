@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
-import type { Profile, Experience, Project, Education, Awards, SelfEvaluation, ThemeConfig, ResumeSectionKey } from '@/types/resume'
+import type { Profile, Experience, Project, Education, Awards, SelfEvaluation, PublishedArticles, ThemeConfig, ResumeSectionKey } from '@/types/resume'
 import { generateUUID } from '@/utils/uuid'
 
 const DEFAULT_SECTION_ORDER: ResumeSectionKey[] = [
@@ -10,6 +10,7 @@ const DEFAULT_SECTION_ORDER: ResumeSectionKey[] = [
   'experience',
   'project',
   'award',
+  'publication',
   'selfEvaluation'
 ]
 
@@ -193,6 +194,11 @@ export const useResumeStore = defineStore('resume', () => {
     content: '证书：CET-4，CET-6<br>第三十三届"软件杯"省赛一等奖'
   })
 
+  // 发表文章
+  const publishedArticles = ref<PublishedArticles>({
+    content: ''
+  })
+
   // 个人评价
   const selfEvaluation = ref<SelfEvaluation>({
     content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
@@ -351,6 +357,9 @@ export const useResumeStore = defineStore('resume', () => {
     awards: {
       content: '证书：CET-4，CET-6<br>第三十三届"软件杯"省赛一等奖'
     },
+    publishedArticles: {
+      content: ''
+    },
     selfEvaluation: {
       content: '喜欢自己捣鼓捣鼓小项目<br>具有较强的自学能力，喜欢啃阅读各种经典技术书籍'
     },
@@ -395,6 +404,7 @@ export const useResumeStore = defineStore('resume', () => {
       id: generateUUID()
     }))
     awards.value = { content: t.awards.content }
+    publishedArticles.value = { content: t.publishedArticles.content }
     selfEvaluation.value = { content: t.selfEvaluation.content }
     sectionOrder.value = [...t.sectionOrder]
     theme.value = {
@@ -424,6 +434,7 @@ export const useResumeStore = defineStore('resume', () => {
       projects: projects.value,
       educations: educations.value,
       awards: awards.value,
+      publishedArticles: publishedArticles.value,
       selfEvaluation: selfEvaluation.value,
       sectionOrder: sectionOrder.value,
       theme: theme.value,
@@ -479,6 +490,13 @@ export const useResumeStore = defineStore('resume', () => {
         }
       }
 
+      // 导入发表文章（旧导出无该字段时重置为空）
+      publishedArticles.value = {
+        content: data.publishedArticles && typeof data.publishedArticles === 'object'
+          ? (data.publishedArticles.content || '')
+          : ''
+      }
+
       // 导入自我评价
       if (data.selfEvaluation && typeof data.selfEvaluation === 'object') {
         selfEvaluation.value = {
@@ -520,6 +538,7 @@ export const useResumeStore = defineStore('resume', () => {
     projects,
     educations,
     awards,
+    publishedArticles,
     selfEvaluation,
     sectionOrder,
     theme,
@@ -551,6 +570,7 @@ export const useResumeStore = defineStore('resume', () => {
       'projects',
       'educations',
       'awards',
+      'publishedArticles',
       'selfEvaluation',
       'sectionOrder',
       'theme.language'  // 持久化语言选择
