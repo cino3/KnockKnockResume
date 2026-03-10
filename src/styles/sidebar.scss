@@ -352,10 +352,7 @@
   flex: none;
 }
 
-/* 标题粗细（细/粗）：跟“导出 PDF”主按钮一致，使用衬线字体栈 */
-.font-weight-radio-group .el-radio-button__inner {
-  font-family: var(--font-serif) !important;
-}
+/* 标题粗细（细/粗）与“正文字号”保持一致，使用全局单选按钮字体 */
 
 /* === 模板卡片 === */
 .template-grid {
