@@ -209,6 +209,10 @@ const handleRemoveAvatar = () => {
   padding-left: 24px;
 }
 
+.basic-info-form {
+  padding-left: 24px;
+}
+
 .drag-handle {
   cursor: move;
   color: #9ca3af;
