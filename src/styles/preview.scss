@@ -66,6 +66,10 @@
   box-sizing: border-box;
 }
 
+.screen-page.first-page .page-content-wrapper {
+  padding-bottom: 28px;
+}
+
 /* ================= 打印样式 (使用打印专用容器) ================= */
 @media print {
   /* 设置打印页边距：0，由容器 padding 提供 */

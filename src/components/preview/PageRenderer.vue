@@ -3,6 +3,7 @@
     v-for="(_page, index) in renderPages"
     :key="index"
     class="resume-paper screen-page"
+    :class="{ 'first-page': index === 0 }"
     :style="resumeStyle"
   >
     <div :id="`page-content-${index}`" class="page-content-wrapper"></div>
@@ -28,33 +29,33 @@ const bodyFontSizeMap = {
 const spacingMap = {
   sm: {
     header: '7px',
-    section: '15px',
+    section: '12px',
     divider: '9px',
     item: '9px',
     itemLg: '12px',
     titleTop: '4px',
     titleBottom: '3px',
-    sectionPrint: '17px'
+    sectionPrint: '12px'
   },
   md: {
     header: '8px',
-    section: '18px',
+    section: '15px',
     divider: '11px',
     item: '11px',
     itemLg: '14px',
     titleTop: '5px',
     titleBottom: '4px',
-    sectionPrint: '20px'
+    sectionPrint: '15px'
   },
   lg: {
     header: '8px',
-    section: '18px',
+    section: '15px',
     divider: '11px',
     item: '11px',
     itemLg: '14px',
     titleTop: '5px',
     titleBottom: '4px',
-    sectionPrint: '20px'
+    sectionPrint: '15px'
   }
 } as const
 
