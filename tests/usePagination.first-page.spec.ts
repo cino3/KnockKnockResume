@@ -15,7 +15,7 @@ describe('usePagination first-page capacity', () => {
   })
 
   it('allocates more usable content height to the first page', () => {
-    expect(FIRST_PAGE_MAX_CONTENT_HEIGHT).toBe(1065)
+    expect(FIRST_PAGE_MAX_CONTENT_HEIGHT).toBe(1071)
     expect(FIRST_PAGE_MAX_CONTENT_HEIGHT).toBeGreaterThan(MAX_CONTENT_HEIGHT)
   })
 

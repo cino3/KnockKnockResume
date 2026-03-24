@@ -49,7 +49,7 @@ describe('usePagination first-page whitespace stretch', () => {
     page.append(section1, section2)
     document.body.appendChild(page)
 
-    // 当前第一页下边距为 22px，margin=22+limit+1 时，emptySpace 会超限
+    // 拉伸预算应基于固定基准值计算，避免与当前第一页下边距耦合
     const tooLargeMargin = 23 + MAX_FIRST_PAGE_STRETCH_LIMIT
     const applied = applyFirstPageWhitespaceStretch(page, tooLargeMargin)
 

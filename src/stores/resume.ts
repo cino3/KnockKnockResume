@@ -15,6 +15,7 @@ const DEFAULT_SECTION_ORDER: ResumeSectionKey[] = [
 ]
 
 const SECTION_KEYS = new Set<ResumeSectionKey>(DEFAULT_SECTION_ORDER)
+const DEFAULT_LAYOUT_MODE: ThemeConfig['layoutMode'] = 'flow'
 
 function normalizeSectionOrder(order: unknown): ResumeSectionKey[] {
   if (!Array.isArray(order)) {
@@ -39,6 +40,10 @@ function normalizeSectionOrder(order: unknown): ResumeSectionKey[] {
   }
 
   return normalized
+}
+
+function normalizeLayoutMode(mode: unknown): ThemeConfig['layoutMode'] {
+  return mode === 'compact' ? 'compact' : DEFAULT_LAYOUT_MODE
 }
 
 export const useResumeStore = defineStore('resume', () => {
@@ -78,6 +83,17 @@ export const useResumeStore = defineStore('resume', () => {
       if (isOrderChanged) {
         parsed.sectionOrder = normalizedOrder
         shouldPersist = true
+      }
+
+      if (!parsed.theme || typeof parsed.theme !== 'object') {
+        parsed.theme = { layoutMode: DEFAULT_LAYOUT_MODE }
+        shouldPersist = true
+      } else {
+        const normalizedLayoutMode = normalizeLayoutMode(parsed.theme.layoutMode)
+        if (parsed.theme.layoutMode !== normalizedLayoutMode) {
+          parsed.theme.layoutMode = normalizedLayoutMode
+          shouldPersist = true
+        }
       }
 
       if (shouldPersist) {
@@ -217,7 +233,8 @@ export const useResumeStore = defineStore('resume', () => {
     titleFontSize: 28,
     titleFontWeight: 800,
     bodyFontSize: 'md',
-    language: 'zh'
+    language: 'zh',
+    layoutMode: DEFAULT_LAYOUT_MODE
   })
 
   // 预览缩放（默认 74%）
@@ -373,7 +390,8 @@ export const useResumeStore = defineStore('resume', () => {
       titleFontSize: 28,
       titleFontWeight: 800,
       bodyFontSize: 'md',
-      language: 'zh' as const
+      language: 'zh' as const,
+      layoutMode: DEFAULT_LAYOUT_MODE
     }
   }
 
@@ -517,7 +535,8 @@ export const useResumeStore = defineStore('resume', () => {
           titleFontSize: data.theme.titleFontSize || 28,
           titleFontWeight: data.theme.titleFontWeight || 700,
           bodyFontSize: data.theme.bodyFontSize || 'md',
-          language: data.theme.language || 'zh'
+          language: data.theme.language || 'zh',
+          layoutMode: normalizeLayoutMode(data.theme.layoutMode)
         }
       }
 
@@ -573,7 +592,8 @@ export const useResumeStore = defineStore('resume', () => {
       'publishedArticles',
       'selfEvaluation',
       'sectionOrder',
-      'theme.language'  // 持久化语言选择
+      'theme.language',
+      'theme.layoutMode'
     ]
   }
 })

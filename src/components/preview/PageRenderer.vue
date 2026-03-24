@@ -28,7 +28,8 @@ const bodyFontSizeMap = {
 
 const spacingMap = {
   sm: {
-    header: '7px',
+    header: '6px',
+    educationItem: '7px',
     section: '12px',
     divider: '9px',
     item: '9px',
@@ -38,7 +39,8 @@ const spacingMap = {
     sectionPrint: '12px'
   },
   md: {
-    header: '8px',
+    header: '6px',
+    educationItem: '8px',
     section: '15px',
     divider: '11px',
     item: '11px',
@@ -48,7 +50,8 @@ const spacingMap = {
     sectionPrint: '15px'
   },
   lg: {
-    header: '8px',
+    header: '6px',
+    educationItem: '8px',
     section: '15px',
     divider: '11px',
     item: '11px',
@@ -68,6 +71,7 @@ const resumeStyle = computed(() => ({
   '--font-size-body': bodyFontSizeMap[store.theme.bodyFontSize] || '14px',
   // Spacing tokens for resume layout (rounded values per size)
   '--space-header': getSpacingVars().header,
+  '--space-education-item': getSpacingVars().educationItem,
   '--space-section': getSpacingVars().section,
   '--space-divider': getSpacingVars().divider,
   '--space-item': getSpacingVars().item,

@@ -329,7 +329,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
 /* 工作经历和项目经历：多条记录之间固定间距 */
 .experience-item, .project-item { margin-bottom: var(--space-item-lg, 14px); }
 /* 教育经历：多条记录之间固定间距 */
-.education-item { margin-bottom: var(--space-header, 8px); }
+.education-item { margin-bottom: var(--space-education-item, 8px); }
 /* 教育经历条目通常无描述，去掉标题下方额外空隙以收紧条目间距 */
 .education-item .item-title { margin-bottom: 0; }
 /* 教育经历中学校名称保持加粗强调 */

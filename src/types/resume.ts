@@ -63,6 +63,8 @@ export type ResumeSectionKey =
   | 'publication'
   | 'selfEvaluation'
 
+export type LayoutMode = 'flow' | 'compact'
+
 // 主题配置
 export interface ThemeConfig {
   primaryColor: string; // 主色调
@@ -74,6 +76,7 @@ export interface ThemeConfig {
   titleFontWeight: number; // 标题字体粗细
   bodyFontSize: 'sm' | 'md' | 'lg'; // 正文字体大小档位
   language: 'zh' | 'en'; // 语言：中文或英文
+  layoutMode: LayoutMode; // 版式模式：流式多页/紧凑一页
 }
 
 // Resume 完整数据结构
