@@ -6,6 +6,9 @@ const COMPACT_PAGE_PADDING_X = 28
 const FIRST_PAGE_PADDING_BOTTOM = 16
 const MAX_COMPACT_ATTEMPTS = 120
 const EPSILON = 0.0001
+const COMPACT_TITLE_FONT_SIZE = 28
+const COMPACT_SECTION_TITLE_FONT_SIZE = 17
+const COMPACT_BODY_FONT_SIZE_SMALL = 13
 
 const SPACING_VARS = [
   '--space-header',
@@ -223,6 +226,14 @@ function applyCompactVariables(
     const multiplier = getCompactSpacingMultiplier(key)
     target.style.setProperty(key, `${roundToTwo(baseValue * variables.spacingScale * multiplier)}px`)
   })
+
+  // Compact mode always uses S title sizing so results are stable regardless of prior flow settings.
+  target.querySelectorAll('.name').forEach((el) => {
+    (el as HTMLElement).style.fontSize = `${COMPACT_TITLE_FONT_SIZE}px`
+  })
+  target.querySelectorAll('.section-title').forEach((el) => {
+    (el as HTMLElement).style.fontSize = `${COMPACT_SECTION_TITLE_FONT_SIZE}px`
+  })
 }
 
 function measureWithVariables(
@@ -262,7 +273,8 @@ export function useCompactPagination(renderPages: Ref<number[]>) {
     const sourceStyles = window.getComputedStyle(sourceRoot)
 
     const initialVariables: CompactVariables = {
-      fontSizePx: readCSSNumber(sourceStyles, '--font-size-body', 14),
+      // Compact mode always starts from "small" body size for stable output.
+      fontSizePx: COMPACT_BODY_FONT_SIZE_SMALL,
       lineHeight: readCSSNumber(sourceStyles, '--line-height', 1.6),
       spacingScale: 1
     }
