@@ -140,7 +140,7 @@
               class="item-title"
               :style="store.theme.language === 'en' ? { fontFamily: sectionTitleFont } : {}"
             >
-              {{ proj.name }} <span class="item-subtitle-inline">{{ proj.role }}</span>
+              <span class="project-name">{{ proj.name }}</span> <span class="item-subtitle-inline">{{ proj.role }}</span>
             </h3>
           </div>
           <span
@@ -350,6 +350,7 @@ function formatDescriptionLines(text: string | undefined): string[] {
   color: #333;
   margin: 0 0 var(--space-title-bottom, 4px) 0;
 }
+.project-item .project-name { font-size: calc(var(--font-size-body) + 1px); }
 .item-subtitle-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
 .item-subtitle { font-size: var(--font-size-body); color: #000000; }
 .education-major { font-size: var(--font-size-body); color: #000000; }
