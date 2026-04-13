@@ -288,10 +288,10 @@ function formatDescriptionLines(text: string | undefined): string[] {
   /* 名字与大标题使用同一套中文衬线字体 */
   font-family: var(--font-serif-cn);
 }
-.title { font-size: 18px; color: #000000; margin-bottom: 0; }
+.title { font-size: 18px; color: #333333; margin-bottom: 0; }
 .avatar-wrapper { position: absolute; right: 0; top: 0; }
 .avatar { width: 80px; height: 100px; object-fit: cover; display: block; }
-.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: var(--font-size-body); color: #000000; min-height: 50px; }
+.contact-info { display: flex; flex-direction: column; gap: 4px; font-size: var(--font-size-body); color: #333333; min-height: 50px; }
 .contact-info.has-avatar { margin-right: 96px; }
 .contact-info-row { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
 .contact-row { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -347,23 +347,23 @@ function formatDescriptionLines(text: string | undefined): string[] {
 .item-title {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-item-title);
-  color: #333;
+  color: #333333;
   margin: 0 0 var(--space-title-bottom, 4px) 0;
 }
 .project-item .project-name { font-size: calc(var(--font-size-body) + 1px); }
-.item-subtitle-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
-.item-subtitle { font-size: var(--font-size-body); color: #000000; }
-.education-major { font-size: var(--font-size-body); color: #000000; }
-.education-major-inline { font-size: var(--font-size-body); font-weight: 400; color: #000000; margin-left: 8px; }
-.education-degree { font-size: var(--font-size-body); font-weight: 600; color: #333; }
-.item-date { font-size: var(--font-size-body); color: #000000; white-space: nowrap; }
+.item-subtitle-inline { font-size: var(--font-size-body); font-weight: 400; color: #333333; margin-left: 8px; }
+.item-subtitle { font-size: var(--font-size-body); color: #333333; }
+.education-major { font-size: var(--font-size-body); color: #333333; }
+.education-major-inline { font-size: var(--font-size-body); font-weight: 400; color: #333333; margin-left: 8px; }
+.education-degree { font-size: var(--font-size-body); font-weight: 600; color: #333333; }
+.item-date { font-size: var(--font-size-body); color: #333333; white-space: nowrap; }
 
 .item-description-wrapper { margin-top: 0px; margin-bottom: 0px; }
 
 /* 每一行文本的样式：保持高度一致 */
 .text-line {
   font-size: var(--font-size-body);
-  color: #000000;
+  color: #333333;
   line-height: var(--line-height, 1.6);
   white-space: pre-wrap;
 }
